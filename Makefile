@@ -6,7 +6,7 @@
 #    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/04/21 10:50:02 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/04/22 15:32:11 by wbelfatm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ CFLAGS = -Wall -Wextra -Werror
 CC = cc
 RM = rm -f
 
-SRCS = main.c
+SRCS = main.c hooks.c
 OBJS = ${SRCS:.c=.o}
 LIBMLX = ./lib/MLX
 GLFW = /Users/wbelfatm/homebrew/Cellar/glfw/3.4/lib
