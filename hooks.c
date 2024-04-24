@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/04/22 16:04:39 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/04/24 12:07:12 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,46 +19,102 @@ void move_player(mlx_key_data_t keydata, t_config *config)
 	int newY;
 
 	div = WIDTH / MAP_WIDTH;
-	newX = config->xPos;
-	newY = config->yPos;
-	if (keydata.action == MLX_RELEASE)
-		return ;
+	newX = config->xOffset;
+	newY = config->yOffset;
+	// if (keydata.action == MLX_RELEASE)
+	// 	return ;
 	if (keydata.key == MLX_KEY_W)
 	{
-		newX = config->xPos - 1;
-		if (!(newX >= 0 && newX < MAP_HEIGHT && !config->map[newX][newY]))
+		newX -= 3;
+		if (newX < 0 && config->yOffset)
+		{
+			if (config->yOffset > 0 && config->map[config->xPos - 1][config->yPos + 1])
+				return ;
+			else if (config->yOffset < 0 && config->map[config->xPos - 1][config->yPos - 1])
+				return ;
+		}
+		if (!in_range(config->xPos * div + newX, 0, HEIGHT - 1))
 			return ;
-		config->map[config->xPos][config->yPos] = 0;
-		config->xPos -= 1;
-		config->map[newX][newY] = 5;
+		if (newX < 0 && abs(newX) >= div
+			&& !config->map[config->xPos - 1][config->yPos])
+		{
+			config->map[config->xPos][config->yPos] = 0;
+			config->map[config->xPos - 1][config->yPos] = 5;
+			config->xPos--;
+			newX = 0;
+		}
+		else if (newX < 0 && config->map[config->xPos - 1][config->yPos])
+			newX += 3;
+		config->xOffset = newX;
 	}
 	else if (keydata.key == MLX_KEY_S)
 	{
-		newX = config->xPos + 1;
-		if (!(newX >= 0 && newX < MAP_HEIGHT && !config->map[newX][newY]))
+		newX += 3;
+		if (newX > 0 && config->yOffset)
+		{
+			if (config->yOffset > 0 && config->map[config->xPos + 1][config->yPos + 1])
+				return ;
+			else if (config->yOffset < 0 && config->map[config->xPos + 1][config->yPos - 1])
+				return ;
+		}
+		if (!in_range(config->xPos * div + newX, 0, HEIGHT - 1))
 			return ;
-		config->map[config->xPos][config->yPos] = 0;
-		config->xPos = newX;
-		config->map[newX][newY] = 5;
+		if (newX > 0 && abs(newX) >= div && !config->map[config->xPos + 1][config->yPos])
+		{
+			config->map[config->xPos][config->yPos] = 0;
+			config->map[config->xPos + 1][config->yPos] = 5;
+			config->xPos++;
+			newX = 0;
+		}
+		else if (newX > 0 && config->map[config->xPos + 1][config->yPos])
+			newX -= 3;
+		config->xOffset = newX;
 	}
 	else if (keydata.key == MLX_KEY_A)
 	{
-		newY = config->yPos - 1;
-		if (!(newY >= 0 && newY < MAP_WIDTH && !config->map[newX][newY]))
+		newY -= 3;
+		if (newY < 0 && config->xOffset)
+		{
+			if (config->xOffset > 0 && config->map[config->xPos + 1][config->yPos - 1])
+				return ;
+			else if (config->xOffset < 0 && config->map[config->xPos - 1][config->yPos - 1])
+				return ;
+		}
+		if (!in_range(config->yPos * div + newY, 0, WIDTH - 1))
 			return ;
-		config->map[config->xPos][config->yPos] = 0;
-		config->yPos = newY;
-		config->map[newX][newY] = 5;
+		if (newY < 0 && abs(newY) >= div && !config->map[config->xPos][config->yPos - 1])
+		{
+			config->map[config->xPos][config->yPos] = 0;
+			config->map[config->xPos][config->yPos - 1] = 5;
+			config->yPos--;
+			newY = 0;
+		}
+		else if (newY < 0 && config->map[config->xPos][config->yPos - 1])
+			newY += 3;
+		config->yOffset = newY;
 	}
 	else if (keydata.key == MLX_KEY_D)
 	{
-		newY = config->yPos + 1;
-		if (!(newY >= 0 && newY < MAP_WIDTH && !config->map[newX][newY]))
+		newY += 3;
+		if (newY > 0 && config->xOffset)
+		{
+			if (config->xOffset > 0 && config->map[config->xPos + 1][config->yPos + 1])
+				return ;
+			else if (config->xOffset < 0 && config->map[config->xPos - 1][config->yPos + 1])
+				return ;
+		}
+		if (!in_range(config->yPos * div + newY, 0, WIDTH - 1))
 			return ;
-		config->map[config->xPos][config->yPos] = 0;
-		config->yPos = newY;
-		config->map[newX][newY] = 5;
+		if (newY > 0 && abs(newY) >= div && !config->map[config->xPos][config->yPos + 1])
+		{
+			config->map[config->xPos][config->yPos] = 0;
+			config->map[config->xPos][config->yPos + 1] = 5;
+			config->yPos++;
+			newY = 0;
+		}
+		else if (newY > 0 && config->map[config->xPos][config->yPos + 1])
+			newY -= 3;
+		config->yOffset = newY;
 	}
-	
-	draw_map(config);
+	redraw_image(config);
 }
