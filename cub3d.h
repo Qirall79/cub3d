@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/04/23 13:54:12 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:08:17 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_config
 // draw
 void draw_map(t_config *config);
 void redraw_image(t_config *config);
+void draw_line(int xi, int yi, int xf, int yf, t_config *config);
 
 // hooks
 void move_player(mlx_key_data_t keydata, t_config *config);

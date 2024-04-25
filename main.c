@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/04/23 17:52:15 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/04/25 10:13:26 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,13 +98,11 @@ int main(void)
 	t_config config;
 
 	init_config(&config);
-	mlx_put_pixel(config.img, HEIGHT / 2, WIDTH / 2, 0xFFFFFFFF);
 	draw_map(&config);
 
 	// hooks
 	mlx_key_hook(config.mlx, (mlx_keyfunc) move_player, &config);
 
-	
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);
 	return (EXIT_SUCCESS);
