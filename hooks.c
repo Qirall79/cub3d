@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/04/24 12:56:54 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/04/28 21:56:43 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void move_player(mlx_key_data_t keydata, t_config *config)
 	div = WIDTH / MAP_WIDTH;
 	newX = config->xOffset;
 	newY = config->yOffset;
-	// if (keydata.action == MLX_RELEASE)
-	// 	return ;
 	if (keydata.key == MLX_KEY_W)
 	{
 		newX -= 3;
@@ -115,6 +113,24 @@ void move_player(mlx_key_data_t keydata, t_config *config)
 		else if (newY > 0 && config->map[config->xPos][config->yPos + 1])
 			newY -= 3;
 		config->yOffset = newY;
+		
+	}
+	
+	else if (keydata.key == MLX_KEY_LEFT)
+	{
+		config->viewAngle--;
+		if (config->viewAngle < 0)
+			config->viewAngle = 360;
+		config->dirX = sin(config->viewAngle * M_PI / 180.0) * WIDTH;
+		config->dirY = cos(config->viewAngle * M_PI / 180.0) * WIDTH;
+	}
+	else if (keydata.key == MLX_KEY_RIGHT)
+	{
+		if (config->viewAngle > 360)
+			config->viewAngle = 0;
+		config->viewAngle++;
+		config->dirX = sin(config->viewAngle * M_PI / 180.0) * WIDTH;
+		config->dirY = cos(config->viewAngle * M_PI / 180.0) * WIDTH;
 	}
 	redraw_image(config);
 }

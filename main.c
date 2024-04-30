@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/04/25 10:13:26 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/04/28 22:14:52 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,9 @@ void init_config(t_config *config)
 	{1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
+	int div = WIDTH / MAP_WIDTH;
 
+	
 	copy_map(config, worldMap);
 	set_pos(config);
 	config->mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", 0);
@@ -91,6 +93,12 @@ void init_config(t_config *config)
 		printf("ERROR initializing MLX image\n");
 	config->xOffset = 0;
 	config->yOffset = 0;
+	config->fovAngle = 60.0;
+	config->viewAngle = 90.0;
+	config->dirX = sin(config->viewAngle * M_PI / 180.0) * WIDTH;
+	config->dirY = cos(config->viewAngle * M_PI / 180.0) * WIDTH;
+	config->initialX = config->xPos * div + div / 2;
+	config->initialY = config->yPos * div + div / 2;
 }
 
 int main(void)

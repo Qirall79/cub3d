@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/04/25 10:23:34 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/04/29 13:12:14 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,32 +62,55 @@ void draw_map(t_config *config)
 		}
 		i++;
 	}
-	draw_line(config->xPos * div + div / 2 + config->xOffset, config->yPos * div + div / 2 + config->yOffset, WIDTH - 1, HEIGHT - 1, config);
+	
+	draw_rays(config);
 }
 
-void draw_line(int yi, int xi, int yf, int xf, t_config *config)
+void draw_rays(t_config *config)
 {
-	int x;
-	int y;
-	int dx;
-	int dy;
-	int p;
-
-	x = xi;
-	y = yi;
-	dx = xf - xi;
-	dy = yf - yi;
-	p = 2 * dy - dx;
-	while (x <= xf)
+	int div = HEIGHT / MAP_HEIGHT;
+	int playerX = config->xPos * div + div / 2;
+	int playerY = config->yPos * div + div / 2;
+	int lineEndX = config->dirX;
+	int lineEndY = config->dirY;
+	double min_angle = config->viewAngle - config->fovAngle / 2;
+	double max_angle = config->viewAngle + config->fovAngle / 2;
+	
+	while (min_angle <= max_angle)
 	{
-		mlx_put_pixel(config->img, x, y, 0xFF0000FF);
-		if (p < 0)
-			p += 2 * dy;
-		else
-		{
-			p += 2 * dy - 2 * dx;
-			y++;
-		}
-		x++;
+		lineEndX = config->initialX + sin(min_angle * M_PI / 180) * WIDTH;
+        lineEndY = config->initialY + cos(min_angle * M_PI / 180) * WIDTH;
+		draw_line(playerX + config->xOffset, playerY + config->yOffset, lineEndX, lineEndY, config);
+		min_angle += config->fovAngle / (double) WIDTH;
 	}
+
+}
+
+void draw_line(double yi, double xi, double yf, double xf, t_config *config)
+{
+    int i;
+    double dx;
+    double dy;
+    double x_incr;
+    double y_incr;
+    int steps;
+	// int div = WIDTH / MAP_WIDTH;
+
+    dx = xf - xi;
+    dy = yf - yi;
+    steps = fabs(dx);
+    if (fabs(dx) < fabs(dy))
+        steps = fabs(dy);
+    i = 0;
+    x_incr = (float)dx / steps; // Use floating-point division
+    y_incr = (float)dy / steps; // Use floating-point division
+    while (i++ < steps)
+    {
+		if (((int) round(xi) % MAP_WIDTH == 0 || (int) round(yi) % MAP_WIDTH == 0) && config->map[(int)round(yi / MAP_HEIGHT)][(int)round(xi) / MAP_WIDTH] != 0)
+			break ;
+        if (xi >= 0 && xi < WIDTH && yi >= 0 && yi < HEIGHT) // Check boundaries before plotting
+            mlx_put_pixel(config->img, round(xi), round(yi), 0xFFFFFFFF);
+        xi += x_incr;
+        yi += y_incr;
+    }
 }
