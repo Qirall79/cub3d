@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/04/28 22:14:52 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/01 18:08:42 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void set_pos(t_config *config)
 		{
 			if (config->map[i][j] == 5)
 			{
-				config->xPos = i;
-				config->yPos = j;
+				config->yPos = i;
+				config->xPos = j;
 				return ;
 			}
 			j++;
@@ -95,8 +95,8 @@ void init_config(t_config *config)
 	config->yOffset = 0;
 	config->fovAngle = 60.0;
 	config->viewAngle = 90.0;
-	config->dirX = sin(config->viewAngle * M_PI / 180.0) * WIDTH;
-	config->dirY = cos(config->viewAngle * M_PI / 180.0) * WIDTH;
+	config->dirY = sin(config->viewAngle * M_PI / 180.0) * WIDTH;
+	config->dirX = cos(config->viewAngle * M_PI / 180.0) * WIDTH;
 	config->initialX = config->xPos * div + div / 2;
 	config->initialY = config->yPos * div + div / 2;
 }

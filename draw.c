@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/04/29 13:12:14 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/01 18:43:14 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,22 @@ void draw_map(t_config *config)
 		j = 0;
 		while (j < MAP_WIDTH)
 		{
-			x = i * div;
-			while (x < (i + 1) * div)
+			y = i * div;
+			while (y < (i + 1) * div)
 			{
-				y = j * div;
-				while (y < (j + 1) * div)
+				x = j * div;
+				while (x < (j + 1) * div)
 				{
 					if (in_range(x, config->xPos * div + config->xOffset + 5, div * (config->xPos + 1) + config->xOffset - 5)
 					&& in_range(y, config->yPos * div + config->yOffset + 5, div * (config->yPos + 1) + config->yOffset - 5))
-						mlx_put_pixel(config->img, y, x, 0xFFFF00FF);
+						mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
 					else if (config->map[i][j] && config->map[i][j] != 5)
-						mlx_put_pixel(config->img, y, x, 0x0FFFFFFF);
+						mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
 					else
-						mlx_put_pixel(config->img, y, x, 0x0);
-					y++;
+						mlx_put_pixel(config->img, x, y, 0x0);
+					x++;
 				}
-				x++;
+				y++;
 			}
 			j++;
 		}
@@ -78,15 +78,15 @@ void draw_rays(t_config *config)
 	
 	while (min_angle <= max_angle)
 	{
-		lineEndX = config->initialX + sin(min_angle * M_PI / 180) * WIDTH;
-        lineEndY = config->initialY + cos(min_angle * M_PI / 180) * WIDTH;
+		lineEndX = config->initialX + cos(min_angle * M_PI / 180) * WIDTH;
+        lineEndY = config->initialY + sin(min_angle * M_PI / 180) * WIDTH;
 		draw_line(playerX + config->xOffset, playerY + config->yOffset, lineEndX, lineEndY, config);
 		min_angle += config->fovAngle / (double) WIDTH;
 	}
 
 }
 
-void draw_line(double yi, double xi, double yf, double xf, t_config *config)
+void draw_line(double xi, double yi, double xf, double yf, t_config *config)
 {
     int i;
     double dx;
@@ -106,8 +106,6 @@ void draw_line(double yi, double xi, double yf, double xf, t_config *config)
     y_incr = (float)dy / steps; // Use floating-point division
     while (i++ < steps)
     {
-		if (((int) round(xi) % MAP_WIDTH == 0 || (int) round(yi) % MAP_WIDTH == 0) && config->map[(int)round(yi / MAP_HEIGHT)][(int)round(xi) / MAP_WIDTH] != 0)
-			break ;
         if (xi >= 0 && xi < WIDTH && yi >= 0 && yi < HEIGHT) // Check boundaries before plotting
             mlx_put_pixel(config->img, round(xi), round(yi), 0xFFFFFFFF);
         xi += x_incr;
