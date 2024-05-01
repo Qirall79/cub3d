@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/01 18:43:14 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/01 19:43:37 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,77 @@ void draw_map(t_config *config)
 		}
 		i++;
 	}
-	
 	draw_rays(config);
+}
+
+void collision_x(t_config *config, float alpha, int *lineEndX, int *lineEndY)
+{
+	int unit = WIDTH / MAP_WIDTH;
+	float direction = sin(config->viewAngle * M_PI / 180);
+	int a_x;
+	int a_y;
+	float x_incr;
+	float y_incr;
+	int playerX = config->xPos * unit + unit / 2;
+	int playerY = config->yPos * unit + unit / 2;
+
+	x_incr = unit / tan(alpha * M_PI / 180);
+	if (direction < 0)
+	{
+		a_y = floorf(playerY / unit) * unit - 1;
+		y_incr = -unit;
+	}
+	else {
+		a_y = floorf(playerY / unit) * unit + unit;
+		y_incr = unit;
+	}
+	a_x = playerX + (playerY - a_y) / tan(alpha * M_PI / 180);
+	while (in_range((int)(a_y / unit), 0, MAP_HEIGHT) && in_range((int)a_x / unit, 0, MAP_WIDTH)
+		&& !config->map[(int)(a_y / unit)][(int)a_x / unit])
+	{
+		a_y += y_incr;
+		a_x += x_incr;
+	}
+	
+	*lineEndX = a_x;
+	*lineEndY = a_y;
+}
+
+void collision_y(t_config *config, float alpha, int *lineEndX, int *lineEndY)
+{
+	int unit = WIDTH / MAP_WIDTH;
+	float direction = cos(config->viewAngle * M_PI / 180);
+	int a_x;
+	int a_y;
+	float x_incr;
+	float y_incr;
+	int playerX = config->xPos * unit + unit / 2;
+	int playerY = config->yPos * unit + unit / 2;
+
+	y_incr = unit * tan(alpha * M_PI / 180);
+	if (direction < 0)
+	{
+		a_x = floorf(playerX / unit) * unit - 1;
+		x_incr = -unit;
+	}
+	else {
+		a_x = floorf(playerX / unit) * unit + unit;
+		x_incr = unit;
+	}
+	a_y = playerY + (playerX - a_x) * tan(alpha * M_PI / 180);
+
+	while (in_range((int)(a_y / unit), 0, MAP_HEIGHT) && in_range((int)a_x / unit, 0, MAP_WIDTH)
+		&& !config->map[(int)(a_y / unit)][(int)a_x / unit])
+	{
+		a_y += y_incr;
+		a_x += x_incr;
+	}
+	
+	if (a_x <= *lineEndX && a_y <= *lineEndY)
+	{
+		*lineEndX = a_x;
+		*lineEndY = a_y;
+	}
 }
 
 void draw_rays(t_config *config)
@@ -76,10 +145,11 @@ void draw_rays(t_config *config)
 	double min_angle = config->viewAngle - config->fovAngle / 2;
 	double max_angle = config->viewAngle + config->fovAngle / 2;
 	
+	
 	while (min_angle <= max_angle)
 	{
-		lineEndX = config->initialX + cos(min_angle * M_PI / 180) * WIDTH;
-        lineEndY = config->initialY + sin(min_angle * M_PI / 180) * WIDTH;
+		collision_x(config, min_angle, &lineEndX, &lineEndY);
+		collision_y(config, min_angle, &lineEndX, &lineEndY);
 		draw_line(playerX + config->xOffset, playerY + config->yOffset, lineEndX, lineEndY, config);
 		min_angle += config->fovAngle / (double) WIDTH;
 	}
@@ -107,7 +177,7 @@ void draw_line(double xi, double yi, double xf, double yf, t_config *config)
     while (i++ < steps)
     {
         if (xi >= 0 && xi < WIDTH && yi >= 0 && yi < HEIGHT) // Check boundaries before plotting
-            mlx_put_pixel(config->img, round(xi), round(yi), 0xFFFFFFFF);
+            mlx_put_pixel(config->img, round(xi), round(yi), 0xFF0000FF);
         xi += x_incr;
         yi += y_incr;
     }
