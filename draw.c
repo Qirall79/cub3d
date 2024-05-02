@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/01 19:43:37 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:59:23 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,74 +65,99 @@ void draw_map(t_config *config)
 	draw_rays(config);
 }
 
-void collision_x(t_config *config, float alpha, int *lineEndX, int *lineEndY)
+void draw_point(t_config *config, int x, int y)
 {
-	int unit = WIDTH / MAP_WIDTH;
-	float direction = sin(config->viewAngle * M_PI / 180);
-	int a_x;
-	int a_y;
-	float x_incr;
-	float y_incr;
-	int playerX = config->xPos * unit + unit / 2;
-	int playerY = config->yPos * unit + unit / 2;
+	int i = 0;
+	int j = 0;
 
-	x_incr = unit / tan(alpha * M_PI / 180);
-	if (direction < 0)
+	while (i < 4)
 	{
-		a_y = floorf(playerY / unit) * unit - 1;
-		y_incr = -unit;
+		j = 0;
+		while (j < 4)
+		{
+			mlx_put_pixel(config->img, x + j - 2, y + i - 2, 0xFF00FFFF);
+			j++;
+		}
+		i++;
 	}
-	else {
-		a_y = floorf(playerY / unit) * unit + unit;
-		y_incr = unit;
-	}
-	a_x = playerX + (playerY - a_y) / tan(alpha * M_PI / 180);
-	while (in_range((int)(a_y / unit), 0, MAP_HEIGHT) && in_range((int)a_x / unit, 0, MAP_WIDTH)
-		&& !config->map[(int)(a_y / unit)][(int)a_x / unit])
-	{
-		a_y += y_incr;
-		a_x += x_incr;
-	}
-	
-	*lineEndX = a_x;
-	*lineEndY = a_y;
 }
 
-void collision_y(t_config *config, float alpha, int *lineEndX, int *lineEndY)
+void normalize_vector(t_vector *vec)
+{
+	float length;
+
+	length = sqrtf(vec->x * vec->x + vec->y * vec->y);
+	vec->x = vec->x / length;
+	vec->y = vec->y / length;
+}
+
+t_vector dda_casting(t_config *config, float alpha)
 {
 	int unit = WIDTH / MAP_WIDTH;
-	float direction = cos(config->viewAngle * M_PI / 180);
-	int a_x;
-	int a_y;
-	float x_incr;
-	float y_incr;
-	int playerX = config->xPos * unit + unit / 2;
-	int playerY = config->yPos * unit + unit / 2;
+	t_vector player = {config->xPos * unit + unit / 2, config->yPos * unit + unit / 2};
+	t_vector rayDir = {cos(alpha * M_PI / 180), sin(alpha * M_PI / 180)};
+	t_vector step;
+	t_vector rayLength;
+	t_vector rayUnitStep;
+	t_vector mapCheck = player;
 
-	y_incr = unit * tan(alpha * M_PI / 180);
-	if (direction < 0)
-	{
-		a_x = floorf(playerX / unit) * unit - 1;
-		x_incr = -unit;
-	}
-	else {
-		a_x = floorf(playerX / unit) * unit + unit;
-		x_incr = unit;
-	}
-	a_y = playerY + (playerX - a_x) * tan(alpha * M_PI / 180);
+	normalize_vector(&rayDir);
 
-	while (in_range((int)(a_y / unit), 0, MAP_HEIGHT) && in_range((int)a_x / unit, 0, MAP_WIDTH)
-		&& !config->map[(int)(a_y / unit)][(int)a_x / unit])
+	rayUnitStep.x = sqrtf(1 + (rayDir.y / rayDir.x) * (rayDir.y / rayDir.x));
+	rayUnitStep.y = sqrtf(1 + (rayDir.x / rayDir.y) * (rayDir.x / rayDir.y));
+	
+	if (rayDir.x < 0)
 	{
-		a_y += y_incr;
-		a_x += x_incr;
+		step.x = -1;
+		rayLength.x = (player.x - mapCheck.x) * rayUnitStep.x;
+	}
+	else
+	{
+		step.x = 1;
+		rayLength.x = (mapCheck.x + 1 - player.x) * rayUnitStep.x;
 	}
 	
-	if (a_x <= *lineEndX && a_y <= *lineEndY)
+	if (rayDir.y < 0)
 	{
-		*lineEndX = a_x;
-		*lineEndY = a_y;
+		step.y = -1;
+		rayLength.y = (player.y - mapCheck.y) * rayUnitStep.y;
 	}
+	else
+	{
+		step.y = 1;
+		rayLength.y = (mapCheck.y + 1 - player.y) * rayUnitStep.y;
+	}
+
+	int wallFound = 0;
+	float distance;
+	distance = 0;
+
+	while (!wallFound && distance < WIDTH)
+	{
+		if (rayLength.x < rayLength.y)
+		{
+			mapCheck.x += step.x;
+			distance = rayLength.x;
+			rayLength.x += rayUnitStep.x;
+		}
+		else {
+			mapCheck.y += step.y;
+			distance = rayLength.y;
+			rayLength.y += rayUnitStep.y;
+		}
+
+		if (in_range(mapCheck.x, 0, WIDTH) && in_range(mapCheck.y, 0, HEIGHT))
+		{
+			if (config->map[(int)mapCheck.y / unit][(int)mapCheck.x / unit] && config->map[(int)mapCheck.y / unit][(int)mapCheck.x / unit] != 5)
+				wallFound = 1;
+		}
+		else
+		{
+			break ;
+		}
+	}
+	t_vector p = {player.x + rayDir.x * distance, player.y + rayDir.y * distance};
+	return p;
 }
 
 void draw_rays(t_config *config)
@@ -140,17 +165,17 @@ void draw_rays(t_config *config)
 	int div = HEIGHT / MAP_HEIGHT;
 	int playerX = config->xPos * div + div / 2;
 	int playerY = config->yPos * div + div / 2;
-	int lineEndX = config->dirX;
-	int lineEndY = config->dirY;
+	int lineEndX = config->dirX + config->initialX;
+	int lineEndY = config->dirY + config->initialY;
 	double min_angle = config->viewAngle - config->fovAngle / 2;
 	double max_angle = config->viewAngle + config->fovAngle / 2;
-	
-	
+
+	t_vector p;
+
 	while (min_angle <= max_angle)
 	{
-		collision_x(config, min_angle, &lineEndX, &lineEndY);
-		collision_y(config, min_angle, &lineEndX, &lineEndY);
-		draw_line(playerX + config->xOffset, playerY + config->yOffset, lineEndX, lineEndY, config);
+		p = dda_casting(config, min_angle);
+		draw_line(playerX + config->xOffset, playerY + config->yOffset, p.x, p.y, config);
 		min_angle += config->fovAngle / (double) WIDTH;
 	}
 

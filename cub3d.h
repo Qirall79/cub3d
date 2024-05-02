@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/04/28 22:13:58 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:06:41 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,12 @@ typedef struct s_config
 	double dirX;
 	double dirY;
 }	t_config;
+
+typedef struct s_vector
+{
+	float x;
+	float y;
+}	t_vector;
 
 // draw
 void draw_map(t_config *config);

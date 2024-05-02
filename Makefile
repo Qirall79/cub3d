@@ -6,11 +6,11 @@
 #    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/05/01 19:15:12 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/05/02 13:08:34 by wbelfatm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -fsanitize=address -g #-Wall -Wextra -Werror 
 CC = cc
 RM = rm -f
 
