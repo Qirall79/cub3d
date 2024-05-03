@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/01 18:42:21 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/03 17:33:07 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 void move_player(mlx_key_data_t keydata, t_config *config)
 {
 	int div;
-	int newX;
-	int newY;
+	float newX;
+	float newY;
 
 	div = WIDTH / MAP_WIDTH;
-	newX = config->xOffset;
-	newY = config->yOffset;
 	if (keydata.key == MLX_KEY_A)
 	{
 		newX -= 3;
@@ -33,7 +31,7 @@ void move_player(mlx_key_data_t keydata, t_config *config)
 		}
 		if (!in_range(config->xPos * div + newX, 0, WIDTH - 1))
 			return ;
-		if (newX < 0 && abs(newX) >= div
+		if (newX < 0 && fabs(newX) >= div
 			&& !config->map[config->yPos][config->xPos - 1])
 		{
 			config->map[config->yPos][config->xPos] = 0;
@@ -57,7 +55,7 @@ void move_player(mlx_key_data_t keydata, t_config *config)
 		}
 		if (!in_range(config->xPos * div + newX, 0, HEIGHT - 1))
 			return ;
-		if (newX > 0 && abs(newX) >= div && !config->map[config->yPos][config->xPos + 1])
+		if (newX > 0 && fabs(newX) >= div && !config->map[config->yPos][config->xPos + 1])
 		{
 			config->map[config->yPos][config->xPos] = 0;
 			config->map[config->yPos][config->xPos + 1] = 5;
@@ -70,50 +68,109 @@ void move_player(mlx_key_data_t keydata, t_config *config)
 	}
 	else if (keydata.key == MLX_KEY_W)
 	{
-		newY -= 3;
-		if (newY < 0 && config->xOffset)
+		newY = sin(config->viewAngle * M_PI / 180);
+		newX = cos(config->viewAngle * M_PI / 180);
+		
+		// check if newX + xOffset + playerX hits a wall
+		// check if newy + yOffset + playery hits a wall
+
+		// check if part of the player hits a wall
+			// if xOffset + newX > 0
+				// check that the [y - 1][x + 1] and [y + 1][x + 1] aren't walls
+			// if xOffset + newX < 0
+				// check that the [y - 1][x - 1] and [y + 1][x - 1] aren't walls
+			// if yOffset + newY > 0
+				// check that the [y + 1][x + 1] and [y + 1][x - 1] aren't walls
+			// if yOffset + newY < 0
+				// check that the [y - 1][x + 1] and [y - 1][x - 1] aren't walls
+
+		if (fabs(config->xOffset + newX) > 0)
 		{
-			if (config->xOffset > 0 && config->map[config->yPos - 1][config->xPos + 1])
-				return ;
-			else if (config->xOffset < 0 && config->map[config->yPos - 1][config->xPos - 1])
-				return ;
+			if (config->xOffset + newX > 0.0001
+			&& (config->map[config->yPos - 1][config->xPos + 1] || config->map[config->yPos + 1][config->xPos + 1]))
+				return (printf("1: %f, %i\n", config->xOffset + newX, config->map[config->yPos][config->xPos]), free(NULL));
+			if (config->xOffset + newX < -0.0001
+			&& (config->map[config->yPos - 1][config->xPos - 1] || config->map[config->yPos + 1][config->xPos - 1]))
+				return (printf("2: %f, %i\n", config->xOffset + newX, div), free(NULL));
 		}
-		if (!in_range(config->yPos * div + newY, 0, WIDTH - 1))
-			return ;
-		if (newY < 0 && abs(newY) >= div && !config->map[config->yPos - 1][config->xPos])
+
+		if (fabs(config->yOffset + newY) > 0)
 		{
-			config->map[config->yPos][config->xPos] = 0;
-			config->map[config->yPos - 1][config->xPos] = 5;
-			config->yPos--;
-			newY = 0;
+			if (config->yOffset + newY > 0.0001
+			&& (config->map[config->yPos + 1][config->xPos - 1] || config->map[config->yPos + 1][config->xPos + 1]))
+				return (printf("3\n"), free(NULL));
+			if (config->yOffset + newY < -0.0001
+			&& (config->map[config->yPos - 1][config->xPos - 1] || config->map[config->yPos - 1][config->xPos + 1]))
+				return (printf("4\n"), free(NULL));
 		}
-		else if (newY < 0 && config->map[config->yPos - 1][config->xPos])
-			newY += 3;
-		config->yOffset = newY;
+
+		config->yOffset += newY;
+		config->xOffset += newX;
+
+		// check if the offset is bigger than the div, if so, change player in map
+		if (fabs(config->yOffset) >= div)
+		{
+			if (config->yOffset > 0.0001 && !config->map[config->yPos + 1][config->xPos])
+			{
+				config->map[config->yPos + 1][config->xPos] = 5;
+				config->map[config->yPos][config->xPos] = 0;
+				config->yPos++;
+				config->yOffset -= div;
+			}
+			else if (config->yOffset < -0.0001 && !config->map[config->yPos - 1][config->xPos])
+			{
+				config->map[config->yPos - 1][config->xPos] = 5;
+				config->map[config->yPos][config->xPos] = 0;
+				config->yPos--;
+				config->yOffset -= div;
+			}
+		}
 	}
 	else if (keydata.key == MLX_KEY_S)
 	{
-		newY += 3;
-		if (newY > 0 && config->xOffset)
-		{
-			if (config->xOffset > 0 && config->map[config->yPos + 1][config->xPos + 1])
-				return ;
-			else if (config->xOffset < 0 && config->map[config->yPos + 1][config->xPos - 1])
-				return ;
-		}
-		if (!in_range(config->yPos * div + newY, 0, WIDTH - 1))
-			return ;
-		if (newY > 0 && abs(newY) >= div && !config->map[config->yPos + 1][config->xPos])
-		{
-			config->map[config->yPos][config->xPos] = 0;
-			config->map[config->yPos + 1][config->xPos] = 5;
-			config->yPos++;
-			newY = 0;
-		}
-		else if (newY > 0 && config->map[config->yPos + 1][config->xPos])
-			newY -= 3;
-		config->yOffset = newY;
+		newY = sin(config->viewAngle * M_PI / 180);
+		newX = cos(config->viewAngle * M_PI / 180);
+		config->yOffset -= newY;
+		config->xOffset -= newX;
 		
+		if (config->xOffset)
+		{
+			if (config->xOffset > 0.0001
+			&& (config->map[config->yPos - 1][config->xPos + 1] || config->map[config->yPos + 1][config->xPos + 1]))
+				return (printf("1: %f, %i\n", config->xOffset, config->xOffset > 0), free(NULL));
+			if (config->xOffset < -0.0001
+			&& (config->map[config->yPos - 1][config->xPos - 1] || config->map[config->yPos + 1][config->xPos - 1]))
+				return (printf("2: %f, %i\n", config->xOffset, div), free(NULL));
+		}
+		
+		if (config->yOffset)
+		{
+			if (config->yOffset > 0.0001
+			&& (config->map[config->yPos + 1][config->xPos - 1] || config->map[config->yPos + 1][config->xPos + 1]))
+				return (printf("3\n"), free(NULL));
+			if (config->yOffset < -0.0001
+			&& (config->map[config->yPos - 1][config->xPos - 1] || config->map[config->yPos - 1][config->xPos + 1]))
+				return (printf("4\n"), free(NULL));
+		}			
+
+		// check if the offset is bigger than the div, if so, change player in map
+		if (fabs(config->yOffset) >= div)
+		{
+			if (config->yOffset > 0.0001 && !config->map[config->yPos + 1][config->xPos])
+			{
+				config->map[config->yPos + 1][config->xPos] = 5;
+				config->map[config->yPos][config->xPos] = 0;
+				config->yPos++;
+				config->yOffset += div;
+			}
+			else if (config->yOffset < -0.0001 && !config->map[config->yPos - 1][config->xPos])
+			{
+				config->map[config->yPos - 1][config->xPos] = 5;
+				config->map[config->yPos][config->xPos] = 0;
+				config->yPos--;
+				config->yOffset += div;
+			}
+		}
 	}
 	
 	else if (keydata.key == MLX_KEY_LEFT)

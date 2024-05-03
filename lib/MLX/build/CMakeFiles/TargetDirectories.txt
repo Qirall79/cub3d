@@ -1,0 +1,7 @@
+/Users/wbelfatm/Desktop/cub3d/lib/MLX/build/CMakeFiles/mlx42.dir
+/Users/wbelfatm/Desktop/cub3d/lib/MLX/build/CMakeFiles/edit_cache.dir
+/Users/wbelfatm/Desktop/cub3d/lib/MLX/build/CMakeFiles/rebuild_cache.dir
+/Users/wbelfatm/Desktop/cub3d/lib/MLX/build/CMakeFiles/list_install_components.dir
+/Users/wbelfatm/Desktop/cub3d/lib/MLX/build/CMakeFiles/install.dir
+/Users/wbelfatm/Desktop/cub3d/lib/MLX/build/CMakeFiles/install/local.dir
+/Users/wbelfatm/Desktop/cub3d/lib/MLX/build/CMakeFiles/install/strip.dir

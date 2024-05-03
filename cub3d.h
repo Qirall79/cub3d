@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/02 14:06:41 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/03 11:54:42 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ typedef struct s_config
 	int map[MAP_WIDTH][MAP_HEIGHT];
 	int xPos;
 	int yPos;
-	int xOffset;
-	int yOffset;
+	float xOffset;
+	float yOffset;
 	int initialX;
 	int initialY;
-	double viewAngle;
-	double fovAngle;
-	double dirX;
-	double dirY;
+	float viewAngle;
+	float fovAngle;
+	float dirX;
+	float dirY;
 }	t_config;
 
 typedef struct s_vector

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/02 14:59:23 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/03 14:45:06 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void normalize_vector(t_vector *vec)
 t_vector dda_casting(t_config *config, float alpha)
 {
 	int unit = WIDTH / MAP_WIDTH;
-	t_vector player = {config->xPos * unit + unit / 2, config->yPos * unit + unit / 2};
+	t_vector player = {config->xPos * unit + unit / 2 + config->xOffset, config->yPos * unit + unit / 2 + config->yOffset};
 	t_vector rayDir = {cos(alpha * M_PI / 180), sin(alpha * M_PI / 180)};
 	t_vector step;
 	t_vector rayLength;
@@ -145,7 +145,7 @@ t_vector dda_casting(t_config *config, float alpha)
 			distance = rayLength.y;
 			rayLength.y += rayUnitStep.y;
 		}
-
+		
 		if (in_range(mapCheck.x, 0, WIDTH) && in_range(mapCheck.y, 0, HEIGHT))
 		{
 			if (config->map[(int)mapCheck.y / unit][(int)mapCheck.x / unit] && config->map[(int)mapCheck.y / unit][(int)mapCheck.x / unit] != 5)
@@ -156,6 +156,7 @@ t_vector dda_casting(t_config *config, float alpha)
 			break ;
 		}
 	}
+	
 	t_vector p = {player.x + rayDir.x * distance, player.y + rayDir.y * distance};
 	return p;
 }
