@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/03 21:15:33 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/04 11:49:11 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,16 @@ void draw_map(t_config *config)
 				x = j * div;
 				while (x < (j + 1) * div)
 				{
-					if (in_range(x, config->xPos * div + config->xOffset, div * (config->xPos + 1) + config->xOffset)
-					&& in_range(y, config->yPos * div + config->yOffset, div * (config->yPos + 1) + config->yOffset))
+						
+					if (in_range(x, config->xPos * div + config->xOffset + (div - 10) / 2 , div * (config->xPos + 1) + config->xOffset - (div - 10) / 2)
+					&& in_range(y, config->yPos * div + config->yOffset + (div - 10) / 2, div * (config->yPos + 1) + config->yOffset - (div - 10) / 2))
 						mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
 					else if (config->map[i][j] && config->map[i][j] != 5)
 						mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
 					else
 						mlx_put_pixel(config->img, x, y, 0x0);
+					if (x % div == 0 || y % div == 0)
+						mlx_put_pixel(config->img, x, y, 0xFFFFFFFF);
 					x++;
 				}
 				y++;

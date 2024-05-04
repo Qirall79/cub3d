@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/04 00:59:30 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/04 12:02:12 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,186 +68,103 @@ void move_player(mlx_key_data_t keydata, t_config *config)
 	}
 	else if (keydata.key == MLX_KEY_W)
 	{
-		newY = sin(config->viewAngle * M_PI / 180);
-		newX = cos(config->viewAngle * M_PI / 180);
-		
-		// check if newX + xOffset + playerX hits a wall
-		// check if newy + yOffset + playery hits a wall
+		newY = sin(config->viewAngle * M_PI / 180) * 2;
+		newX = cos(config->viewAngle * M_PI / 180) * 2;
 
-		// check if part of the player hits a wall
-			// if xOffset + newX > 0
-				// check that the [y - 1][x + 1] and [y + 1][x + 1] aren't walls
-			// if xOffset + newX < 0
-				// check that the [y - 1][x - 1] and [y + 1][x - 1] aren't walls
-			// if yOffset + newY > 0
-				// check that the [y + 1][x + 1] and [y + 1][x - 1] aren't walls
-			// if yOffset + newY < 0
-				// check that the [y - 1][x + 1] and [y - 1][x - 1] aren't walls
-
-		int tmpX = (config->xPos + 1) * div + config->xOffset + newX;
-		int tmpY = (config->yPos + 1) * div + config->yOffset + newY;
-		int startX = (tmpX - div) / div;
-		int endX = tmpX / div;
-		int startY = (tmpY - div) / div;
-		int endY = tmpY / div;
-
-		if (fabs(config->xOffset + newX) >= div)
-		{
-			if (config->xOffset + newX < 0)
-				endX--;
-			else
-				startX++;
-		}
-		if (fabs(config->yOffset + newY) >= div)
-		{	
-			if (config->yOffset + newY < 0)
-				endY--;
-			else
-				startY++;
-		}
+		int tmpX = config->xPos * div + (div - 10) / 2 + config->xOffset + newX;
+		int tmpY = config->yPos * div + (div - 10) / 2 + config->yOffset + newY;
+		int startX = tmpX / div;
+		int endX = (tmpX + (div - 10) / 2) / div;
+		int startY = tmpY / div;
+		int endY = (tmpY + (div - 10) / 2) / div;
 
 		if (config->map[config->yPos][endX] == 1 || config->map[config->yPos][startX] == 1
-			|| (config->yOffset > 0 && config->map[config->yPos + 1][endX] == 1 || config->map[config->yPos + 1][startX] == 1)
-			|| (config->yOffset < 0 && config->map[config->yPos - 1][endX] == 1 || config->map[config->yPos - 1][startX] == 1))
+			|| (config->yOffset > (div - 10) / 2 && (config->map[config->yPos + 1][endX] == 1 || config->map[config->yPos + 1][startX] == 1))
+			|| (config->yOffset < -((div - 10) / 2) && (config->map[config->yPos - 1][endX] == 1 || config->map[config->yPos - 1][startX] == 1)))
 			return ;
 		if (config->map[startY][config->xPos] == 1 || config->map[endY][config->xPos] == 1
-			|| (config->xOffset > 0 && config->map[startY][config->xPos + 1] == 1 || config->map[endY][config->xPos + 1] == 1)
-			|| (config->xOffset < 0 && config->map[startY][config->xPos - 1] == 1 || config->map[endY][config->xPos - 1] == 1))
+			|| (config->xOffset > (div - 10) / 2 && (config->map[startY][config->xPos + 1] == 1 || config->map[endY][config->xPos + 1] == 1))
+			|| (config->xOffset < -((div - 10) / 2) && (config->map[startY][config->xPos - 1] == 1 || config->map[endY][config->xPos - 1] == 1)))
 			return ;
-		
-		if (fabs(config->xOffset + newX) > div)
+	
+		if (startY == endY && startY != config->yPos)
 		{
-			printf("Hi\n");
 			config->map[config->yPos][config->xPos] = 0;
-			if (config->xOffset + newX < 0)
-			{
-				config->map[config->yPos][config->xPos - 1] = 5;
-				config->xPos--;
-			}
+			config->map[startY][config->xPos] = 5;
+			config->yPos = startY;
+			if (config->yOffset > 0)
+				config->yOffset = -((div - 10) / 2);
 			else
-			{
-				config->map[config->yPos][config->xPos + 1] = 5;
-				config->xPos++;	
-			}
-			config->xOffset = fabs(config->xOffset + newX) - div;
-		}
-		else
-			config->xOffset += newX;
-		
-		if (fabs(config->yOffset + newY) > div)
-		{
-			printf("Hello\n");
-			config->map[config->yPos][config->xPos] = 0;
-			if (config->yOffset + newY < 0)
-			{
-				config->map[config->yPos - 1][config->xPos] = 5;
-				config->yPos--;
-			}
-			else
-			{
-				config->map[config->yPos + 1][config->xPos] = 5;
-				config->yPos++;	
-			}
-			config->yOffset = fabs(config->yOffset + newY) - div;
+				config->yOffset = ((div - 10) / 2);
 		}
 		else
 			config->yOffset += newY;
 		
-
-		// if (fabs(config->yOffset + newY) > 0)
-		// {
-		// 	if (config->yOffset + newY > 0.0001
-		// 	&& (config->map[config->yPos + 1][config->xPos - 1] || config->map[config->yPos + 1][config->xPos + 1]))
-		// 		return (printf("3\n"), free(NULL));
-		// 	if (config->yOffset + newY < -0.0001
-		// 	&& (config->map[config->yPos - 1][config->xPos - 1] || config->map[config->yPos - 1][config->xPos + 1]))
-		// 		return (printf("4\n"), free(NULL));
-		// }
-
-
-		// // check if the offset is bigger than the div, if so, change player in map
-		// if (fabs(config->yOffset) >= div)
-		// {
-		// 	if (config->yOffset > 0.0001 && !config->map[config->yPos + 1][config->xPos])
-		// 	{
-		// 		config->map[config->yPos + 1][config->xPos] = 5;
-		// 		config->map[config->yPos][config->xPos] = 0;
-		// 		config->yPos++;
-		// 		config->yOffset -= div;
-		// 	}
-		// 	else if (config->yOffset < -0.0001 && !config->map[config->yPos - 1][config->xPos])
-		// 	{
-		// 		config->map[config->yPos - 1][config->xPos] = 5;
-		// 		config->map[config->yPos][config->xPos] = 0;
-		// 		config->yPos--;
-		// 		config->yOffset -= div;
-		// 	}
-		// }
+		if (startX == endX && startX != config->xPos)
+		{
+			config->map[config->yPos][config->xPos] = 0;
+			config->map[config->yPos][startX] = 5;
+			config->xPos = startX;
+			if (config->xOffset > 0)
+				config->xOffset = -((div - 10) / 2);
+			else
+				config->xOffset = ((div - 10) / 2);
+		}
+		else
+			config->xOffset += newX;
+		
 	}
 	else if (keydata.key == MLX_KEY_S)
 	{
-		newY = sin(config->viewAngle * M_PI / 180);
-		newX = cos(config->viewAngle * M_PI / 180);
+		newY = -sin(config->viewAngle * M_PI / 180) * 2;
+		newX = -cos(config->viewAngle * M_PI / 180) * 2;
+
+		int tmpX = config->xPos * div + (div - 10) / 2 + config->xOffset + newX;
+		int tmpY = config->yPos * div + (div - 10) / 2 + config->yOffset + newY;
+		int startX = tmpX / div;
+		int endX = (tmpX + (div - 10) / 2) / div;
+		int startY = tmpY / div;
+		int endY = (tmpY + (div - 10) / 2) / div;
+
+		if (config->map[config->yPos][endX] == 1 || config->map[config->yPos][startX] == 1
+			|| (config->yOffset > (div - 10) / 2 && (config->map[config->yPos + 1][endX] == 1 || config->map[config->yPos + 1][startX] == 1))
+			|| (config->yOffset < -((div - 10) / 2) && (config->map[config->yPos - 1][endX] == 1 || config->map[config->yPos - 1][startX] == 1)))
+			return ;
+		if (config->map[startY][config->xPos] == 1 || config->map[endY][config->xPos] == 1
+			|| (config->xOffset > (div - 10) / 2 && (config->map[startY][config->xPos + 1] == 1 || config->map[endY][config->xPos + 1] == 1))
+			|| (config->xOffset < -((div - 10) / 2) && (config->map[startY][config->xPos - 1] == 1 || config->map[endY][config->xPos - 1] == 1)))
+			return ;
+	
+		if (startY == endY && startY != config->yPos)
+		{
+			config->map[config->yPos][config->xPos] = 0;
+			config->map[startY][config->xPos] = 5;
+			config->yPos = startY;
+			if (config->yOffset > 0)
+				config->yOffset = -((div - 10) / 2);
+			else
+				config->yOffset = ((div - 10) / 2);
+		}
+		else
+			config->yOffset += newY;
 		
-		// check if newX + xOffset + playerX hits a wall
-		// check if newy + yOffset + playery hits a wall
-
-		// check if part of the player hits a wall
-			// if xOffset + newX > 0
-				// check that the [y - 1][x + 1] and [y + 1][x + 1] aren't walls
-			// if xOffset + newX < 0
-				// check that the [y - 1][x - 1] and [y + 1][x - 1] aren't walls
-			// if yOffset + newY > 0
-				// check that the [y + 1][x + 1] and [y + 1][x - 1] aren't walls
-			// if yOffset + newY < 0
-				// check that the [y - 1][x + 1] and [y - 1][x - 1] aren't walls
-
-		if (fabs(config->xOffset - newX) > 0)
+		if (startX == endX && startX != config->xPos)
 		{
-			if (config->xOffset - newX > 0.0001
-			&& (config->map[config->yPos - 1][config->xPos + 1] || config->map[config->yPos + 1][config->xPos + 1]))
-				return (printf("1: %f, %i\n", config->xOffset + newX, config->map[config->yPos][config->xPos]), free(NULL));
-			if (config->xOffset - newX < -0.0001
-			&& (config->map[config->yPos - 1][config->xPos - 1] || config->map[config->yPos + 1][config->xPos - 1]))
-				return (printf("2: %f, %i\n", config->xOffset + newX, div), free(NULL));
+			config->map[config->yPos][config->xPos] = 0;
+			config->map[config->yPos][startX] = 5;
+			config->xPos = startX;
+			if (config->xOffset > 0)
+				config->xOffset = -((div - 10) / 2);
+			else
+				config->xOffset = ((div - 10) / 2);
 		}
-
-		if (fabs(config->yOffset - newY) > 0)
-		{
-			if (config->yOffset - newY > 0.0001
-			&& (config->map[config->yPos + 1][config->xPos - 1] || config->map[config->yPos + 1][config->xPos + 1]))
-				return (printf("3\n"), free(NULL));
-			if (config->yOffset - newY < -0.0001
-			&& (config->map[config->yPos - 1][config->xPos - 1] || config->map[config->yPos - 1][config->xPos + 1]))
-				return (printf("4\n"), free(NULL));
-		}
-
-		config->yOffset -= newY;
-		config->xOffset -= newX;
-
-		// check if the offset is bigger than the div, if so, change player in map
-		if (fabs(config->yOffset) >= div)
-		{
-			if (config->yOffset > 0.0001 && !config->map[config->yPos + 1][config->xPos])
-			{
-				config->map[config->yPos + 1][config->xPos] = 5;
-				config->map[config->yPos][config->xPos] = 0;
-				config->yPos++;
-				config->yOffset += div;
-			}
-			else if (config->yOffset < -0.0001 && !config->map[config->yPos - 1][config->xPos])
-			{
-				config->map[config->yPos - 1][config->xPos] = 5;
-				config->map[config->yPos][config->xPos] = 0;
-				config->yPos--;
-				config->yOffset += div;
-			}
-		}
+		else
+			config->xOffset += newX;
 	}
 	
 	else if (keydata.key == MLX_KEY_LEFT)
 	{
-		config->viewAngle--;
+		config->viewAngle -= 4;
 		if (config->viewAngle < 0)
 			config->viewAngle = 360;
 		config->dirY = sin(config->viewAngle * M_PI / 180.0) * WIDTH;
@@ -255,9 +172,9 @@ void move_player(mlx_key_data_t keydata, t_config *config)
 	}
 	else if (keydata.key == MLX_KEY_RIGHT)
 	{
+		config->viewAngle += 4;
 		if (config->viewAngle > 360)
 			config->viewAngle = 0;
-		config->viewAngle++;
 		config->dirY = sin(config->viewAngle * M_PI / 180.0) * WIDTH;
 		config->dirX = cos(config->viewAngle * M_PI / 180.0) * WIDTH;
 	}
