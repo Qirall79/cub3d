@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/05 11:21:11 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/05 15:26:40 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ void draw_map(t_config *config)
 				while (x < (j + 1) * div)
 				{
 						
-					if (in_range(x, config->xPos - 5, config->xPos + 5)
-					&& in_range(y, config->yPos - 5, config->yPos + 5))
-						mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
-					else if (config->map[i][j] == 1)
-						mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
-					else
-						mlx_put_pixel(config->img, x, y, 0x0);
+					// if (in_range(x, config->xPos - 5, config->xPos + 5)
+					// && in_range(y, config->yPos - 5, config->yPos + 5))
+					// 	mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
+					// else if (config->map[i][j] == 1)
+					// 	mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
+					// else
+					// 	mlx_put_pixel(config->img, x, y, 0x0);
 					x++;
 				}
 				y++;
@@ -101,6 +101,7 @@ t_vector dda_casting(t_config *config, float alpha)
 	t_vector rayLength;
 	t_vector rayUnitStep;
 	t_vector mapCheck = player;
+	t_vector p;
 
 	normalize_vector(&rayDir);
 
@@ -140,11 +141,13 @@ t_vector dda_casting(t_config *config, float alpha)
 			mapCheck.x += step.x;
 			distance = rayLength.x;
 			rayLength.x += rayUnitStep.x;
+			p.z = 0;
 		}
 		else {
 			mapCheck.y += step.y;
 			distance = rayLength.y;
 			rayLength.y += rayUnitStep.y;
+			p.z = 1;
 		}
 		
 		if (in_range(mapCheck.x, 0, WIDTH) && in_range(mapCheck.y, 0, HEIGHT))
@@ -158,9 +161,32 @@ t_vector dda_casting(t_config *config, float alpha)
 		}
 	}
 	
-	t_vector p = {player.x + rayDir.x * distance, player.y + rayDir.y * distance};
+	p.x = player.x + rayDir.x * distance;
+	p.y = player.y + rayDir.y * distance;
 	return p;
 }
+
+void draw_wall(t_config *config, t_vector p, float alpha, float x)
+{
+	float plane_dist = WIDTH / (2 * tan(30 * M_PI / 180));
+	float distorted_dist = fabs(config->yPos - p.y) / sin(alpha * M_PI / 180);
+	
+	if (fabs(round(distorted_dist)) < 0.00001)
+		distorted_dist = fabs(config->xPos - p.x) / cos(alpha * M_PI / 180);
+	
+	float correct_dist = distorted_dist * cos((config->viewAngle - alpha) * M_PI / 180);
+	float block_height = WIDTH / MAP_WIDTH;
+	float wall_height = roundf(fabs((block_height / correct_dist) * plane_dist));
+	int startY = (HEIGHT / 2) - (wall_height / 2);
+	int endY = startY + wall_height;
+
+	
+	if (p.z)
+		draw_line(x, startY, x, endY, config, 0x00F0FFAF);
+	else
+		draw_line(x, startY, x, endY, config, 0x00F0FFFF);
+}
+
 
 void draw_rays(t_config *config)
 {
@@ -173,17 +199,18 @@ void draw_rays(t_config *config)
 	double max_angle = config->viewAngle + config->fovAngle / 2;
 
 	t_vector p;
-
+	float i = 0;
 	while (min_angle <= max_angle)
 	{
 		p = dda_casting(config, min_angle);
-		draw_line(playerX, playerY, p.x, p.y, config);
+		// draw_line(playerX, playerY, p.x, p.y, config, 0xFF0000FF);
+		draw_wall(config, p, min_angle, i++);
 		min_angle += config->fovAngle / (double) WIDTH;
 	}
 
 }
 
-void draw_line(double xi, double yi, double xf, double yf, t_config *config)
+void draw_line(double xi, double yi, double xf, double yf, t_config *config, int color)
 {
     int i;
     double dx;
@@ -204,7 +231,7 @@ void draw_line(double xi, double yi, double xf, double yf, t_config *config)
     while (i++ < steps)
     {
         if (xi >= 0 && xi < WIDTH && yi >= 0 && yi < HEIGHT) // Check boundaries before plotting
-            mlx_put_pixel(config->img, round(xi), round(yi), 0xFF0000FF);
+            mlx_put_pixel(config->img, round(xi), round(yi), color);
         xi += x_incr;
         yi += y_incr;
     }

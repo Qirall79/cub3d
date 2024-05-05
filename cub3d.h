@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/05 10:30:19 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/05 14:56:43 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,13 @@ typedef struct s_vector
 {
 	float x;
 	float y;
+	float z;
 }	t_vector;
 
 // draw
 void draw_map(t_config *config);
 void redraw_image(t_config *config);
-void draw_line(double yi, double xi, double yf, double xf, t_config *config);
+void draw_line(double yi, double xi, double yf, double xf, t_config *config, int color);
 void draw_rays(t_config *config);
 
 // hooks

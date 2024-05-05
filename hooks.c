@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/05 11:51:21 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/05 13:32:49 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void move_player(t_config *config)
 	unit = WIDTH / MAP_WIDTH;
 	if (config->move_left)
 	{
-		newY = sin((normalize_angle(config->viewAngle - 90)) * M_PI / 180) * 2;
-		newX = cos((normalize_angle(config->viewAngle - 90)) * M_PI / 180) * 2;
+		newY = roundf(sin((normalize_angle(config->viewAngle - 90)) * M_PI / 180));
+		newX = roundf(cos((normalize_angle(config->viewAngle - 90)) * M_PI / 180));
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
@@ -74,8 +74,8 @@ void move_player(t_config *config)
 	}
 	if (config->move_right)
 	{
-		newY = sin(normalize_angle(config->viewAngle + 90) * M_PI / 180) * 2;
-		newX = cos(normalize_angle(config->viewAngle + 90) * M_PI / 180) * 2;
+		newY = roundf(sin(normalize_angle(config->viewAngle + 90) * M_PI / 180));
+		newX = roundf(cos(normalize_angle(config->viewAngle + 90) * M_PI / 180));
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
