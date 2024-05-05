@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/04 11:49:11 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/05 09:34:15 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ void draw_map(t_config *config)
 						mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
 					else
 						mlx_put_pixel(config->img, x, y, 0x0);
-					if (x % div == 0 || y % div == 0)
-						mlx_put_pixel(config->img, x, y, 0xFFFFFFFF);
 					x++;
 				}
 				y++;

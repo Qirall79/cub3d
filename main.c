@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/04 00:27:48 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/05 10:30:59 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void init_config(t_config *config)
 	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,0,0,0,0,5,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,1,0,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
@@ -99,6 +99,14 @@ void init_config(t_config *config)
 	config->dirX = cos(config->viewAngle * M_PI / 180.0) * WIDTH;
 	config->initialX = config->xPos * div + div / 2;
 	config->initialY = config->yPos * div + div / 2;
+
+	// init keys
+	config->move_forward = 0;
+	config->move_backward = 0;
+	config->move_right = 0;
+	config->move_left = 0;
+	config->rotate_left = 0;
+	config->rotate_right = 0;
 }
 
 int main(void)
@@ -109,7 +117,8 @@ int main(void)
 	draw_map(&config);
 
 	// hooks
-	mlx_key_hook(config.mlx, (mlx_keyfunc) move_player, &config);
+	mlx_key_hook(config.mlx, (mlx_keyfunc) set_movement_params, &config);
+	mlx_loop_hook(config.mlx, loop_hook, &config);
 
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/03 11:54:42 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/05 10:30:19 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ typedef struct s_config
 	float fovAngle;
 	float dirX;
 	float dirY;
+	int move_forward;
+	int move_backward;
+	int move_right;
+	int move_left;
+	int rotate_right;
+	int rotate_left;
 }	t_config;
 
 typedef struct s_vector
@@ -56,7 +62,9 @@ void draw_line(double yi, double xi, double yf, double xf, t_config *config);
 void draw_rays(t_config *config);
 
 // hooks
-void move_player(mlx_key_data_t keydata, t_config *config);
+void move_player(t_config *config);
+void set_movement_params(mlx_key_data_t keydata, t_config *config);
+void loop_hook(t_config *config);
 
 // utils
 int in_range(int p, int min, int max);
