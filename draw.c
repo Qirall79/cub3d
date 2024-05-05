@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/05 09:34:15 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/05 11:21:11 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ void draw_map(t_config *config)
 				while (x < (j + 1) * div)
 				{
 						
-					if (in_range(x, config->xPos * div + config->xOffset + (div - 10) / 2 , div * (config->xPos + 1) + config->xOffset - (div - 10) / 2)
-					&& in_range(y, config->yPos * div + config->yOffset + (div - 10) / 2, div * (config->yPos + 1) + config->yOffset - (div - 10) / 2))
+					if (in_range(x, config->xPos - 5, config->xPos + 5)
+					&& in_range(y, config->yPos - 5, config->yPos + 5))
 						mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
-					else if (config->map[i][j] && config->map[i][j] != 5)
+					else if (config->map[i][j] == 1)
 						mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
 					else
 						mlx_put_pixel(config->img, x, y, 0x0);
@@ -95,7 +95,7 @@ void normalize_vector(t_vector *vec)
 t_vector dda_casting(t_config *config, float alpha)
 {
 	int unit = WIDTH / MAP_WIDTH;
-	t_vector player = {config->xPos * unit + unit / 2 + config->xOffset, config->yPos * unit + unit / 2 + config->yOffset};
+	t_vector player = {config->xPos, config->yPos};
 	t_vector rayDir = {cos(alpha * M_PI / 180), sin(alpha * M_PI / 180)};
 	t_vector step;
 	t_vector rayLength;
@@ -165,8 +165,8 @@ t_vector dda_casting(t_config *config, float alpha)
 void draw_rays(t_config *config)
 {
 	int div = HEIGHT / MAP_HEIGHT;
-	int playerX = config->xPos * div + div / 2;
-	int playerY = config->yPos * div + div / 2;
+	int playerX = config->xPos;
+	int playerY = config->yPos;
 	int lineEndX = config->dirX + config->initialX;
 	int lineEndY = config->dirY + config->initialY;
 	double min_angle = config->viewAngle - config->fovAngle / 2;
@@ -177,7 +177,7 @@ void draw_rays(t_config *config)
 	while (min_angle <= max_angle)
 	{
 		p = dda_casting(config, min_angle);
-		draw_line(playerX + config->xOffset, playerY + config->yOffset, p.x, p.y, config);
+		draw_line(playerX, playerY, p.x, p.y, config);
 		min_angle += config->fovAngle / (double) WIDTH;
 	}
 

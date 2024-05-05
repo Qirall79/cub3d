@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/05 10:30:59 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/05 10:54:37 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void init_config(t_config *config)
 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
-	int div = WIDTH / MAP_WIDTH;
+	int unit = WIDTH / MAP_WIDTH;
 
 	
 	copy_map(config, worldMap);
@@ -97,8 +97,10 @@ void init_config(t_config *config)
 	config->viewAngle = 90.0;
 	config->dirY = sin(config->viewAngle * M_PI / 180.0) * WIDTH;
 	config->dirX = cos(config->viewAngle * M_PI / 180.0) * WIDTH;
-	config->initialX = config->xPos * div + div / 2;
-	config->initialY = config->yPos * div + div / 2;
+	config->initialX = config->xPos;
+	config->initialY = config->yPos;
+	config->xPos = config->initialX * unit + (unit - 10) / 2;
+	config->yPos = config->initialY * unit + (unit - 10) / 2;
 
 	// init keys
 	config->move_forward = 0;
