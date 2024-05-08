@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/05 10:54:37 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/08 17:18:27 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void init_config(t_config *config)
 	config->xOffset = 0;
 	config->yOffset = 0;
 	config->fovAngle = 60.0;
-	config->viewAngle = 90.0;
+	config->viewAngle = 180.0;
 	config->dirY = sin(config->viewAngle * M_PI / 180.0) * WIDTH;
 	config->dirX = cos(config->viewAngle * M_PI / 180.0) * WIDTH;
 	config->initialX = config->xPos;

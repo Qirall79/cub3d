@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/05 14:56:43 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:21:01 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # define HEIGHT 720
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
+# define UNIT (WIDTH / MAP_WIDTH)
+# define DEG_TO_RAD (M_PI / 180)
 
 # include <unistd.h>
 # include <stdio.h>
@@ -69,5 +71,5 @@ void loop_hook(t_config *config);
 
 // utils
 int in_range(int p, int min, int max);
-
+float normalize_angle(float angle);
 #endif

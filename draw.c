@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/05 15:26:40 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/08 18:05:34 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,18 @@ void draw_map(t_config *config)
 				while (x < (j + 1) * div)
 				{
 						
-					// if (in_range(x, config->xPos - 5, config->xPos + 5)
-					// && in_range(y, config->yPos - 5, config->yPos + 5))
-					// 	mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
-					// else if (config->map[i][j] == 1)
-					// 	mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
-					// else
-					// 	mlx_put_pixel(config->img, x, y, 0x0);
+					if (in_range(x, config->xPos - 5, config->xPos + 5)
+					&& in_range(y, config->yPos - 5, config->yPos + 5))
+						mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
+					else if (config->map[i][j] == 1)
+						mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
+					else
+						mlx_put_pixel(config->img, x, y, 0x0);
+					
+					// draw grids
+					if (x % UNIT == 0 || y % UNIT == 0)
+						mlx_put_pixel(config->img, x, y, 0xFFFFFFFF);
+
 					x++;
 				}
 				y++;
@@ -76,7 +81,7 @@ void draw_point(t_config *config, int x, int y)
 		j = 0;
 		while (j < 4)
 		{
-			mlx_put_pixel(config->img, x + j - 2, y + i - 2, 0xFF00FFFF);
+			mlx_put_pixel(config->img, x + j - 2, y + i - 2, 0xFFFF00FF);
 			j++;
 		}
 		i++;
@@ -156,14 +161,125 @@ t_vector dda_casting(t_config *config, float alpha)
 				wallFound = 1;
 		}
 		else
-		{
 			break ;
-		}
+		p.x = player.x + rayDir.x * distance;
+		p.y = player.y + rayDir.y * distance;
+		draw_point(config, p.x, p.y);
 	}
-	
+
 	p.x = player.x + rayDir.x * distance;
 	p.y = player.y + rayDir.y * distance;
 	return p;
+}
+
+t_vector raycasting_h(t_config *config, float alpha)
+{
+	alpha = normalize_angle(alpha);
+	t_vector a;
+	t_vector step;
+	
+	if (alpha <= 180.0)
+	{
+		// facing up
+		a.y = floorf(config->yPos / UNIT) * UNIT - 1;
+		step.y = -UNIT;
+		step.x = UNIT / tan(normalize_angle(-alpha) * DEG_TO_RAD);
+	}
+	else
+	{
+		// facing down
+		a.y = floorf(config->yPos / UNIT) * UNIT + UNIT;
+		step.y = UNIT;
+		step.x = UNIT / tan(alpha * DEG_TO_RAD);
+	}
+	a.x = config->xPos + (config->yPos - a.y) / tan(normalize_angle(-alpha) * DEG_TO_RAD);
+	
+	
+	
+	while (a.x >= 0 && a.x < WIDTH)
+	{
+		// draw_point(config, a.x, a.y);
+		if (config->map[(int) (a.y) / UNIT][(int) (a.x) / UNIT] == 1)
+			break ;
+		a.x += step.x;
+		a.y += step.y;
+	}
+
+	if (a.x >= WIDTH || a.x < 0)
+	{
+		a.x = config->xPos;
+		a.y = config->yPos;
+		return a;
+	}
+	a.x -= 1;
+	a.y -= 1;
+	return a;
+}
+
+t_vector raycasting_v(t_config *config, float alpha)
+{
+	alpha = normalize_angle(alpha);
+	t_vector a;
+	t_vector step;
+	
+	if (alpha < 90 || alpha > 270)
+	{
+		// facing left
+		a.x = floorf(config->xPos / UNIT) * UNIT - 1;
+		step.x = -UNIT;
+		step.y = UNIT * tan(normalize_angle(-alpha) * DEG_TO_RAD);
+	}
+	if (alpha >= 90 && alpha <= 270)
+	{
+		// facing right
+		a.x = floorf(config->xPos / UNIT) * UNIT + UNIT;
+		step.x = UNIT;
+		step.y = UNIT * tan(alpha * DEG_TO_RAD);
+	}
+	a.y = config->yPos + (config->xPos - a.x) * tan(normalize_angle(-alpha) * DEG_TO_RAD);
+	
+
+	while (a.y >= 0 && a.y < HEIGHT)
+	{
+		// draw_point(config, a.x, a.y);
+		if (config->map[(int) (a.y) / UNIT][(int) (a.x) / UNIT] == 1)
+			break ;
+		a.x += step.x;
+		a.y += step.y;
+	}
+	if (a.y >= HEIGHT || a.y < 0)
+	{
+		a.x = config->xPos;
+		a.y = config->yPos;
+		return a;
+	}
+	a.x -= 1;
+	a.y -= 1;
+	return a;
+}
+
+t_vector find_intersection(t_config *config, float alpha)
+{
+	t_vector p_h;
+	t_vector p_v;
+	float dist_h;
+	float dist_v;
+
+	p_h = raycasting_h(config, alpha);
+	p_v = raycasting_v(config, alpha);
+	p_v.z = 1;
+	p_h.z = 0;
+
+	dist_h = sqrtf((config->xPos - p_h.x) * (config->xPos - p_h.x) + (config->yPos - p_h.y) * (config->yPos - p_h.y));
+	dist_v = sqrtf((config->xPos - p_v.x) * (config->xPos - p_v.x) + (config->yPos - p_v.y) * (config->yPos - p_v.y));
+	
+	if (dist_h < 0.001)
+		return (p_v);
+	if (dist_v < 0.001)
+		return (p_h);
+	if (dist_h <= dist_v)
+		return (p_h);
+	return (p_v);
 }
 
 void draw_wall(t_config *config, t_vector p, float alpha, float x)
@@ -179,7 +295,6 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 	float wall_height = roundf(fabs((block_height / correct_dist) * plane_dist));
 	int startY = (HEIGHT / 2) - (wall_height / 2);
 	int endY = startY + wall_height;
-
 	
 	if (p.z)
 		draw_line(x, startY, x, endY, config, 0x00F0FFAF);
@@ -202,9 +317,9 @@ void draw_rays(t_config *config)
 	float i = 0;
 	while (min_angle <= max_angle)
 	{
-		p = dda_casting(config, min_angle);
-		// draw_line(playerX, playerY, p.x, p.y, config, 0xFF0000FF);
-		draw_wall(config, p, min_angle, i++);
+		p = find_intersection(config, min_angle);
+		draw_line(playerX, playerY, p.x, p.y, config, 0xFF0000FF);
+		// draw_wall(config, p, min_angle, i++);
 		min_angle += config->fovAngle / (double) WIDTH;
 	}
 
