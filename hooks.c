@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/08 18:06:04 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/08 18:08:45 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ void move_player(t_config *config)
 	}
 	if (config->move_forward)
 	{
-		newY = sin(config->viewAngle * M_PI / 180) * 1.4;
-		newX = cos(config->viewAngle * M_PI / 180) * 1.4;
+		newY = sin(config->viewAngle * M_PI / 180) * 2;
+		newX = cos(config->viewAngle * M_PI / 180) * 2;
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
@@ -130,8 +130,8 @@ void move_player(t_config *config)
 	}
 	if (config->move_backward)
 	{
-		newY = -sin(config->viewAngle * M_PI / 180) * 1.4;
-		newX = -cos(config->viewAngle * M_PI / 180) * 1.4;
+		newY = -sin(config->viewAngle * M_PI / 180) * 2;
+		newX = -cos(config->viewAngle * M_PI / 180) * 2;
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;

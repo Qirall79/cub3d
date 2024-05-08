@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/08 18:05:34 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/08 19:59:22 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ void draw_map(t_config *config)
 				while (x < (j + 1) * div)
 				{
 						
-					if (in_range(x, config->xPos - 5, config->xPos + 5)
-					&& in_range(y, config->yPos - 5, config->yPos + 5))
-						mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
-					else if (config->map[i][j] == 1)
-						mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
-					else
-						mlx_put_pixel(config->img, x, y, 0x0);
+					// if (in_range(x, config->xPos - 5, config->xPos + 5)
+					// && in_range(y, config->yPos - 5, config->yPos + 5))
+					// 	mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
+					// else if (config->map[i][j] == 1)
+					// 	mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
+					// else
+					// 	mlx_put_pixel(config->img, x, y, 0x0);
 					
-					// draw grids
-					if (x % UNIT == 0 || y % UNIT == 0)
-						mlx_put_pixel(config->img, x, y, 0xFFFFFFFF);
+					// // draw grids
+					// if (x % UNIT == 0 || y % UNIT == 0)
+					// 	mlx_put_pixel(config->img, x, y, 0xFFFFFFFF);
 
 					x++;
 				}
@@ -97,80 +97,7 @@ void normalize_vector(t_vector *vec)
 	vec->y = vec->y / length;
 }
 
-t_vector dda_casting(t_config *config, float alpha)
-{
-	int unit = WIDTH / MAP_WIDTH;
-	t_vector player = {config->xPos, config->yPos};
-	t_vector rayDir = {cos(alpha * M_PI / 180), sin(alpha * M_PI / 180)};
-	t_vector step;
-	t_vector rayLength;
-	t_vector rayUnitStep;
-	t_vector mapCheck = player;
-	t_vector p;
 
-	normalize_vector(&rayDir);
-
-	rayUnitStep.x = sqrtf(1 + (rayDir.y / rayDir.x) * (rayDir.y / rayDir.x));
-	rayUnitStep.y = sqrtf(1 + (rayDir.x / rayDir.y) * (rayDir.x / rayDir.y));
-	
-	if (rayDir.x < 0)
-	{
-		step.x = -1;
-		rayLength.x = (player.x - mapCheck.x) * rayUnitStep.x;
-	}
-	else
-	{
-		step.x = 1;
-		rayLength.x = (mapCheck.x + 1 - player.x) * rayUnitStep.x;
-	}
-	
-	if (rayDir.y < 0)
-	{
-		step.y = -1;
-		rayLength.y = (player.y - mapCheck.y) * rayUnitStep.y;
-	}
-	else
-	{
-		step.y = 1;
-		rayLength.y = (mapCheck.y + 1 - player.y) * rayUnitStep.y;
-	}
-
-	int wallFound = 0;
-	float distance;
-	distance = 0;
-
-	while (!wallFound && distance < WIDTH)
-	{
-		if (rayLength.x < rayLength.y)
-		{
-			mapCheck.x += step.x;
-			distance = rayLength.x;
-			rayLength.x += rayUnitStep.x;
-			p.z = 0;
-		}
-		else {
-			mapCheck.y += step.y;
-			distance = rayLength.y;
-			rayLength.y += rayUnitStep.y;
-			p.z = 1;
-		}
-		
-		if (in_range(mapCheck.x, 0, WIDTH) && in_range(mapCheck.y, 0, HEIGHT))
-		{
-			if (config->map[(int)mapCheck.y / unit][(int)mapCheck.x / unit] && config->map[(int)mapCheck.y / unit][(int)mapCheck.x / unit] != 5)
-				wallFound = 1;
-		}
-		else
-			break ;
-		p.x = player.x + rayDir.x * distance;
-		p.y = player.y + rayDir.y * distance;
-		draw_point(config, p.x, p.y);
-	}
-
-	p.x = player.x + rayDir.x * distance;
-	p.y = player.y + rayDir.y * distance;
-	return p;
-}
 
 t_vector raycasting_h(t_config *config, float alpha)
 {
@@ -181,7 +108,7 @@ t_vector raycasting_h(t_config *config, float alpha)
 	if (alpha <= 180.0)
 	{
 		// facing up
-		a.y = floorf(config->yPos / UNIT) * UNIT - 1;
+		a.y = floorf(config->yPos / UNIT) * UNIT - 0.009;
 		step.y = -UNIT;
 		step.x = UNIT / tan(normalize_angle(-alpha) * DEG_TO_RAD);
 	}
@@ -193,12 +120,8 @@ t_vector raycasting_h(t_config *config, float alpha)
 		step.x = UNIT / tan(alpha * DEG_TO_RAD);
 	}
 	a.x = config->xPos + (config->yPos - a.y) / tan(normalize_angle(-alpha) * DEG_TO_RAD);
-	
-	
-	
 	while (a.x >= 0 && a.x < WIDTH)
 	{
-		// draw_point(config, a.x, a.y);
 		if (config->map[(int) (a.y) / UNIT][(int) (a.x) / UNIT] == 1)
 			break ;
 		a.x += step.x;
@@ -211,8 +134,7 @@ t_vector raycasting_h(t_config *config, float alpha)
 		a.y = config->yPos;
 		return a;
 	}
-	a.x -= 1;
-	a.y -= 1;
+	
 	return a;
 }
 
@@ -225,7 +147,7 @@ t_vector raycasting_v(t_config *config, float alpha)
 	if (alpha < 90 || alpha > 270)
 	{
 		// facing left
-		a.x = floorf(config->xPos / UNIT) * UNIT - 1;
+		a.x = floorf(config->xPos / UNIT) * UNIT - 0.009;
 		step.x = -UNIT;
 		step.y = UNIT * tan(normalize_angle(-alpha) * DEG_TO_RAD);
 	}
@@ -241,7 +163,6 @@ t_vector raycasting_v(t_config *config, float alpha)
 
 	while (a.y >= 0 && a.y < HEIGHT)
 	{
-		// draw_point(config, a.x, a.y);
 		if (config->map[(int) (a.y) / UNIT][(int) (a.x) / UNIT] == 1)
 			break ;
 		a.x += step.x;
@@ -253,8 +174,6 @@ t_vector raycasting_v(t_config *config, float alpha)
 		a.y = config->yPos;
 		return a;
 	}
-	a.x -= 1;
-	a.y -= 1;
 	return a;
 }
 
@@ -273,10 +192,10 @@ t_vector find_intersection(t_config *config, float alpha)
 	dist_h = sqrtf((config->xPos - p_h.x) * (config->xPos - p_h.x) + (config->yPos - p_h.y) * (config->yPos - p_h.y));
 	dist_v = sqrtf((config->xPos - p_v.x) * (config->xPos - p_v.x) + (config->yPos - p_v.y) * (config->yPos - p_v.y));
 	
-	if (dist_h < 0.001)
-		return (p_v);
-	if (dist_v < 0.001)
+	if (p_v.x == config->xPos)
 		return (p_h);
+	if (p_h.x == config->xPos)
+		return (p_v);
 	if (dist_h <= dist_v)
 		return (p_h);
 	return (p_v);
@@ -285,11 +204,7 @@ t_vector find_intersection(t_config *config, float alpha)
 void draw_wall(t_config *config, t_vector p, float alpha, float x)
 {
 	float plane_dist = WIDTH / (2 * tan(30 * M_PI / 180));
-	float distorted_dist = fabs(config->yPos - p.y) / sin(alpha * M_PI / 180);
-	
-	if (fabs(round(distorted_dist)) < 0.00001)
-		distorted_dist = fabs(config->xPos - p.x) / cos(alpha * M_PI / 180);
-	
+	float distorted_dist = sqrtf((config->xPos - p.x) * (config->xPos - p.x) + (config->yPos - p.y) * (config->yPos - p.y));
 	float correct_dist = distorted_dist * cos((config->viewAngle - alpha) * M_PI / 180);
 	float block_height = WIDTH / MAP_WIDTH;
 	float wall_height = roundf(fabs((block_height / correct_dist) * plane_dist));
@@ -318,8 +233,8 @@ void draw_rays(t_config *config)
 	while (min_angle <= max_angle)
 	{
 		p = find_intersection(config, min_angle);
-		draw_line(playerX, playerY, p.x, p.y, config, 0xFF0000FF);
-		// draw_wall(config, p, min_angle, i++);
+		// draw_line(playerX, playerY, p.x, p.y, config, 0xFF0000FF);
+		draw_wall(config, p, min_angle, i++);
 		min_angle += config->fovAngle / (double) WIDTH;
 	}
 
