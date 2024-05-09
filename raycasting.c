@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 18:18:53 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/08 18:19:01 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/09 20:31:43 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,75 +14,70 @@
 
 t_vector dda_casting(t_config *config, float alpha)
 {
-	int unit = WIDTH / MAP_WIDTH;
 	t_vector player = {config->xPos, config->yPos};
-	t_vector rayDir = {cos(alpha * M_PI / 180), sin(alpha * M_PI / 180)};
+	t_vector rayDir = {cos(alpha * DEG_TO_RAD), sin(alpha * DEG_TO_RAD)};
 	t_vector step;
-	t_vector rayLength;
-	t_vector rayUnitStep;
+	t_vector sideDist;
+	t_vector deltaDist;
 	t_vector mapCheck = player;
 	t_vector p;
 
 	normalize_vector(&rayDir);
 
-	rayUnitStep.x = sqrtf(1 + (rayDir.y / rayDir.x) * (rayDir.y / rayDir.x));
-	rayUnitStep.y = sqrtf(1 + (rayDir.x / rayDir.y) * (rayDir.x / rayDir.y));
+	deltaDist.x = sqrtf(1 + (rayDir.y / rayDir.x) * (rayDir.y / rayDir.x));
+	deltaDist.y = sqrtf(1 + (rayDir.x / rayDir.y) * (rayDir.x / rayDir.y));
 	
 	if (rayDir.x < 0)
 	{
 		step.x = -1;
-		rayLength.x = (player.x - mapCheck.x) * rayUnitStep.x;
+		sideDist.x = (player.x - mapCheck.x) * deltaDist.x;
 	}
 	else
 	{
 		step.x = 1;
-		rayLength.x = (mapCheck.x + 1 - player.x) * rayUnitStep.x;
+		sideDist.x = (mapCheck.x + 1.0 - player.x) * deltaDist.x;
 	}
 	
 	if (rayDir.y < 0)
 	{
 		step.y = -1;
-		rayLength.y = (player.y - mapCheck.y) * rayUnitStep.y;
+		sideDist.y = (player.y - mapCheck.y) * deltaDist.y;
 	}
 	else
 	{
 		step.y = 1;
-		rayLength.y = (mapCheck.y + 1 - player.y) * rayUnitStep.y;
+		sideDist.y = (mapCheck.y + 1.0 - player.y) * deltaDist.y;
 	}
 
 	int wallFound = 0;
 	float distance;
-	distance = 0;
+	distance = 1;
 
 	while (!wallFound && distance < WIDTH)
 	{
-		if (rayLength.x < rayLength.y)
+		if (sideDist.x < sideDist.y)
 		{
+			sideDist.x += deltaDist.x;
 			mapCheck.x += step.x;
-			distance = rayLength.x;
-			rayLength.x += rayUnitStep.x;
+			distance = sideDist.x;
 			p.z = 0;
 		}
 		else {
+			sideDist.y += deltaDist.y;
 			mapCheck.y += step.y;
-			distance = rayLength.y;
-			rayLength.y += rayUnitStep.y;
+			distance = sideDist.y;
 			p.z = 1;
 		}
 		
 		if (in_range(mapCheck.x, 0, WIDTH) && in_range(mapCheck.y, 0, HEIGHT))
 		{
-			if (config->map[(int)mapCheck.y / unit][(int)mapCheck.x / unit] && config->map[(int)mapCheck.y / unit][(int)mapCheck.x / unit] != 5)
+			if (config->map[(int)mapCheck.y / UNIT][(int)mapCheck.x / UNIT] && config->map[(int)mapCheck.y / UNIT][(int)mapCheck.x / UNIT] != 5)
 				wallFound = 1;
 		}
 		else
 			break ;
-		p.x = player.x + rayDir.x * distance;
-		p.y = player.y + rayDir.y * distance;
-		draw_point(config, p.x, p.y);
 	}
-
-	p.x = player.x + rayDir.x * distance;
-	p.y = player.y + rayDir.y * distance;
+	
+	p.x = distance;
 	return p;
 }

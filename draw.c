@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/08 19:59:22 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/09 20:41:00 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void draw_map(t_config *config)
 					// else
 					// 	mlx_put_pixel(config->img, x, y, 0x0);
 					
-					// // draw grids
+					// // // draw grids
 					// if (x % UNIT == 0 || y % UNIT == 0)
 					// 	mlx_put_pixel(config->img, x, y, 0xFFFFFFFF);
 
@@ -102,77 +102,85 @@ void normalize_vector(t_vector *vec)
 t_vector raycasting_h(t_config *config, float alpha)
 {
 	alpha = normalize_angle(alpha);
+	float aTan = - 1.0f / tan(alpha * DEG_TO_RAD);
 	t_vector a;
 	t_vector step;
+
+	a.x = config->xPos;
+	a.y = config->yPos;
 	
-	if (alpha <= 180.0)
-	{
-		// facing up
-		a.y = floorf(config->yPos / UNIT) * UNIT - 0.009;
-		step.y = -UNIT;
-		step.x = UNIT / tan(normalize_angle(-alpha) * DEG_TO_RAD);
-	}
-	else
+	if (sin(alpha * DEG_TO_RAD) > 0.001f)
 	{
 		// facing down
 		a.y = floorf(config->yPos / UNIT) * UNIT + UNIT;
 		step.y = UNIT;
-		step.x = UNIT / tan(alpha * DEG_TO_RAD);
+		step.x = -step.y * aTan;
 	}
-	a.x = config->xPos + (config->yPos - a.y) / tan(normalize_angle(-alpha) * DEG_TO_RAD);
-	while (a.x >= 0 && a.x < WIDTH)
+	else if (sin(alpha * DEG_TO_RAD) < -0.001f)
 	{
-		if (config->map[(int) (a.y) / UNIT][(int) (a.x) / UNIT] == 1)
+		// facing up
+		a.y = floorf(config->yPos / UNIT) * UNIT - 0.001f;
+		step.y = -UNIT;
+		step.x = -step.y * aTan;
+	}
+	else
+		return (a);
+	a.x = config->xPos + (config->yPos - a.y) * aTan;
+	int i = 0;
+	int mapX;
+	int mapY;
+	while (i < MAX_CHECK)
+	{
+		mapX = (int) a.x / UNIT;
+		mapY = (int) a.y / UNIT;
+		if (in_range(mapX, 0, MAP_WIDTH - 1) && in_range(mapY, 0, MAP_HEIGHT - 1) && config->map[mapY][mapX] == 1)
 			break ;
 		a.x += step.x;
 		a.y += step.y;
+		i++;
 	}
-
-	if (a.x >= WIDTH || a.x < 0)
-	{
-		a.x = config->xPos;
-		a.y = config->yPos;
-		return a;
-	}
-	
 	return a;
 }
 
 t_vector raycasting_v(t_config *config, float alpha)
 {
 	alpha = normalize_angle(alpha);
+	float aTan = -tan(alpha * DEG_TO_RAD);
 	t_vector a;
 	t_vector step;
+
+	a.x = config->xPos;
+	a.y = config->yPos;
 	
-	if (alpha < 90 || alpha > 270)
-	{
-		// facing left
-		a.x = floorf(config->xPos / UNIT) * UNIT - 0.009;
-		step.x = -UNIT;
-		step.y = UNIT * tan(normalize_angle(-alpha) * DEG_TO_RAD);
-	}
-	if (alpha >= 90 && alpha <= 270)
+	if (cos(alpha * DEG_TO_RAD) > 0.001f)
 	{
 		// facing right
 		a.x = floorf(config->xPos / UNIT) * UNIT + UNIT;
 		step.x = UNIT;
-		step.y = UNIT * tan(alpha * DEG_TO_RAD);
+		step.y = -step.x * aTan;
 	}
-	a.y = config->yPos + (config->xPos - a.x) * tan(normalize_angle(-alpha) * DEG_TO_RAD);
-	
-
-	while (a.y >= 0 && a.y < HEIGHT)
+	else if (cos(alpha * DEG_TO_RAD) < -0.001f)
 	{
-		if (config->map[(int) (a.y) / UNIT][(int) (a.x) / UNIT] == 1)
+		// facing left
+		a.x = floorf(config->xPos / UNIT) * UNIT - 0.001f;
+		step.x = -UNIT;
+		step.y = -step.x * aTan;
+	}
+	else
+		return (a);
+	a.y = config->yPos + (config->xPos - a.x) * aTan;
+	int i = 0;
+	int mapX;
+	int mapY;
+	while (i < MAX_CHECK)
+	{
+		mapX = (int) a.x / UNIT;
+		mapY = (int) a.y / UNIT;
+		if (in_range(mapX, 0, MAP_WIDTH - 1) && in_range(mapY, 0, MAP_HEIGHT - 1) && config->map[mapY][mapX] == 1)
 			break ;
 		a.x += step.x;
 		a.y += step.y;
-	}
-	if (a.y >= HEIGHT || a.y < 0)
-	{
-		a.x = config->xPos;
-		a.y = config->yPos;
-		return a;
+		i++;
 	}
 	return a;
 }
@@ -203,13 +211,13 @@ t_vector find_intersection(t_config *config, float alpha)
 
 void draw_wall(t_config *config, t_vector p, float alpha, float x)
 {
-	float plane_dist = WIDTH / (2 * tan(30 * M_PI / 180));
+	float plane_dist = WIDTH / (2 * tan(30 * DEG_TO_RAD));
 	float distorted_dist = sqrtf((config->xPos - p.x) * (config->xPos - p.x) + (config->yPos - p.y) * (config->yPos - p.y));
-	float correct_dist = distorted_dist * cos((config->viewAngle - alpha) * M_PI / 180);
+	float correct_dist = distorted_dist * cos((config->viewAngle - alpha) * DEG_TO_RAD);
 	float block_height = WIDTH / MAP_WIDTH;
 	float wall_height = roundf(fabs((block_height / correct_dist) * plane_dist));
-	int startY = (HEIGHT / 2) - (wall_height / 2);
-	int endY = startY + wall_height;
+	float startY = (HEIGHT / 2) - (wall_height / 2);
+	float endY = startY + wall_height;
 	
 	if (p.z)
 		draw_line(x, startY, x, endY, config, 0x00F0FFAF);
@@ -220,13 +228,10 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 
 void draw_rays(t_config *config)
 {
-	int div = HEIGHT / MAP_HEIGHT;
-	int playerX = config->xPos;
-	int playerY = config->yPos;
-	int lineEndX = config->dirX + config->initialX;
-	int lineEndY = config->dirY + config->initialY;
-	double min_angle = config->viewAngle - config->fovAngle / 2;
-	double max_angle = config->viewAngle + config->fovAngle / 2;
+	float playerX = config->xPos;
+	float playerY = config->yPos;
+	float min_angle = config->viewAngle - config->fovAngle / 2;
+	float max_angle = config->viewAngle + config->fovAngle / 2;
 
 	t_vector p;
 	float i = 0;
@@ -235,19 +240,19 @@ void draw_rays(t_config *config)
 		p = find_intersection(config, min_angle);
 		// draw_line(playerX, playerY, p.x, p.y, config, 0xFF0000FF);
 		draw_wall(config, p, min_angle, i++);
-		min_angle += config->fovAngle / (double) WIDTH;
+		min_angle += config->fovAngle / (float) (WIDTH);
 	}
 
 }
 
-void draw_line(double xi, double yi, double xf, double yf, t_config *config, int color)
+void draw_line(float xi, float yi, float xf, float yf, t_config *config, int color)
 {
     int i;
-    double dx;
-    double dy;
-    double x_incr;
-    double y_incr;
-    int steps;
+    float dx;
+    float dy;
+    float x_incr;
+    float y_incr;
+    float steps;
 	// int div = WIDTH / MAP_WIDTH;
 
     dx = xf - xi;

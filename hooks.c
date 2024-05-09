@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/08 18:08:45 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/09 19:49:50 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,22 @@ void move_player(t_config *config)
 	// camera rotation
 	if (config->rotate_left)
 	{
-		config->viewAngle = normalize_angle(config->viewAngle - 2);
-		config->dirY = sin(config->viewAngle * M_PI / 180.0) * WIDTH;
-		config->dirX = cos(config->viewAngle * M_PI / 180.0) * WIDTH;
+		config->viewAngle = normalize_angle(config->viewAngle - 1);
+		config->dirY = sin(config->viewAngle * DEG_TO_RAD) * WIDTH;
+		config->dirX = cos(config->viewAngle * DEG_TO_RAD) * WIDTH;
 	}
 	if (config->rotate_right)
 	{
-		config->viewAngle = normalize_angle(config->viewAngle + 2);
-		config->dirY = sin(config->viewAngle * M_PI / 180.0) * WIDTH;
-		config->dirX = cos(config->viewAngle * M_PI / 180.0) * WIDTH;
+		config->viewAngle = normalize_angle(config->viewAngle + 1);
+		config->dirY = sin(config->viewAngle * DEG_TO_RAD) * WIDTH;
+		config->dirX = cos(config->viewAngle * DEG_TO_RAD) * WIDTH;
 	}
 
 	// player movement
 	if (config->move_left)
 	{
-		newY = roundf(sin((normalize_angle(config->viewAngle - 90)) * M_PI / 180));
-		newX = roundf(cos((normalize_angle(config->viewAngle - 90)) * M_PI / 180));
+		newY = roundf(sin((normalize_angle(config->viewAngle - 90)) * DEG_TO_RAD));
+		newX = roundf(cos((normalize_angle(config->viewAngle - 90)) * DEG_TO_RAD));
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
@@ -90,8 +90,8 @@ void move_player(t_config *config)
 	}
 	if (config->move_right)
 	{
-		newY = roundf(sin(normalize_angle(config->viewAngle + 90) * M_PI / 180));
-		newX = roundf(cos(normalize_angle(config->viewAngle + 90) * M_PI / 180));
+		newY = roundf(sin(normalize_angle(config->viewAngle + 90) * DEG_TO_RAD));
+		newX = roundf(cos(normalize_angle(config->viewAngle + 90) * DEG_TO_RAD));
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
@@ -110,8 +110,8 @@ void move_player(t_config *config)
 	}
 	if (config->move_forward)
 	{
-		newY = sin(config->viewAngle * M_PI / 180) * 2;
-		newX = cos(config->viewAngle * M_PI / 180) * 2;
+		newY = sin(config->viewAngle * DEG_TO_RAD) * 2;
+		newX = cos(config->viewAngle * DEG_TO_RAD) * 2;
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
@@ -130,8 +130,8 @@ void move_player(t_config *config)
 	}
 	if (config->move_backward)
 	{
-		newY = -sin(config->viewAngle * M_PI / 180) * 2;
-		newX = -cos(config->viewAngle * M_PI / 180) * 2;
+		newY = -sin(config->viewAngle * DEG_TO_RAD) * 2;
+		newX = -cos(config->viewAngle * DEG_TO_RAD) * 2;
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
