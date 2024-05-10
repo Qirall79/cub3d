@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/10 15:23:44 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/10 21:09:11 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,7 +225,7 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 		draw_line(x, startY, x, endY, config, 0x00F0FFFF);
 }
 
-float my_raycaster(t_config *config, float alpha, int x)
+t_vector my_raycaster(t_config *config, float alpha, int x)
 {
 	t_vector pos = {(int)config->player.x / UNIT, (int)config->player.y / UNIT};
 	float cameraX;
@@ -234,7 +234,7 @@ float my_raycaster(t_config *config, float alpha, int x)
 	t_vector sideDist;
 	t_vector deltaDist;
 	t_vector step;
-	float perpWallDist;
+	t_vector perpWallDist;
 	int wallFound = 0;
 	int side;
 
@@ -295,21 +295,21 @@ float my_raycaster(t_config *config, float alpha, int x)
 			map.y += step.y;
 			side = 1;
 		}
-		if (config->map[(int)map.y / UNIT][(int)map.x / UNIT] == 1)
+		if (config->map[(int)map.y][(int)map.x] == 1)
 			wallFound = 1;
 	}
 	if (side == 0)
-		perpWallDist = (sideDist.x - deltaDist.x);
+		perpWallDist.x = (sideDist.x - deltaDist.x);
 	else
-		perpWallDist = (sideDist.y - deltaDist.y);
+		perpWallDist.x = (sideDist.y - deltaDist.y);
 	
-	printf("%i\n", perpWallDist);
-	if (perpWallDist < 0.000001 && perpWallDist > -0.000001)
-		perpWallDist = 1;
+	if (perpWallDist.x < 0.000001 && perpWallDist.x > -0.000001)
+		perpWallDist.x = 1;
+	perpWallDist.z = side;
 	return perpWallDist;
 }
 
-void build_wall(t_config *config, int x, float distance)
+void build_wall(t_config *config, int x, float distance, int side)
 {
 	int line_height = (int) (HEIGHT / distance);
 	int start = -line_height / 2 + HEIGHT / 2;
@@ -318,7 +318,10 @@ void build_wall(t_config *config, int x, float distance)
 	int end = line_height / 2 + HEIGHT / 2;
 	if (end >= HEIGHT)
 		end = HEIGHT - 1;
-	draw_line(x, start, x, end, config, 0xFFFFFFFF);
+	if (side == 0)
+		draw_line(x, start, x, end, config, 0xFFFFFFFF);
+	else
+		draw_line(x, start, x, end, config, 0xFFFFFFAF);
 }
 
 void draw_rays(t_config *config)
@@ -333,8 +336,8 @@ void draw_rays(t_config *config)
 	float i = 0;
 	while (i < WIDTH)
 	{
-		distance = my_raycaster(config, min_angle, i);
-		build_wall(config, i, distance);
+		p = my_raycaster(config, min_angle, i);
+		build_wall(config, i, p.x, p.z);
 		// draw_line(playerX, playerY, p.x, p.y, config, 0xFF0000FF);
 		// draw_wall(config, p, min_angle, i++);
 		min_angle += config->fovAngle / (float) (WIDTH);
