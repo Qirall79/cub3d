@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/09 20:32:46 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/10 15:10:08 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void set_pos(t_config *config)
 		{
 			if (config->map[i][j] == 5)
 			{
-				config->yPos = i;
-				config->xPos = j;
+				config->player.x = j * UNIT + (UNIT - 10) / 2;
+				config->player.y = i * UNIT + (UNIT - 10) / 2;
 				return ;
 			}
 			j++;
@@ -91,16 +91,12 @@ void init_config(t_config *config)
 	config->img = mlx_new_image(config->mlx, WIDTH, HEIGHT);
 	if (!config->img || (mlx_image_to_window(config->mlx, config->img, 0, 0) < 0))
 		printf("ERROR initializing MLX image\n");
-	config->xOffset = 0;
-	config->yOffset = 0;
 	config->fovAngle = 60.0;
-	config->viewAngle = 90.0;
-	config->dirY = sin(config->viewAngle * DEG_TO_RAD) * WIDTH;
-	config->dirX = cos(config->viewAngle * DEG_TO_RAD) * WIDTH;
-	config->initialX = config->xPos;
-	config->initialY = config->yPos;
-	config->xPos = config->initialX * unit + (unit - 10) / 2;
-	config->yPos = config->initialY * unit + (unit - 10) / 2;
+	config->viewAngle = 180.0;
+	config->dir.y = sin(config->viewAngle * DEG_TO_RAD);
+	config->dir.x = cos(config->viewAngle * DEG_TO_RAD);
+	config->plane.x = 0;
+	config->plane.y = 0.60;
 
 	// init keys
 	config->move_forward = 0;

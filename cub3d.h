@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/09 20:32:25 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/10 11:29:07 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,35 +29,32 @@
 
 # include "./lib/MLX/include/MLX42/MLX42.h"
 
-typedef struct s_config
-{
-	mlx_t		*mlx;
-	mlx_image_t	*img;
-	int map[MAP_WIDTH][MAP_HEIGHT];
-	float xPos;
-	float yPos;
-	float xOffset;
-	float yOffset;
-	float initialX;
-	float initialY;
-	float viewAngle;
-	float fovAngle;
-	float dirX;
-	float dirY;
-	int move_forward;
-	int move_backward;
-	int move_right;
-	int move_left;
-	int rotate_right;
-	int rotate_left;
-}	t_config;
-
 typedef struct s_vector
 {
 	float x;
 	float y;
 	float z;
 }	t_vector;
+
+typedef struct s_config
+{
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+	int 		map[MAP_WIDTH][MAP_HEIGHT];
+	t_vector 	player;
+	t_vector 	dir;
+	t_vector	plane;
+	float 		viewAngle;
+	float 		fovAngle;
+	int 		move_forward;
+	int 		move_backward;
+	int 		move_right;
+	int 		move_left;
+	int 		rotate_right;
+	int 		rotate_left;
+}	t_config;
+
+
 
 // draw
 void draw_map(t_config *config);

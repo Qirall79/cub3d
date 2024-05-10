@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/09 19:49:50 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/10 11:28:27 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ int is_wall_v(float newX, float newY, t_config *config)
 {
 	int unit = WIDTH / MAP_WIDTH;
 	
-	if (config->map[(int)(config->yPos - 5 + newY) / unit][(int)(config->xPos - 5) / unit] == 1
-	|| config->map[(int)(config->yPos + 5 + newY) / unit][(int)(config->xPos + 5) / unit] == 1
-	|| config->map[(int)(config->yPos - 5 + newY) / unit][(int)(config->xPos + 5) / unit] == 1
-	|| config->map[(int)(config->yPos + 5 + newY) / unit][(int)(config->xPos - 5) / unit] == 1)
+	if (config->map[(int)(config->player.y - 5 + newY) / unit][(int)(config->player.x - 5) / unit] == 1
+	|| config->map[(int)(config->player.y + 5 + newY) / unit][(int)(config->player.x + 5) / unit] == 1
+	|| config->map[(int)(config->player.y - 5 + newY) / unit][(int)(config->player.x + 5) / unit] == 1
+	|| config->map[(int)(config->player.y + 5 + newY) / unit][(int)(config->player.x - 5) / unit] == 1)
 		return 1;
 	return 0;
 }
@@ -36,10 +36,10 @@ int is_wall_h(float newX, float newY, t_config *config)
 {
 	int unit = WIDTH / MAP_WIDTH;
 	
-	if (config->map[(int)(config->yPos - 5) / unit][(int)(config->xPos - 5 + newX) / unit] == 1
-	|| config->map[(int)(config->yPos + 5) / unit][(int)(config->xPos + 5 + newX) / unit] == 1
-	|| config->map[(int)(config->yPos - 5) / unit][(int)(config->xPos + 5 + newX) / unit] == 1
-	|| config->map[(int)(config->yPos + 5) / unit][(int)(config->xPos - 5 + newX) / unit] == 1)
+	if (config->map[(int)(config->player.y - 5) / unit][(int)(config->player.x - 5 + newX) / unit] == 1
+	|| config->map[(int)(config->player.y + 5) / unit][(int)(config->player.x + 5 + newX) / unit] == 1
+	|| config->map[(int)(config->player.y - 5) / unit][(int)(config->player.x + 5 + newX) / unit] == 1
+	|| config->map[(int)(config->player.y + 5) / unit][(int)(config->player.x - 5 + newX) / unit] == 1)
 		return 1;
 	return 0;
 }
@@ -56,14 +56,14 @@ void move_player(t_config *config)
 	if (config->rotate_left)
 	{
 		config->viewAngle = normalize_angle(config->viewAngle - 1);
-		config->dirY = sin(config->viewAngle * DEG_TO_RAD) * WIDTH;
-		config->dirX = cos(config->viewAngle * DEG_TO_RAD) * WIDTH;
+		config->dir.y = sin(config->viewAngle * DEG_TO_RAD);
+		config->dir.x = cos(config->viewAngle * DEG_TO_RAD);
 	}
 	if (config->rotate_right)
 	{
 		config->viewAngle = normalize_angle(config->viewAngle + 1);
-		config->dirY = sin(config->viewAngle * DEG_TO_RAD) * WIDTH;
-		config->dirX = cos(config->viewAngle * DEG_TO_RAD) * WIDTH;
+		config->dir.y = sin(config->viewAngle * DEG_TO_RAD);
+		config->dir.x = cos(config->viewAngle * DEG_TO_RAD);
 	}
 
 	// player movement
@@ -76,17 +76,17 @@ void move_player(t_config *config)
 			return ;
 		if (is_wall_v(newX, newY, config))
 		{
-			config->xPos += newX;
+			config->player.x += newX;
 			return ;
 		}
 		if (is_wall_h(newX, newY, config))
 		{
-			config->yPos += newY;
+			config->player.y += newY;
 			return ;
 		}
 
-		config->xPos += newX;
-		config->yPos += newY;
+		config->player.x += newX;
+		config->player.y += newY;
 	}
 	if (config->move_right)
 	{
@@ -97,16 +97,16 @@ void move_player(t_config *config)
 			return ;
 		if (is_wall_v(newX, newY, config))
 		{
-			config->xPos += newX;
+			config->player.x += newX;
 			return ;
 		}
 		if (is_wall_h(newX, newY, config))
 		{
-			config->yPos += newY;
+			config->player.y += newY;
 			return ;
 		}
-		config->xPos += newX;
-		config->yPos += newY;
+		config->player.x += newX;
+		config->player.y += newY;
 	}
 	if (config->move_forward)
 	{
@@ -117,16 +117,16 @@ void move_player(t_config *config)
 			return ;
 		if (is_wall_v(newX, newY, config))
 		{
-			config->xPos += newX;
+			config->player.x += newX;
 			return ;
 		}
 		if (is_wall_h(newX, newY, config))
 		{
-			config->yPos += newY;
+			config->player.y += newY;
 			return ;
 		}
-		config->xPos += newX;
-		config->yPos += newY;
+		config->player.x += newX;
+		config->player.y += newY;
 	}
 	if (config->move_backward)
 	{
@@ -137,16 +137,16 @@ void move_player(t_config *config)
 			return ;
 		if (is_wall_v(newX, newY, config))
 		{
-			config->xPos += newX;
+			config->player.x += newX;
 			return ;
 		}
 		if (is_wall_h(newX, newY, config))
 		{
-			config->yPos += newY;
+			config->player.y += newY;
 			return ;
 		}
-		config->xPos += newX;
-		config->yPos += newY;
+		config->player.x += newX;
+		config->player.y += newY;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 18:18:53 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/09 20:31:43 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/10 11:28:41 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_vector dda_casting(t_config *config, float alpha)
 {
-	t_vector player = {config->xPos, config->yPos};
+	t_vector player = {config->player.x, config->player.x};
 	t_vector rayDir = {cos(alpha * DEG_TO_RAD), sin(alpha * DEG_TO_RAD)};
 	t_vector step;
 	t_vector sideDist;
