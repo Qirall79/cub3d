@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/10 11:29:07 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:21:49 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,6 @@ int in_range(int p, int min, int max);
 float normalize_angle(float angle);
 void normalize_vector(t_vector *vec);
 void draw_point(t_config *config, int x, int y);
+int is_wall(int cell);
 
 #endif

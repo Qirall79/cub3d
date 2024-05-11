@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/10 21:09:11 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/11 10:46:25 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 
 t_vector my_raycaster(t_config *config, float alpha, int x)
 {
-	t_vector pos = {(int)config->player.x / UNIT, (int)config->player.y / UNIT};
+	t_vector pos = {config->player.x, config->player.y};
 	float cameraX;
 	t_vector rayDir;
 	t_vector map;
@@ -295,7 +295,7 @@ t_vector my_raycaster(t_config *config, float alpha, int x)
 			map.y += step.y;
 			side = 1;
 		}
-		if (config->map[(int)map.y][(int)map.x] == 1)
+		if (is_wall(config->map[(int)map.y][(int)map.x]))
 			wallFound = 1;
 	}
 	if (side == 0)
@@ -306,10 +306,11 @@ t_vector my_raycaster(t_config *config, float alpha, int x)
 	if (perpWallDist.x < 0.000001 && perpWallDist.x > -0.000001)
 		perpWallDist.x = 1;
 	perpWallDist.z = side;
+	perpWallDist.y = config->map[(int)map.y][(int)map.x];
 	return perpWallDist;
 }
 
-void build_wall(t_config *config, int x, float distance, int side)
+void build_wall(t_config *config, int x, float distance, int side, int wall)
 {
 	int line_height = (int) (HEIGHT / distance);
 	int start = -line_height / 2 + HEIGHT / 2;
@@ -318,10 +319,36 @@ void build_wall(t_config *config, int x, float distance, int side)
 	int end = line_height / 2 + HEIGHT / 2;
 	if (end >= HEIGHT)
 		end = HEIGHT - 1;
-	if (side == 0)
-		draw_line(x, start, x, end, config, 0xFFFFFFFF);
-	else
-		draw_line(x, start, x, end, config, 0xFFFFFFAF);
+
+	if (wall == 1)
+	{
+		if (side == 0)
+			draw_line(x, start, x, end, config, 0xFFFFFFFF);
+		else
+			draw_line(x, start, x, end, config, 0xFFFFFFAF);
+	}
+	if (wall == 2)
+	{
+		if (side == 0)
+			draw_line(x, start, x, end, config, 0xFFFF00FF);
+		else
+			draw_line(x, start, x, end, config, 0xFFFF00AF);
+	}
+	if (wall == 3)
+	{
+		if (side == 0)
+			draw_line(x, start, x, end, config, 0xFF00FFFF);
+		else
+			draw_line(x, start, x, end, config, 0xFF00FFAF);
+	}
+	if (wall == 4)
+	{
+		if (side == 0)
+			draw_line(x, start, x, end, config, 0x00FFFFFF);
+		else
+			draw_line(x, start, x, end, config, 0x00FFFFAF);
+	}
+
 }
 
 void draw_rays(t_config *config)
@@ -337,7 +364,7 @@ void draw_rays(t_config *config)
 	while (i < WIDTH)
 	{
 		p = my_raycaster(config, min_angle, i);
-		build_wall(config, i, p.x, p.z);
+		build_wall(config, i, p.x, p.z, p.y);
 		// draw_line(playerX, playerY, p.x, p.y, config, 0xFF0000FF);
 		// draw_wall(config, p, min_angle, i++);
 		min_angle += config->fovAngle / (float) (WIDTH);
