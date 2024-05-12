@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/11 10:46:25 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/12 10:38:36 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,34 +36,50 @@ void draw_map(t_config *config)
 
 	div = WIDTH / MAP_WIDTH;
 	i = 0;
-	while (i < MAP_HEIGHT)
+	// while (i < MAP_HEIGHT)
+	// {
+	// 	j = 0;
+	// 	while (j < MAP_WIDTH)
+	// 	{
+	// 		y = i * div;
+	// 		while (y < (i + 1) * div)
+	// 		{
+	// 			x = j * div;
+	// 			while (x < (j + 1) * div)
+	// 			{
+						
+	// 				// if (in_range(x, config->player.x - 5, config->player.x + 5)
+	// 				// && in_range(y, config->player.y - 5, config->player.y + 5))
+	// 				// 	mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
+	// 				// else if (config->map[i][j] == 1)
+	// 				// 	mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
+	// 				// else
+	// 				// 	mlx_put_pixel(config->img, x, y, 0x0);
+					
+	// 				// // // // draw grids
+	// 				// if (x % UNIT == 0 || y % UNIT == 0)
+	// 				// 	mlx_put_pixel(config->img, x, y, 0xFFFFFFFF);
+
+	// 				x++;
+	// 			}
+	// 			y++;
+	// 		}
+	// 		j++;
+	// 	}
+	// 	i++;
+	// }
+
+	// draw floor and ceiling
+	i = 0;
+	while (i < HEIGHT)
 	{
 		j = 0;
-		while (j < MAP_WIDTH)
+		while (j < WIDTH)
 		{
-			y = i * div;
-			while (y < (i + 1) * div)
-			{
-				x = j * div;
-				while (x < (j + 1) * div)
-				{
-						
-					// if (in_range(x, config->player.x - 5, config->player.x + 5)
-					// && in_range(y, config->player.y - 5, config->player.y + 5))
-					// 	mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
-					// else if (config->map[i][j] == 1)
-					// 	mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
-					// else
-					// 	mlx_put_pixel(config->img, x, y, 0x0);
-					
-					// // // // draw grids
-					// if (x % UNIT == 0 || y % UNIT == 0)
-					// 	mlx_put_pixel(config->img, x, y, 0xFFFFFFFF);
-
-					x++;
-				}
-				y++;
-			}
+			if (i < HEIGHT / 2)
+				mlx_put_pixel(config->img, j, i, 0x00FFFFFF);
+			else
+				mlx_put_pixel(config->img, j, i, 0xFF00FFFF);
 			j++;
 		}
 		i++;
@@ -307,47 +323,56 @@ t_vector my_raycaster(t_config *config, float alpha, int x)
 		perpWallDist.x = 1;
 	perpWallDist.z = side;
 	perpWallDist.y = config->map[(int)map.y][(int)map.x];
+
+	// drawing walls
+	int line_height = (int) (HEIGHT / perpWallDist.x);
+	int start = -line_height / 3 + HEIGHT / 2;
+	if (start < 0)
+		start = 0;
+	int end = line_height / 3 + HEIGHT / 2;
+	if (end >= HEIGHT)
+		end = HEIGHT - 1;
+
+	float wallX;
+	if (!side)
+		wallX = config->player.y + perpWallDist.x * rayDir.y;
+	else
+		wallX = config->player.x + perpWallDist.x * rayDir.x;
+	wallX -= floor(wallX);
+	
+	int texX = (int)(wallX * (float)(TEX_WIDTH));
+	if(side == 0 && rayDir.x > 0) texX = TEX_WIDTH - texX - 1;
+	if(side == 1 && rayDir.y < 0) texX = TEX_WIDTH - texX - 1;
+
+	// coloring
+	float texStep = 1.0 * TEX_HEIGHT / line_height;
+	float texPos = (start - HEIGHT / 2 + line_height / 3) * texStep;
+
+	for (int k = start; k < end; k++)
+	{
+		int texY = (int) texPos & (TEX_HEIGHT - 1);
+		texPos += texStep;
+		int color = config->texture[texY][texX];
+		if(side == 1) color *= 127;
+		else color *= 255;
+		mlx_put_pixel(config->img, x, k, color);
+	}
+	
 	return perpWallDist;
 }
 
 void build_wall(t_config *config, int x, float distance, int side, int wall)
 {
 	int line_height = (int) (HEIGHT / distance);
-	int start = -line_height / 2 + HEIGHT / 2;
+	int start = -line_height / 3 + HEIGHT / 2;
 	if (start < 0)
 		start = 0;
-	int end = line_height / 2 + HEIGHT / 2;
+	int end = line_height / 3 + HEIGHT / 2;
 	if (end >= HEIGHT)
 		end = HEIGHT - 1;
 
-	if (wall == 1)
-	{
-		if (side == 0)
-			draw_line(x, start, x, end, config, 0xFFFFFFFF);
-		else
-			draw_line(x, start, x, end, config, 0xFFFFFFAF);
-	}
-	if (wall == 2)
-	{
-		if (side == 0)
-			draw_line(x, start, x, end, config, 0xFFFF00FF);
-		else
-			draw_line(x, start, x, end, config, 0xFFFF00AF);
-	}
-	if (wall == 3)
-	{
-		if (side == 0)
-			draw_line(x, start, x, end, config, 0xFF00FFFF);
-		else
-			draw_line(x, start, x, end, config, 0xFF00FFAF);
-	}
-	if (wall == 4)
-	{
-		if (side == 0)
-			draw_line(x, start, x, end, config, 0x00FFFFFF);
-		else
-			draw_line(x, start, x, end, config, 0x00FFFFAF);
-	}
+	float wallX;
+
 
 }
 

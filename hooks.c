@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/11 10:56:10 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/12 10:01:32 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,19 +93,36 @@ void move_player(t_config *config)
 	{
 		// todo
 	}
+	int COLLISION_MARGIN = 10.0;
 	if (config->move_forward)
 	{
+		if (!is_wall(config->map[(int)(config->player.y + config->dir.y * movSpeed * COLLISION_MARGIN)][(int)config->player.x]))
+		{
+			// Check if the next movement will cause a collision
+			if (!is_wall(config->map[(int)(config->player.y + (config->dir.y * movSpeed) * COLLISION_MARGIN)][(int)config->player.x]))
+				config->player.y += config->dir.y * movSpeed; // Move player forward
+		}
 		if (!is_wall(config->map[(int)config->player.y][(int)(config->player.x + config->dir.x * movSpeed)]))
-			config->player.x += config->dir.x * movSpeed;
-		if (!is_wall(config->map[(int)(config->player.y + config->dir.y * movSpeed)][(int)config->player.x]))
-			config->player.y += config->dir.y * movSpeed;
+		{
+			// Check if the next movement will cause a collision
+			if (!is_wall(config->map[(int)config->player.y][(int)(config->player.x + (config->dir.x * movSpeed) * COLLISION_MARGIN)]))
+				config->player.x += config->dir.x * movSpeed; // Move player forward
+		}
 	}
 	if (config->move_backward)
 	{
+		if (!is_wall(config->map[(int)(config->player.y - config->dir.y * movSpeed * COLLISION_MARGIN)][(int)config->player.x]))
+		{
+			// Check if the next movement will cause a collision
+			if (!is_wall(config->map[(int)(config->player.y - (config->dir.y * movSpeed) * COLLISION_MARGIN)][(int)config->player.x]))
+				config->player.y -= config->dir.y * movSpeed; // Move player backward
+		}
 		if (!is_wall(config->map[(int)config->player.y][(int)(config->player.x - config->dir.x * movSpeed)]))
-			config->player.x -= config->dir.x * movSpeed;
-		if (!is_wall(config->map[(int)(config->player.y - config->dir.y * movSpeed)][(int)config->player.x]))
-			config->player.y -= config->dir.y * movSpeed;
+		{
+			// Check if the next movement will cause a collision
+			if (!is_wall(config->map[(int)config->player.y][(int)(config->player.x - (config->dir.x * movSpeed) * COLLISION_MARGIN)]))
+				config->player.x -= config->dir.x * movSpeed; // Move player backward
+		}
 	}
 }
 

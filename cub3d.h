@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/11 10:21:49 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/12 10:11:04 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # define HEIGHT 720
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
+# define TEX_WIDTH 64
+# define TEX_HEIGHT 64
 # define UNIT (WIDTH / MAP_WIDTH)
 # define DEG_TO_RAD (M_PI / 180)
 # define MAX_CHECK UNIT
@@ -41,6 +43,7 @@ typedef struct s_config
 	mlx_t		*mlx;
 	mlx_image_t	*img;
 	int 		map[MAP_WIDTH][MAP_HEIGHT];
+	int 		texture[TEX_HEIGHT][TEX_WIDTH];
 	t_vector 	player;
 	t_vector 	dir;
 	t_vector	plane;
