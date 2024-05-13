@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/12 10:42:20 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/12 11:24:33 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,18 +106,45 @@ void init_config(t_config *config)
 	config->rotate_right = 0;
 
 	// textures
+	mlx_texture_t *tex = mlx_load_png("./textures/bluestone.png");
+	mlx_image_t *img = mlx_texture_to_image(config->mlx, tex);
+
+	int **arr = (int **)malloc(tex->height * sizeof(int *));
+    for (int i = 0; i < tex->height; i++) {
+        arr[i] = (int *)malloc(tex->width * sizeof(int));
+    }
+	
 	int y = 0;
 	int x = 0;
-	while ( y < TEX_HEIGHT)
+	while ( y < tex->height)
 	{
 		x = 0;
-		while (x < TEX_WIDTH)
+		while (x < tex->width)
 		{
-			int xorcolor = (x * 256 / TEX_WIDTH) ^ (y * 256 / TEX_HEIGHT);
-			config->texture[y][x] = xorcolor;
+			arr[y][x] = tex->pixels[y * tex->width + x];
 			x++;
 		}
 		y++;
+	}
+	config->texture = arr;
+	config->tex = tex;
+}
+
+void draw_texture(t_config *config)
+{
+	int i = 0;
+	int j;
+
+	while (i < config->tex->height && i < HEIGHT)
+	{
+		j = 0;
+		while (j < config->tex->width && j < WIDTH)
+		{
+			mlx_put_pixel(config->img, j, i, config->texture[i][j] * 0xFFFFFFFF);
+			j++;
+		}
+		i++;
+		
 	}
 }
 
@@ -126,11 +153,14 @@ int main(void)
 	t_config config;
 
 	init_config(&config);
-	draw_map(&config);
+
+	draw_texture(&config);
+
+	// draw_map(&config);
 
 	// hooks
 	mlx_key_hook(config.mlx, (mlx_keyfunc) set_movement_params, &config);
-	mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
+	// mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
 
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/12 10:38:36 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/12 11:02:55 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,116 +114,6 @@ void normalize_vector(t_vector *vec)
 }
 
 
-
-t_vector raycasting_h(t_config *config, float alpha)
-{
-	alpha = normalize_angle(alpha);
-	float aTan = - 1.0f / tan(alpha * DEG_TO_RAD);
-	t_vector a;
-	t_vector step;
-
-	a.x = config->player.x;
-	a.y = config->player.y;
-	
-	if (sin(alpha * DEG_TO_RAD) > 0.001f)
-	{
-		// facing down
-		a.y = floorf(config->player.y / UNIT) * UNIT + UNIT;
-		step.y = UNIT;
-		step.x = -step.y * aTan;
-	}
-	else if (sin(alpha * DEG_TO_RAD) < -0.001f)
-	{
-		// facing up
-		a.y = floorf(config->player.y / UNIT) * UNIT - 0.001f;
-		step.y = -UNIT;
-		step.x = -step.y * aTan;
-	}
-	else
-		return (a);
-	a.x = config->player.x + (config->player.y - a.y) * aTan;
-	int i = 0;
-	int mapX;
-	int mapY;
-	while (i < MAX_CHECK)
-	{
-		mapX = (int) a.x / UNIT;
-		mapY = (int) a.y / UNIT;
-		if (in_range(mapX, 0, MAP_WIDTH - 1) && in_range(mapY, 0, MAP_HEIGHT - 1) && config->map[mapY][mapX] == 1)
-			break ;
-		a.x += step.x;
-		a.y += step.y;
-		i++;
-	}
-	return a;
-}
-
-t_vector raycasting_v(t_config *config, float alpha)
-{
-	alpha = normalize_angle(alpha);
-	float aTan = -tan(alpha * DEG_TO_RAD);
-	t_vector a;
-	t_vector step;
-
-	a.x = config->player.x;
-	a.y = config->player.y;
-	
-	if (cos(alpha * DEG_TO_RAD) > 0.001f)
-	{
-		// facing right
-		a.x = floorf(config->player.x / UNIT) * UNIT + UNIT;
-		step.x = UNIT;
-		step.y = -step.x * aTan;
-	}
-	else if (cos(alpha * DEG_TO_RAD) < -0.001f)
-	{
-		// facing left
-		a.x = floorf(config->player.x / UNIT) * UNIT - 0.001f;
-		step.x = -UNIT;
-		step.y = -step.x * aTan;
-	}
-	else
-		return (a);
-	a.y = config->player.y + (config->player.x - a.x) * aTan;
-	int i = 0;
-	int mapX;
-	int mapY;
-	while (i < MAX_CHECK)
-	{
-		mapX = (int) a.x / UNIT;
-		mapY = (int) a.y / UNIT;
-		if (in_range(mapX, 0, MAP_WIDTH - 1) && in_range(mapY, 0, MAP_HEIGHT - 1) && config->map[mapY][mapX] == 1)
-			break ;
-		a.x += step.x;
-		a.y += step.y;
-		i++;
-	}
-	return a;
-}
-
-t_vector find_intersection(t_config *config, float alpha)
-{
-	t_vector p_h;
-	t_vector p_v;
-	float dist_h;
-	float dist_v;
-
-	p_h = raycasting_h(config, alpha);
-	p_v = raycasting_v(config, alpha);
-	p_v.z = 1;
-	p_h.z = 0;
-
-	dist_h = sqrtf((config->player.x - p_h.x) * (config->player.x - p_h.x) + (config->player.y - p_h.y) * (config->player.y - p_h.y));
-	dist_v = sqrtf((config->player.x - p_v.x) * (config->player.x - p_v.x) + (config->player.y - p_v.y) * (config->player.y - p_v.y));
-	
-	if (p_v.x == config->player.x)
-		return (p_h);
-	if (p_h.x == config->player.x)
-		return (p_v);
-	if (dist_h <= dist_v)
-		return (p_h);
-	return (p_v);
-}
 
 void draw_wall(t_config *config, t_vector p, float alpha, float x)
 {
@@ -340,21 +230,21 @@ t_vector my_raycaster(t_config *config, float alpha, int x)
 		wallX = config->player.x + perpWallDist.x * rayDir.x;
 	wallX -= floor(wallX);
 	
-	int texX = (int)(wallX * (float)(TEX_WIDTH));
-	if(side == 0 && rayDir.x > 0) texX = TEX_WIDTH - texX - 1;
-	if(side == 1 && rayDir.y < 0) texX = TEX_WIDTH - texX - 1;
+	int texX = (int)(wallX * (float)(config->tex->width));
+	if(side == 0 && rayDir.x > 0) texX = config->tex->width - texX - 1;
+	if(side == 1 && rayDir.y < 0) texX = config->tex->width - texX - 1;
 
 	// coloring
-	float texStep = 1.0 * TEX_HEIGHT / line_height;
+	float texStep = 1.0 * config->tex->height / line_height;
 	float texPos = (start - HEIGHT / 2 + line_height / 3) * texStep;
 
 	for (int k = start; k < end; k++)
 	{
-		int texY = (int) texPos & (TEX_HEIGHT - 1);
+		int texY = (int) texPos & (config->tex->height - 1);
 		texPos += texStep;
 		int color = config->texture[texY][texX];
-		if(side == 1) color *= 127;
-		else color *= 255;
+		// if(side == 1) color *= 127;
+		// color *= 255;
 		mlx_put_pixel(config->img, x, k, color);
 	}
 	

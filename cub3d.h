@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/12 10:11:04 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/12 11:24:52 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ typedef struct s_config
 	mlx_t		*mlx;
 	mlx_image_t	*img;
 	int 		map[MAP_WIDTH][MAP_HEIGHT];
-	int 		texture[TEX_HEIGHT][TEX_WIDTH];
+	int 		**texture;
+	mlx_texture_t *tex;
 	t_vector 	player;
 	t_vector 	dir;
 	t_vector	plane;
