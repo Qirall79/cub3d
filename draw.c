@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/14 19:27:45 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:41:39 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,6 +267,8 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 			color = config->texture[texture_y][texture_x];
 		else
 			color = 0;
+		if (p.z)
+			color /= 128;
 		mlx_put_pixel(config->img, x, y, color);
 		y++;
 	}

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/14 19:30:17 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:39:42 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,9 @@ uint32_t abgr_to_rgba(uint32_t abgr_color) {
   uint8_t blue = (abgr_color >> 16) & 0xFF;
   uint8_t green = (abgr_color >> 8) & 0xFF;
   uint8_t red = abgr_color & 0xFF;
+
+  if (!alpha)
+	alpha = 127;
 
   // Reassemble color in RGBA format by shifting and combining
   return (red << 24) | (green << 16) | (blue << 8) | alpha;
@@ -122,7 +125,9 @@ void init_config(t_config *config)
 
 
 	// load mlx png
-	mlx_texture_t *tex = mlx_load_png("./textures/chrollo.png");
+	mlx_texture_t *tex = mlx_load_png("./textures/gonn.png");
+	if (!tex)
+		(printf("FAIL\n"), exit(1));
 
 	// textures
 	int **arr = (int **)malloc(tex->height * sizeof(int *));
