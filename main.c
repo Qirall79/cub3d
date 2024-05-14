@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/09 20:32:46 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:30:17 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,17 @@ void copy_map(t_config *config, int map[MAP_WIDTH][MAP_HEIGHT])
 	}
 }
 
+uint32_t abgr_to_rgba(uint32_t abgr_color) {
+  // Extract individual color channels with bit shifting and masking
+  uint8_t alpha = (abgr_color >> 24) & 0xFF;
+  uint8_t blue = (abgr_color >> 16) & 0xFF;
+  uint8_t green = (abgr_color >> 8) & 0xFF;
+  uint8_t red = abgr_color & 0xFF;
+
+  // Reassemble color in RGBA format by shifting and combining
+  return (red << 24) | (green << 16) | (blue << 8) | alpha;
+}
+
 void init_config(t_config *config)
 {
 	int worldMap[MAP_WIDTH][MAP_HEIGHT]=
@@ -80,7 +91,6 @@ void init_config(t_config *config)
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
-	int unit = WIDTH / MAP_WIDTH;
 
 	
 	copy_map(config, worldMap);
@@ -99,8 +109,8 @@ void init_config(t_config *config)
 	config->dirX = cos(config->viewAngle * DEG_TO_RAD) * WIDTH;
 	config->initialX = config->xPos;
 	config->initialY = config->yPos;
-	config->xPos = config->initialX * unit + (unit - 10) / 2;
-	config->yPos = config->initialY * unit + (unit - 10) / 2;
+	config->xPos = config->initialX * UNIT + (UNIT - 10) / 2;
+	config->yPos = config->initialY * UNIT + (UNIT - 10) / 2;
 
 	// init keys
 	config->move_forward = 0;
@@ -109,6 +119,43 @@ void init_config(t_config *config)
 	config->move_left = 0;
 	config->rotate_left = 0;
 	config->rotate_right = 0;
+
+
+	// load mlx png
+	mlx_texture_t *tex = mlx_load_png("./textures/chrollo.png");
+
+	// textures
+	int **arr = (int **)malloc(tex->height * sizeof(int *));
+    for (int i = 0; i < tex->height; i++) {
+        arr[i] = (int *)malloc(tex->width * sizeof(int));
+    }
+    int *pixels = (int *) tex->pixels;
+	for (int i = 0; i < tex->height; i++) {
+        for (int j = 0; j < tex->width; j++)
+		{
+			arr[i][j] = abgr_to_rgba(pixels[i * tex->width + j]);
+		}
+    }
+	config->texture = arr;
+	config->tex = tex;
+}
+
+void draw_texture(t_config *config)
+{
+	int i = 0;
+	int j;
+
+	while (i < config->tex->height && i < HEIGHT)
+	{
+		j = 0;
+		while (j < config->tex->width && j < WIDTH)
+		{
+			mlx_put_pixel(config->img, j, i, config->texture[i][j]);
+			j++;
+		}
+		i++;
+		
+	}
 }
 
 int main(void)

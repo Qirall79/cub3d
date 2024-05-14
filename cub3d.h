@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/09 20:32:25 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:27:26 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,16 @@
 # define HEIGHT 720
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
-# define UNIT (WIDTH / MAP_WIDTH)
-# define DEG_TO_RAD (M_PI / 180)
+# define UNIT 730
+# define TEX_WIDTH UNIT
+# define TEX_HEIGHT UNIT
+# define DEG_TO_RAD (float)(M_PI / 180.0)
 # define MAX_CHECK UNIT
+# define RIGHT 1
+# define BOT 1
+# define TOP 2
+# define LEFT 2
+
 
 # include <unistd.h>
 # include <stdio.h>
@@ -34,6 +41,8 @@ typedef struct s_config
 	mlx_t		*mlx;
 	mlx_image_t	*img;
 	int map[MAP_WIDTH][MAP_HEIGHT];
+	int **texture;
+	mlx_texture_t *tex;
 	float xPos;
 	float yPos;
 	float xOffset;
@@ -57,6 +66,7 @@ typedef struct s_vector
 	float x;
 	float y;
 	float z;
+	float distance;
 }	t_vector;
 
 // draw

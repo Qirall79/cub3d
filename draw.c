@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/09 20:41:00 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/14 19:27:45 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,23 @@ void normalize_vector(t_vector *vec)
 	vec->y = vec->y / length;
 }
 
+int vertical_facing(float angle)
+{
+	if (sin(angle * DEG_TO_RAD) > 0.000001f)
+		return 1;
+	else if (sin(angle * DEG_TO_RAD) < -0.000001f)
+		return 2;
+	return 0;
+}
 
+int horizontal_facing(float angle)
+{
+	if (cos(angle * DEG_TO_RAD) > 0.000001f)
+		return 1;
+	else if (cos(angle * DEG_TO_RAD) < -0.000001f)
+		return 2;
+	return 0;
+}
 
 t_vector raycasting_h(t_config *config, float alpha)
 {
@@ -109,30 +125,37 @@ t_vector raycasting_h(t_config *config, float alpha)
 	a.x = config->xPos;
 	a.y = config->yPos;
 	
-	if (sin(alpha * DEG_TO_RAD) > 0.001f)
+	if (vertical_facing(alpha) == BOT)
 	{
 		// facing down
 		a.y = floorf(config->yPos / UNIT) * UNIT + UNIT;
 		step.y = UNIT;
 		step.x = -step.y * aTan;
 	}
-	else if (sin(alpha * DEG_TO_RAD) < -0.001f)
+	else if (vertical_facing(alpha) == TOP)
 	{
 		// facing up
-		a.y = floorf(config->yPos / UNIT) * UNIT - 0.001f;
+		a.y = floorf(config->yPos / UNIT) * UNIT;
 		step.y = -UNIT;
 		step.x = -step.y * aTan;
 	}
 	else
 		return (a);
+
+	if (step.x > 0 && horizontal_facing(alpha) == LEFT)
+		step.x *= -1;
+	if (step.x < 0 && horizontal_facing(alpha) == RIGHT)
+		step.x *= -1;
+		
 	a.x = config->xPos + (config->yPos - a.y) * aTan;
+
 	int i = 0;
 	int mapX;
 	int mapY;
 	while (i < MAX_CHECK)
 	{
 		mapX = (int) a.x / UNIT;
-		mapY = (int) a.y / UNIT;
+		mapY = (int) (a.y - (vertical_facing(alpha) == TOP ? 1 : 0)) / UNIT;
 		if (in_range(mapX, 0, MAP_WIDTH - 1) && in_range(mapY, 0, MAP_HEIGHT - 1) && config->map[mapY][mapX] == 1)
 			break ;
 		a.x += step.x;
@@ -152,29 +175,35 @@ t_vector raycasting_v(t_config *config, float alpha)
 	a.x = config->xPos;
 	a.y = config->yPos;
 	
-	if (cos(alpha * DEG_TO_RAD) > 0.001f)
+	if (horizontal_facing(alpha) == RIGHT)
 	{
 		// facing right
 		a.x = floorf(config->xPos / UNIT) * UNIT + UNIT;
 		step.x = UNIT;
 		step.y = -step.x * aTan;
 	}
-	else if (cos(alpha * DEG_TO_RAD) < -0.001f)
+	else if (horizontal_facing(alpha) == LEFT)
 	{
 		// facing left
-		a.x = floorf(config->xPos / UNIT) * UNIT - 0.001f;
+		a.x = floorf(config->xPos / UNIT) * UNIT;
 		step.x = -UNIT;
 		step.y = -step.x * aTan;
 	}
 	else
 		return (a);
+
+	if (step.y > 0 && vertical_facing(alpha) == TOP)
+		step.y *= -1;
+	if (step.y < 0 && vertical_facing(alpha) == BOT)
+		step.y *= -1;
+	
 	a.y = config->yPos + (config->xPos - a.x) * aTan;
 	int i = 0;
 	int mapX;
 	int mapY;
 	while (i < MAX_CHECK)
 	{
-		mapX = (int) a.x / UNIT;
+		mapX = (int) (a.x - (horizontal_facing(alpha) == LEFT ? 1 : 0)) / UNIT;
 		mapY = (int) a.y / UNIT;
 		if (in_range(mapX, 0, MAP_WIDTH - 1) && in_range(mapY, 0, MAP_HEIGHT - 1) && config->map[mapY][mapX] == 1)
 			break ;
@@ -199,7 +228,10 @@ t_vector find_intersection(t_config *config, float alpha)
 
 	dist_h = sqrtf((config->xPos - p_h.x) * (config->xPos - p_h.x) + (config->yPos - p_h.y) * (config->yPos - p_h.y));
 	dist_v = sqrtf((config->xPos - p_v.x) * (config->xPos - p_v.x) + (config->yPos - p_v.y) * (config->yPos - p_v.y));
-	
+
+	p_h.distance = dist_h;
+	p_v.distance = dist_v;
+
 	if (p_v.x == config->xPos)
 		return (p_h);
 	if (p_h.x == config->xPos)
@@ -212,17 +244,32 @@ t_vector find_intersection(t_config *config, float alpha)
 void draw_wall(t_config *config, t_vector p, float alpha, float x)
 {
 	float plane_dist = WIDTH / (2 * tan(30 * DEG_TO_RAD));
-	float distorted_dist = sqrtf((config->xPos - p.x) * (config->xPos - p.x) + (config->yPos - p.y) * (config->yPos - p.y));
+	float distorted_dist = p.distance;
 	float correct_dist = distorted_dist * cos((config->viewAngle - alpha) * DEG_TO_RAD);
-	float block_height = WIDTH / MAP_WIDTH;
+	float block_height = UNIT;
 	float wall_height = roundf(fabs((block_height / correct_dist) * plane_dist));
 	float startY = (HEIGHT / 2) - (wall_height / 2);
 	float endY = startY + wall_height;
 	
+	float y = startY;
+	int texture_x;
+	int texture_y;
+	int color;
 	if (p.z)
-		draw_line(x, startY, x, endY, config, 0x00F0FFAF);
+		texture_x = ((int)p.y % TEX_WIDTH);
 	else
-		draw_line(x, startY, x, endY, config, 0x00F0FFFF);
+		texture_x = ((int)p.x % TEX_WIDTH);
+	
+	while (y < endY && y < HEIGHT)
+	{
+		texture_y = (int)((y - startY) * ((float) TEX_HEIGHT / wall_height));
+		if (texture_x < config->tex->width && texture_y < config->tex->height)
+			color = config->texture[texture_y][texture_x];
+		else
+			color = 0;
+		mlx_put_pixel(config->img, x, y, color);
+		y++;
+	}
 }
 
 
