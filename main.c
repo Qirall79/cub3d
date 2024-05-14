@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/12 11:24:33 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:54:50 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,17 @@ void copy_map(t_config *config, int map[MAP_WIDTH][MAP_HEIGHT])
 		}
 		i++;
 	}
+}
+
+int abgr_to_rgba(int abgr_color) {
+  // Extract individual color channels with bit shifting and masking
+  int alpha = (abgr_color >> 24) & 0xFF;
+  int blue = (abgr_color >> 16) & 0xFF;
+  int green = (abgr_color >> 8) & 0xFF;
+  int red = abgr_color & 0xFF;
+
+  // Reassemble color in RGBA format by shifting and combining
+  return (red << 24) | (green << 16) | (blue << 8) | alpha;
 }
 
 void init_config(t_config *config)
@@ -106,14 +117,13 @@ void init_config(t_config *config)
 	config->rotate_right = 0;
 
 	// textures
-	mlx_texture_t *tex = mlx_load_png("./textures/bluestone.png");
-	mlx_image_t *img = mlx_texture_to_image(config->mlx, tex);
+	mlx_texture_t *tex = mlx_load_png("./textures/chrollo.png");
 
 	int **arr = (int **)malloc(tex->height * sizeof(int *));
     for (int i = 0; i < tex->height; i++) {
         arr[i] = (int *)malloc(tex->width * sizeof(int));
     }
-	
+	int *pixels = (int *) tex->pixels;
 	int y = 0;
 	int x = 0;
 	while ( y < tex->height)
@@ -121,7 +131,7 @@ void init_config(t_config *config)
 		x = 0;
 		while (x < tex->width)
 		{
-			arr[y][x] = tex->pixels[y * tex->width + x];
+			arr[y][x] = abgr_to_rgba(pixels[y * tex->width + x]);
 			x++;
 		}
 		y++;
@@ -140,7 +150,7 @@ void draw_texture(t_config *config)
 		j = 0;
 		while (j < config->tex->width && j < WIDTH)
 		{
-			mlx_put_pixel(config->img, j, i, config->texture[i][j] * 0xFFFFFFFF);
+			mlx_put_pixel(config->img, j, i, config->texture[i][j]);
 			j++;
 		}
 		i++;
@@ -154,13 +164,13 @@ int main(void)
 
 	init_config(&config);
 
-	draw_texture(&config);
+	// draw_texture(&config);
 
-	// draw_map(&config);
+	draw_map(&config);
 
 	// hooks
 	mlx_key_hook(config.mlx, (mlx_keyfunc) set_movement_params, &config);
-	// mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
+	mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
 
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);

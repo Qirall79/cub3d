@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/12 11:02:55 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:54:39 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,21 +230,19 @@ t_vector my_raycaster(t_config *config, float alpha, int x)
 		wallX = config->player.x + perpWallDist.x * rayDir.x;
 	wallX -= floor(wallX);
 	
-	int texX = (int)(wallX * (float)(config->tex->width));
-	if(side == 0 && rayDir.x > 0) texX = config->tex->width - texX - 1;
-	if(side == 1 && rayDir.y < 0) texX = config->tex->width - texX - 1;
+	int texX = (int)(wallX * (float)(TEX_WIDTH));
+	if(side == 0 && rayDir.x > 0) texX = TEX_WIDTH - texX - 1;
+	if(side == 1 && rayDir.y < 0) texX = TEX_WIDTH - texX - 1;
 
 	// coloring
-	float texStep = 1.0 * config->tex->height / line_height;
+	float texStep = (1.0 * TEX_HEIGHT / line_height);
 	float texPos = (start - HEIGHT / 2 + line_height / 3) * texStep;
 
 	for (int k = start; k < end; k++)
 	{
-		int texY = (int) texPos & (config->tex->height - 1);
+		int texY = (int) texPos & (TEX_HEIGHT - 1);
 		texPos += texStep;
 		int color = config->texture[texY][texX];
-		// if(side == 1) color *= 127;
-		// color *= 255;
 		mlx_put_pixel(config->img, x, k, color);
 	}
 	

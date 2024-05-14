@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/12 11:24:52 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/14 13:54:14 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # define HEIGHT 720
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
-# define TEX_WIDTH 64
-# define TEX_HEIGHT 64
+# define TEX_WIDTH 370
+# define TEX_HEIGHT 370
 # define UNIT (WIDTH / MAP_WIDTH)
 # define DEG_TO_RAD (M_PI / 180)
 # define MAX_CHECK UNIT
