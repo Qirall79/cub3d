@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/15 17:09:01 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:03:32 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,12 +267,20 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 	else
 		texture_x = ((int)p.x % TEX_WIDTH);
 	
+
+	// draw ceiling
+	y = 0;
+	while (y < startY)
+	{
+		mlx_put_pixel(config->img, x, y, 0x0F00FF4F);
+		y++;
+	}
+
+	// draw wall
 	y = startY;
 	while (y < endY && y < HEIGHT)
 	{
 		texture_y = (int)((y - startY) * ((float) TEX_HEIGHT / wall_height));
-		
-		color = config->texture[texture_y][texture_x];
 
 		// direction
 		if (p.z && horizontal_facing(alpha) == LEFT)
@@ -290,6 +298,11 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 			mlx_put_pixel(config->img, x, 0, color);
 		else
 			mlx_put_pixel(config->img, x, y, color);
+		y++;
+	}
+	while (y < HEIGHT)
+	{
+		mlx_put_pixel(config->img, x, y, 0xFF0F000F);
 		y++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/15 17:43:55 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/15 18:07:28 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,11 +164,10 @@ void init_config(t_config *config)
 	config->rotate_left = 0;
 	config->rotate_right = 0;
 
-	config->texture = generate_texture("./textures/gonn.png", config);
-	config->texture_east = generate_texture("./textures/killua.png", config);
-	config->texture_west = generate_texture("./textures/chrollo.png", config);
-	config->texture_north = generate_texture("./textures/meruem.png", config);
-	config->texture_south = generate_texture("./textures/hisoka.png", config);
+	config->texture_east = generate_texture("./textures/kurapika.png", config);
+	config->texture_west = generate_texture("./textures/gonn.png", config);
+	config->texture_north = generate_texture("./textures/hisoka.png", config);
+	config->texture_south = generate_texture("./textures/chrollo.png", config);
 }
 
 void draw_texture(t_config *config)
