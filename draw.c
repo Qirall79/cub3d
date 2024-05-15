@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/15 13:32:30 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:09:01 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,12 +271,19 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 	while (y < endY && y < HEIGHT)
 	{
 		texture_y = (int)((y - startY) * ((float) TEX_HEIGHT / wall_height));
-		if (texture_x < UNIT && texture_y < UNIT)
-			color = config->texture[texture_y][texture_x];
-		// else
-		// 	color = 0xFFFFFFFF;
-		if (p.z)
-			color /= 128;
+		
+		color = config->texture[texture_y][texture_x];
+
+		// direction
+		if (p.z && horizontal_facing(alpha) == LEFT)
+			color = config->texture_east[texture_y][texture_x];
+		else if (p.z && horizontal_facing(alpha) == RIGHT)
+			color = config->texture_west[texture_y][texture_x];
+		else if (!p.z && vertical_facing(alpha) == TOP)
+			color = config->texture_north[texture_y][texture_x];
+		else if (!p.z && vertical_facing(alpha) == BOT)
+			color = config->texture_south[texture_y][texture_x];
+
 		if (y < 0)
 			y = 0;
 		if (!in_range(x, 0, WIDTH - 1) || !in_range(y, 0, HEIGHT - 1))

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/15 14:05:29 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:19:26 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
  
 # define CUB3D_H
 
-# define WIDTH 1080
-# define HEIGHT 1080
+# define WIDTH 720
+# define HEIGHT 720
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
-# define UNIT 512
+# define UNIT 640
 # define TEX_WIDTH UNIT
 # define TEX_HEIGHT UNIT
 # define DEG_TO_RAD (float)(M_PI / 180.0)
@@ -42,6 +42,10 @@ typedef struct s_config
 	mlx_image_t	*img;
 	int map[MAP_WIDTH][MAP_HEIGHT];
 	int **texture;
+	int **texture_north;
+	int **texture_south;
+	int **texture_east;
+	int **texture_west;
 	mlx_texture_t *tex;
 	float xPos;
 	float yPos;

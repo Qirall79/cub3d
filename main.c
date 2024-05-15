@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/15 13:34:30 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:19:01 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,46 @@ uint32_t abgr_to_rgba(uint32_t abgr_color) {
   return (red << 24) | (green << 16) | (blue << 8) | alpha;
 }
 
+int **generate_texture(char *path, t_config *config)
+{
+	int **arr;
+	mlx_texture_t *tex;
+	int *pixels;
+	t_vector step;
+	t_vector iter;
+	int x;
+	int y;
+
+	tex = mlx_load_png(path);
+	if (!tex)
+		(printf("FAIL\n"), exit(1));
+	config->tex = tex;
+	arr = (int **)malloc(UNIT * sizeof(int *));
+	iter.y = 0;
+    while (iter.y < UNIT) {
+        arr[(int)iter.y] = (int *)malloc(UNIT * sizeof(int));
+		iter.y++;
+    }
+    pixels = (int *) tex->pixels;
+	step.x = tex->width / (float)UNIT;
+	step.y = tex->height / (float)UNIT;
+	iter.x = 0;
+	y = 0;
+	while (y < UNIT) {
+		iter.y = 0;
+		x = 0;
+        while (x < UNIT)
+		{
+			arr[y][x] = abgr_to_rgba(pixels[(int)floorf(iter.x) * tex->width + (int)floorf(iter.y)]);
+			iter.y += step.x;
+			x++;
+		}
+		iter.x += step.y;
+		y++;
+	}
+	return (arr);
+}
+
 void init_config(t_config *config)
 {
 	int worldMap[MAP_WIDTH][MAP_HEIGHT]=
@@ -73,25 +113,25 @@ void init_config(t_config *config)
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
+	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1},
+	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,1,0,0,0,0,5,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1},
+	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1},
+	{1,1,0,1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1},
+	{1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
+	{1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 
@@ -124,34 +164,11 @@ void init_config(t_config *config)
 	config->rotate_left = 0;
 	config->rotate_right = 0;
 
-
-	// load mlx png
-	mlx_texture_t *tex = mlx_load_png("./textures/gonn.png");
-	if (!tex)
-		(printf("FAIL\n"), exit(1));
-
-	// textures
-	int **arr = (int **)malloc(UNIT * sizeof(int *));
-    for (int i = 0; i < UNIT; i++) {
-        arr[i] = (int *)malloc(UNIT * sizeof(int));
-    }
-    int *pixels = (int *) tex->pixels;
-	float stepX = tex->width / (float)UNIT;
-	float stepY = tex->height / (float)UNIT;
-	float i = 0;
-	float j;
-	for (int y = 0; y < UNIT; y++) {
-		j = 0;
-        for (int x = 0; x < UNIT; x++)
-		{
-			arr[y][x] = abgr_to_rgba(pixels[(int)floorf(i) * tex->width + (int)floorf(j)]);
-			// printf("%i\n", pixels[(int)floorf(i) * tex->width + (int)floorf(j)]);
-			j += stepX;
-		}
-		i += stepY;
-    }
-	config->texture = arr;
-	config->tex = tex;
+	config->texture = generate_texture("./textures/gonn.png", config);
+	config->texture_east = generate_texture("./textures/mossy.png", config);
+	config->texture_west = generate_texture("./textures/chrollo.png", config);
+	config->texture_north = generate_texture("./textures/bluestone.png", config);
+	config->texture_south = generate_texture("./textures/eagle.png", config);
 }
 
 void draw_texture(t_config *config)

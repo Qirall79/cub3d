@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/15 09:09:38 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:23:45 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,19 @@ void move_player(t_config *config)
 {
 	float newX;
 	float newY;
-	float speed = UNIT / 16.0;
+	float mov_speed = config->mlx->delta_time * UNIT * 3.0;
+	float rot_speed = config->mlx->delta_time * 100.0;
 
 	// camera rotation
 	if (config->rotate_left)
 	{
-		config->viewAngle = normalize_angle(config->viewAngle - 1);
+		config->viewAngle = normalize_angle(config->viewAngle - rot_speed);
 		config->dirY = sin(config->viewAngle * DEG_TO_RAD) * WIDTH;
 		config->dirX = cos(config->viewAngle * DEG_TO_RAD) * WIDTH;
 	}
 	if (config->rotate_right)
 	{
-		config->viewAngle = normalize_angle(config->viewAngle + 1);
+		config->viewAngle = normalize_angle(config->viewAngle + rot_speed);
 		config->dirY = sin(config->viewAngle * DEG_TO_RAD) * WIDTH;
 		config->dirX = cos(config->viewAngle * DEG_TO_RAD) * WIDTH;
 	}
@@ -65,8 +66,8 @@ void move_player(t_config *config)
 	// player movement
 	if (config->move_left)
 	{
-		newY = -sin(normalize_angle(config->viewAngle + 90) * DEG_TO_RAD) * speed;
-		newX = -cos(normalize_angle(config->viewAngle + 90) * DEG_TO_RAD) * speed;
+		newY = -sin(normalize_angle(config->viewAngle + 90) * DEG_TO_RAD) * mov_speed;
+		newX = -cos(normalize_angle(config->viewAngle + 90) * DEG_TO_RAD) * mov_speed;
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
@@ -86,8 +87,8 @@ void move_player(t_config *config)
 	}
 	if (config->move_right)
 	{
-		newY = sin(normalize_angle(config->viewAngle + 90) * DEG_TO_RAD) * speed;
-		newX = cos(normalize_angle(config->viewAngle + 90) * DEG_TO_RAD) * speed;
+		newY = sin(normalize_angle(config->viewAngle + 90) * DEG_TO_RAD) * mov_speed;
+		newX = cos(normalize_angle(config->viewAngle + 90) * DEG_TO_RAD) * mov_speed;
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
@@ -106,8 +107,8 @@ void move_player(t_config *config)
 	}
 	if (config->move_forward)
 	{
-		newY = sin(config->viewAngle * DEG_TO_RAD) * speed;
-		newX = cos(config->viewAngle * DEG_TO_RAD) * speed;
+		newY = sin(config->viewAngle * DEG_TO_RAD) * mov_speed;
+		newX = cos(config->viewAngle * DEG_TO_RAD) * mov_speed;
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
@@ -126,8 +127,8 @@ void move_player(t_config *config)
 	}
 	if (config->move_backward)
 	{
-		newY = -sin(config->viewAngle * DEG_TO_RAD) * speed;
-		newX = -cos(config->viewAngle * DEG_TO_RAD) * speed;
+		newY = -sin(config->viewAngle * DEG_TO_RAD) * mov_speed;
+		newX = -cos(config->viewAngle * DEG_TO_RAD) * mov_speed;
 
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
