@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/15 17:19:26 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/15 17:45:14 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
  
 # define CUB3D_H
 
-# define WIDTH 720
-# define HEIGHT 720
+# define WIDTH 960
+# define HEIGHT 960
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
 # define UNIT 640
