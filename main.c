@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/14 19:39:42 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:34:30 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ uint32_t abgr_to_rgba(uint32_t abgr_color) {
   uint8_t green = (abgr_color >> 8) & 0xFF;
   uint8_t red = abgr_color & 0xFF;
 
-  if (!alpha)
-	alpha = 127;
+//   if (!alpha)
+// 	alpha = 127;
 
   // Reassemble color in RGBA format by shifting and combining
   return (red << 24) | (green << 16) | (blue << 8) | alpha;
@@ -114,6 +114,7 @@ void init_config(t_config *config)
 	config->initialY = config->yPos;
 	config->xPos = config->initialX * UNIT + (UNIT - 10) / 2;
 	config->yPos = config->initialY * UNIT + (UNIT - 10) / 2;
+	config->last_distance = 1;
 
 	// init keys
 	config->move_forward = 0;
@@ -130,16 +131,24 @@ void init_config(t_config *config)
 		(printf("FAIL\n"), exit(1));
 
 	// textures
-	int **arr = (int **)malloc(tex->height * sizeof(int *));
-    for (int i = 0; i < tex->height; i++) {
-        arr[i] = (int *)malloc(tex->width * sizeof(int));
+	int **arr = (int **)malloc(UNIT * sizeof(int *));
+    for (int i = 0; i < UNIT; i++) {
+        arr[i] = (int *)malloc(UNIT * sizeof(int));
     }
     int *pixels = (int *) tex->pixels;
-	for (int i = 0; i < tex->height; i++) {
-        for (int j = 0; j < tex->width; j++)
+	float stepX = tex->width / (float)UNIT;
+	float stepY = tex->height / (float)UNIT;
+	float i = 0;
+	float j;
+	for (int y = 0; y < UNIT; y++) {
+		j = 0;
+        for (int x = 0; x < UNIT; x++)
 		{
-			arr[i][j] = abgr_to_rgba(pixels[i * tex->width + j]);
+			arr[y][x] = abgr_to_rgba(pixels[(int)floorf(i) * tex->width + (int)floorf(j)]);
+			// printf("%i\n", pixels[(int)floorf(i) * tex->width + (int)floorf(j)]);
+			j += stepX;
 		}
+		i += stepY;
     }
 	config->texture = arr;
 	config->tex = tex;
@@ -150,10 +159,10 @@ void draw_texture(t_config *config)
 	int i = 0;
 	int j;
 
-	while (i < config->tex->height && i < HEIGHT)
+	while (i < UNIT && i < HEIGHT)
 	{
 		j = 0;
-		while (j < config->tex->width && j < WIDTH)
+		while (j < UNIT && j < WIDTH)
 		{
 			mlx_put_pixel(config->img, j, i, config->texture[i][j]);
 			j++;
@@ -169,6 +178,7 @@ int main(void)
 
 	init_config(&config);
 	draw_map(&config);
+	// draw_texture(&config);
 
 	// hooks
 	mlx_key_hook(config.mlx, (mlx_keyfunc) set_movement_params, &config);

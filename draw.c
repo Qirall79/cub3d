@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/14 19:41:39 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/15 13:32:30 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,13 +229,17 @@ t_vector find_intersection(t_config *config, float alpha)
 	dist_h = sqrtf((config->xPos - p_h.x) * (config->xPos - p_h.x) + (config->yPos - p_h.y) * (config->yPos - p_h.y));
 	dist_v = sqrtf((config->xPos - p_v.x) * (config->xPos - p_v.x) + (config->yPos - p_v.y) * (config->yPos - p_v.y));
 
+	
+
+	if (p_v.x == config->xPos && p_v.y == config->yPos)
+		dist_v = 1e9;
+	if (p_h.x == config->xPos && p_h.y == config->yPos)
+		dist_h = 1e9;
+
 	p_h.distance = dist_h;
 	p_v.distance = dist_v;
+	
 
-	if (p_v.x == config->xPos)
-		return (p_h);
-	if (p_h.x == config->xPos)
-		return (p_v);
 	if (dist_h <= dist_v)
 		return (p_h);
 	return (p_v);
@@ -247,11 +251,14 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 	float distorted_dist = p.distance;
 	float correct_dist = distorted_dist * cos((config->viewAngle - alpha) * DEG_TO_RAD);
 	float block_height = UNIT;
-	float wall_height = roundf(fabs((block_height / correct_dist) * plane_dist));
+	float wall_height = roundf(fabs(block_height / correct_dist) * plane_dist);
 	float startY = (HEIGHT / 2) - (wall_height / 2);
 	float endY = startY + wall_height;
 	
-	float y = startY;
+	if (endY >= HEIGHT)
+		endY = HEIGHT - 1;
+
+	float y;
 	int texture_x;
 	int texture_y;
 	int color;
@@ -260,16 +267,22 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 	else
 		texture_x = ((int)p.x % TEX_WIDTH);
 	
+	y = startY;
 	while (y < endY && y < HEIGHT)
 	{
 		texture_y = (int)((y - startY) * ((float) TEX_HEIGHT / wall_height));
-		if (texture_x < config->tex->width && texture_y < config->tex->height)
+		if (texture_x < UNIT && texture_y < UNIT)
 			color = config->texture[texture_y][texture_x];
-		else
-			color = 0;
+		// else
+		// 	color = 0xFFFFFFFF;
 		if (p.z)
 			color /= 128;
-		mlx_put_pixel(config->img, x, y, color);
+		if (y < 0)
+			y = 0;
+		if (!in_range(x, 0, WIDTH - 1) || !in_range(y, 0, HEIGHT - 1))
+			mlx_put_pixel(config->img, x, 0, color);
+		else
+			mlx_put_pixel(config->img, x, y, color);
 		y++;
 	}
 }
@@ -284,12 +297,13 @@ void draw_rays(t_config *config)
 
 	t_vector p;
 	float i = 0;
-	while (min_angle <= max_angle)
+	while (i < WIDTH)
 	{
 		p = find_intersection(config, min_angle);
 		// draw_line(playerX, playerY, p.x, p.y, config, 0xFF0000FF);
-		draw_wall(config, p, min_angle, i++);
+		draw_wall(config, p, min_angle, i);
 		min_angle += config->fovAngle / (float) (WIDTH);
+		i++;
 	}
 
 }

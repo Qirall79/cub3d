@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/14 19:37:25 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/15 09:09:38 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,20 @@ float normalize_angle(float angle)
 int is_wall_v(float newX, float newY, t_config *config)
 {
 	
-	if (config->map[(int)(config->yPos - 5 + newY) / UNIT][(int)(config->xPos - 5) / UNIT] == 1
-	|| config->map[(int)(config->yPos + 5 + newY) / UNIT][(int)(config->xPos + 5) / UNIT] == 1
-	|| config->map[(int)(config->yPos - 5 + newY) / UNIT][(int)(config->xPos + 5) / UNIT] == 1
-	|| config->map[(int)(config->yPos + 5 + newY) / UNIT][(int)(config->xPos - 5) / UNIT] == 1)
+	if (config->map[(int)(config->yPos+ newY) / UNIT][(int)(config->xPos) / UNIT] == 1
+	|| config->map[(int)(config->yPos+ newY) / UNIT][(int)(config->xPos) / UNIT] == 1
+	|| config->map[(int)(config->yPos+ newY) / UNIT][(int)(config->xPos) / UNIT] == 1
+	|| config->map[(int)(config->yPos+ newY) / UNIT][(int)(config->xPos) / UNIT] == 1)
 		return 1;
 	return 0;
 }
 int is_wall_h(float newX, float newY, t_config *config)
 {
 	
-	if (config->map[(int)(config->yPos - 5) / UNIT][(int)(config->xPos - 5 + newX) / UNIT] == 1
-	|| config->map[(int)(config->yPos + 5) / UNIT][(int)(config->xPos + 5 + newX) / UNIT] == 1
-	|| config->map[(int)(config->yPos - 5) / UNIT][(int)(config->xPos + 5 + newX) / UNIT] == 1
-	|| config->map[(int)(config->yPos + 5) / UNIT][(int)(config->xPos - 5 + newX) / UNIT] == 1)
+	if (config->map[(int)(config->yPos) / UNIT][(int)(config->xPos + newX) / UNIT] == 1
+	|| config->map[(int)(config->yPos ) / UNIT][(int)(config->xPos  + newX) / UNIT] == 1
+	|| config->map[(int)(config->yPos ) / UNIT][(int)(config->xPos  + newX) / UNIT] == 1
+	|| config->map[(int)(config->yPos ) / UNIT][(int)(config->xPos  + newX) / UNIT] == 1)
 		return 1;
 	return 0;
 }
@@ -46,7 +46,7 @@ void move_player(t_config *config)
 {
 	float newX;
 	float newY;
-	float speed = 20.0;
+	float speed = UNIT / 16.0;
 
 	// camera rotation
 	if (config->rotate_left)
