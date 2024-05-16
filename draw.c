@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/16 15:03:45 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:01:08 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,16 +313,13 @@ void draw_sprite(t_config *config)
 
 	diff.x = config->sprite_pos.x - config->xPos;
 	diff.y = config->sprite_pos.y - config->yPos;
-	
 
-	
 	sprite_angle = normalize_angle(atan2(diff.y, diff.x) * (1.0 / DEG_TO_RAD));
-	
 	float distance = sqrtf(diff.x * diff.x + diff.y * diff.y);
 	float diff_angle = normalize_angle(config->viewAngle - sprite_angle);
 	float screen_angle = normalize_angle((config->fovAngle / 2.0) - diff_angle);
 	float fov_ratio = WIDTH / config->fovAngle;
-	
+
 	y = HEIGHT / 2 - 50;
 	if (in_range(sprite_angle, config->viewAngle - 30, config->viewAngle + 30))
 	{
