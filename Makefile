@@ -6,7 +6,7 @@
 #    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/05/15 08:52:54 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/05/16 18:09:17 by wbelfatm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJS = ${SRCS:.c=.o}
 LIBMLX = ./lib/MLX
 GLFW = /Users/wbelfatm/.brew/Cellar/glfw/3.4/lib
 # GLFW = /opt/homebrew/Cellar/glfw/3.4/lib
-LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -L$(GLFW) -pthread -lm
+LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -L$(GLFW) -lm
 INCLUDES = -I $(LIBMLX)/include
 NAME = cub3d
 HEADER = cub3d.h

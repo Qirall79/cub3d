@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/16 13:18:22 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:04:07 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,15 @@
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
 # define UNIT 640
+# define MAP_UNIT 8
+# define ENEMY_SIZE 640
 # define SPRITE_SIZE 640
 # define TEX_WIDTH UNIT
 # define TEX_HEIGHT UNIT
 # define DEG_TO_RAD (float)(M_PI / 180.0)
 # define MAX_CHECK UNIT
+
+// enum should be
 # define RIGHT 1
 # define BOT 1
 # define TOP 2

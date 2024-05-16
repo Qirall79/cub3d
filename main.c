@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/16 14:16:41 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:50:22 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,45 @@ int **generate_texture(char *path, t_config *config)
 	return (arr);
 }
 
+int **generate_enemy(char *path, t_config *config)
+{
+	int **arr;
+	mlx_texture_t *tex;
+	int *pixels;
+	t_vector step;
+	t_vector iter;
+	int x;
+	int y;
+
+	tex = mlx_load_png(path);
+	if (!tex)
+		(printf("FAIL\n"), exit(1));
+	arr = (int **)malloc(ENEMY_SIZE * sizeof(int *));
+	iter.y = 0;
+    while (iter.y < ENEMY_SIZE) {
+        arr[(int)iter.y] = (int *)malloc(ENEMY_SIZE * sizeof(int));
+		iter.y++;
+    }
+    pixels = (int *) tex->pixels;
+	step.x = tex->width / (float)ENEMY_SIZE;
+	step.y = tex->height / (float)ENEMY_SIZE;
+	iter.x = 0;
+	y = 0;
+	while (y < ENEMY_SIZE) {
+		iter.y = 0;
+		x = 0;
+        while (x < ENEMY_SIZE)
+		{
+			arr[y][x] = abgr_to_rgba(pixels[(int)floorf(iter.x) * tex->width + (int)floorf(iter.y)]);
+			iter.y += step.x;
+			x++;
+		}
+		iter.x += step.y;
+		y++;
+	}
+	return (arr);
+}
+
 void init_config(t_config *config)
 {
 	int worldMap[MAP_WIDTH][MAP_HEIGHT]=
@@ -147,8 +186,8 @@ void init_config(t_config *config)
 	config->yOffset = 0;
 	config->fovAngle = 60.0;
 	config->viewAngle = 90.0;
-	config->dirY = sin(config->viewAngle * DEG_TO_RAD) * WIDTH;
-	config->dirX = cos(config->viewAngle * DEG_TO_RAD) * WIDTH;
+	config->dirY = sin(config->viewAngle * DEG_TO_RAD);
+	config->dirX = cos(config->viewAngle * DEG_TO_RAD);
 	config->initialX = config->xPos;
 	config->initialY = config->yPos;
 	config->xPos = config->initialX * UNIT + (UNIT - 10) / 2;
@@ -167,7 +206,7 @@ void init_config(t_config *config)
 	config->texture_west = generate_texture("./textures/hisoka_portrait.png", config);
 	config->texture_north = generate_texture("./textures/killua.png", config);
 	config->texture_south = generate_texture("./textures/meruem.png", config);
-	config->sprite = generate_texture("./textures/barrel.png", config);
+	config->sprite = generate_enemy("./textures/barrel.png", config);
 }
 
 void draw_texture(t_config *config)

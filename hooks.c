@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/16 10:05:23 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/16 17:50:16 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ void move_player(t_config *config)
 	if (config->rotate_left)
 	{
 		config->viewAngle = normalize_angle(config->viewAngle - rot_speed);
-		config->dirY = sin(config->viewAngle * DEG_TO_RAD) * WIDTH;
-		config->dirX = cos(config->viewAngle * DEG_TO_RAD) * WIDTH;
+		config->dirY = sin(config->viewAngle * DEG_TO_RAD);
+		config->dirX = cos(config->viewAngle * DEG_TO_RAD);
 	}
 	if (config->rotate_right)
 	{
 		config->viewAngle = normalize_angle(config->viewAngle + rot_speed);
-		config->dirY = sin(config->viewAngle * DEG_TO_RAD) * WIDTH;
-		config->dirX = cos(config->viewAngle * DEG_TO_RAD) * WIDTH;
+		config->dirY = sin(config->viewAngle * DEG_TO_RAD);
+		config->dirX = cos(config->viewAngle * DEG_TO_RAD);
 	}
 
 	// player movement

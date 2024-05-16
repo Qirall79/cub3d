@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/16 17:01:08 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/16 18:06:11 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,27 +315,111 @@ void draw_sprite(t_config *config)
 	diff.y = config->sprite_pos.y - config->yPos;
 
 	sprite_angle = normalize_angle(atan2(diff.y, diff.x) * (1.0 / DEG_TO_RAD));
-	float distance = sqrtf(diff.x * diff.x + diff.y * diff.y);
+	float distance = sqrtf(diff.x * diff.x + diff.y * diff.y) / UNIT;
 	float diff_angle = normalize_angle(config->viewAngle - sprite_angle);
 	float screen_angle = normalize_angle((config->fovAngle / 2.0) - diff_angle);
 	float fov_ratio = WIDTH / config->fovAngle;
 
-	y = HEIGHT / 2 - 50;
+	int startY = 0;
+	int startX = fov_ratio * screen_angle;
+
+	y = startY;
 	if (in_range(sprite_angle, config->viewAngle - 30, config->viewAngle + 30))
 	{
-		while (y < HEIGHT / 2 + 50)
+		while (y < startY + ENEMY_SIZE && y < HEIGHT)
 		{
-			x = screen_angle * fov_ratio;
-			while (x < (screen_angle * fov_ratio + 100) && x < WIDTH)
+			x = startX;
+			while (x < startX + ENEMY_SIZE && x < WIDTH)
 			{
-				mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
+				if ((char)config->sprite[y - startY][x - startX] != 0)
+					mlx_put_pixel(config->img, x, y, config->sprite[y - startY][x - startX]);
 				x++;
 			}
 			y++;
 		}
 	}
+}
 
+void fill_square(t_config *config, int x, int y, int color)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < MAP_UNIT)
+	{
+		j = 0;
+		while (j < MAP_UNIT)
+		{
+			mlx_put_pixel(config->img, x * MAP_UNIT + j, y * MAP_UNIT + i, color);
+			j++;
+		}
+		i++;
+	}
+}
+
+void draw_player(t_config *config)
+{
+	float mini_x;
+	float mini_y;
+	int x;
+	int y;
+
+	mini_x = config->xPos * ((float)MAP_UNIT / UNIT);
+	mini_y = config->yPos * ((float)MAP_UNIT / UNIT);
 	
+	y = 0;
+	while (y < MAP_UNIT / 4)
+	{
+		x = 0;
+		while (x < MAP_UNIT / 4)
+		{
+			mlx_put_pixel(config->img, mini_x + x, mini_y + y, 0xFF0000FF);
+			mlx_put_pixel(config->img, mini_x - x, mini_y - y, 0xFF0000FF);
+			mlx_put_pixel(config->img, mini_x + x, mini_y - y, 0xFF0000FF);
+			mlx_put_pixel(config->img, mini_x - x, mini_y + y, 0xFF0000FF);
+			x++;
+		}
+		y++;
+	}
+}
+
+void draw_miniray(t_config *config)
+{
+	float mini_x;
+	float mini_y;
+	float end_x;
+	float end_y;
+
+	mini_x = config->xPos * ((float)MAP_UNIT / UNIT) - MAP_UNIT / 8;
+	mini_y = config->yPos * ((float)MAP_UNIT / UNIT) - MAP_UNIT / 8;
+	end_x = mini_x + config->dirX * 10;
+	end_y = mini_y + config->dirY * 10;
+	
+	draw_line(mini_x, mini_y, end_x, end_y, config, 0xFF0F00FF);
+}
+
+void draw_minimap(t_config *config)
+{
+	int x;
+	int y;
+
+	y = 0;
+	while (y < MAP_HEIGHT)
+	{
+		x = 0;
+		while (x < MAP_WIDTH)
+		{
+			if (config->map[y][x] == 1)
+				fill_square(config, x, y, 0xFFFFFFFF);
+			else
+				fill_square(config, x, y, 0x0);
+			x++;
+		}
+		y++;
+	}
+	draw_player(config);
+	draw_miniray(config);
 }
 
 void draw_rays(t_config *config)
@@ -356,6 +440,7 @@ void draw_rays(t_config *config)
 		i++;
 	}
 	draw_sprite(config);
+	draw_minimap(config);
 
 }
 
