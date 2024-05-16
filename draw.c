@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/15 18:03:32 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/16 15:03:45 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,8 +229,6 @@ t_vector find_intersection(t_config *config, float alpha)
 	dist_h = sqrtf((config->xPos - p_h.x) * (config->xPos - p_h.x) + (config->yPos - p_h.y) * (config->yPos - p_h.y));
 	dist_v = sqrtf((config->xPos - p_v.x) * (config->xPos - p_v.x) + (config->yPos - p_v.y) * (config->yPos - p_v.y));
 
-	
-
 	if (p_v.x == config->xPos && p_v.y == config->yPos)
 		dist_v = 1e9;
 	if (p_h.x == config->xPos && p_h.y == config->yPos)
@@ -239,7 +237,6 @@ t_vector find_intersection(t_config *config, float alpha)
 	p_h.distance = dist_h;
 	p_v.distance = dist_v;
 	
-
 	if (dist_h <= dist_v)
 		return (p_h);
 	return (p_v);
@@ -307,6 +304,42 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 	}
 }
 
+void draw_sprite(t_config *config)
+{
+	int y = 0;
+	int x = 0;
+	float sprite_angle;
+	t_vector diff;
+
+	diff.x = config->sprite_pos.x - config->xPos;
+	diff.y = config->sprite_pos.y - config->yPos;
+	
+
+	
+	sprite_angle = normalize_angle(atan2(diff.y, diff.x) * (1.0 / DEG_TO_RAD));
+	
+	float distance = sqrtf(diff.x * diff.x + diff.y * diff.y);
+	float diff_angle = normalize_angle(config->viewAngle - sprite_angle);
+	float screen_angle = normalize_angle((config->fovAngle / 2.0) - diff_angle);
+	float fov_ratio = WIDTH / config->fovAngle;
+	
+	y = HEIGHT / 2 - 50;
+	if (in_range(sprite_angle, config->viewAngle - 30, config->viewAngle + 30))
+	{
+		while (y < HEIGHT / 2 + 50)
+		{
+			x = screen_angle * fov_ratio;
+			while (x < (screen_angle * fov_ratio + 100) && x < WIDTH)
+			{
+				mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
+				x++;
+			}
+			y++;
+		}
+	}
+
+	
+}
 
 void draw_rays(t_config *config)
 {
@@ -325,6 +358,7 @@ void draw_rays(t_config *config)
 		min_angle += config->fovAngle / (float) (WIDTH);
 		i++;
 	}
+	draw_sprite(config);
 
 }
 

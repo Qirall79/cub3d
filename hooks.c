@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/15 17:23:45 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/16 10:05:23 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,14 @@ float normalize_angle(float angle)
 int is_wall_v(float newX, float newY, t_config *config)
 {
 	
-	if (config->map[(int)(config->yPos+ newY) / UNIT][(int)(config->xPos) / UNIT] == 1
-	|| config->map[(int)(config->yPos+ newY) / UNIT][(int)(config->xPos) / UNIT] == 1
-	|| config->map[(int)(config->yPos+ newY) / UNIT][(int)(config->xPos) / UNIT] == 1
-	|| config->map[(int)(config->yPos+ newY) / UNIT][(int)(config->xPos) / UNIT] == 1)
+	if (config->map[(int)(config->yPos+ newY) / UNIT][(int)(config->xPos) / UNIT] == 1)
 		return 1;
 	return 0;
 }
 int is_wall_h(float newX, float newY, t_config *config)
 {
 	
-	if (config->map[(int)(config->yPos) / UNIT][(int)(config->xPos + newX) / UNIT] == 1
-	|| config->map[(int)(config->yPos ) / UNIT][(int)(config->xPos  + newX) / UNIT] == 1
-	|| config->map[(int)(config->yPos ) / UNIT][(int)(config->xPos  + newX) / UNIT] == 1
-	|| config->map[(int)(config->yPos ) / UNIT][(int)(config->xPos  + newX) / UNIT] == 1)
+	if (config->map[(int)(config->yPos) / UNIT][(int)(config->xPos + newX) / UNIT] == 1)
 		return 1;
 	return 0;
 }

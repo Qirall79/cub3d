@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/15 18:07:28 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/16 14:16:41 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ void set_pos(t_config *config)
 			{
 				config->yPos = i;
 				config->xPos = j;
-				return ;
+			}
+			if (config->map[i][j] == 2)
+			{
+				config->sprite_pos.y = i * UNIT + UNIT / 2;
+				config->sprite_pos.x = j * UNIT + UNIT / 2;
 			}
 			j++;
 		}
@@ -52,16 +56,11 @@ void copy_map(t_config *config, int map[MAP_WIDTH][MAP_HEIGHT])
 }
 
 uint32_t abgr_to_rgba(uint32_t abgr_color) {
-  // Extract individual color channels with bit shifting and masking
   uint8_t alpha = (abgr_color >> 24) & 0xFF;
   uint8_t blue = (abgr_color >> 16) & 0xFF;
   uint8_t green = (abgr_color >> 8) & 0xFF;
   uint8_t red = abgr_color & 0xFF;
 
-//   if (!alpha)
-// 	alpha = 127;
-
-  // Reassemble color in RGBA format by shifting and combining
   return (red << 24) | (green << 16) | (blue << 8) | alpha;
 }
 
@@ -128,7 +127,7 @@ void init_config(t_config *config)
 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,0,0,0,5,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1},
-	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1},
+	{1,1,0,1,0,0,0,0,1,0,2,0,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
 	{1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -164,10 +163,11 @@ void init_config(t_config *config)
 	config->rotate_left = 0;
 	config->rotate_right = 0;
 
-	config->texture_east = generate_texture("./textures/kurapika.png", config);
-	config->texture_west = generate_texture("./textures/gonn.png", config);
-	config->texture_north = generate_texture("./textures/hisoka.png", config);
-	config->texture_south = generate_texture("./textures/chrollo.png", config);
+	config->texture_east = generate_texture("./textures/chrollo_portrait.png", config);
+	config->texture_west = generate_texture("./textures/hisoka_portrait.png", config);
+	config->texture_north = generate_texture("./textures/killua.png", config);
+	config->texture_south = generate_texture("./textures/meruem.png", config);
+	config->sprite = generate_texture("./textures/barrel.png", config);
 }
 
 void draw_texture(t_config *config)
@@ -180,7 +180,8 @@ void draw_texture(t_config *config)
 		j = 0;
 		while (j < UNIT && j < WIDTH)
 		{
-			mlx_put_pixel(config->img, j, i, config->texture[i][j]);
+			if ((char)config->texture[i][j] != 0)
+				mlx_put_pixel(config->img, j, i, config->texture[i][j]);
 			j++;
 		}
 		i++;

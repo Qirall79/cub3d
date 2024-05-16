@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/15 17:57:41 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/16 13:18:22 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
 # define UNIT 640
+# define SPRITE_SIZE 640
 # define TEX_WIDTH UNIT
 # define TEX_HEIGHT UNIT
 # define DEG_TO_RAD (float)(M_PI / 180.0)
@@ -36,6 +37,14 @@
 
 # include "./lib/MLX/include/MLX42/MLX42.h"
 
+typedef struct s_vector
+{
+	float x;
+	float y;
+	float z;
+	float distance;
+}	t_vector;
+
 typedef struct s_config
 {
 	mlx_t		*mlx;
@@ -46,9 +55,11 @@ typedef struct s_config
 	int **texture_south;
 	int **texture_east;
 	int **texture_west;
+	int **sprite;
 	mlx_texture_t *tex;
 	float xPos;
 	float yPos;
+	t_vector sprite_pos;
 	float xOffset;
 	float yOffset;
 	float initialX;
@@ -66,13 +77,7 @@ typedef struct s_config
 	float last_distance;
 }	t_config;
 
-typedef struct s_vector
-{
-	float x;
-	float y;
-	float z;
-	float distance;
-}	t_vector;
+
 
 // draw
 void draw_map(t_config *config);
