@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/17 18:04:24 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:16:21 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,7 @@ void init_config(t_config *config)
 	config->viewAngle = 180.0;
 	config->dirY = sin(config->viewAngle * DEG_TO_RAD);
 	config->dirX = cos(config->viewAngle * DEG_TO_RAD);
+	config->rays = (int *) malloc(WIDTH * sizeof(int));
 
 	// init keys
 	config->move_forward = 0;

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/17 18:05:19 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:24:45 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,6 +252,8 @@ void draw_wall(t_config *config, t_vector p, float alpha, float x)
 	float startY = (HEIGHT / 2) - (wall_height / 2);
 	float endY = startY + wall_height;
 	
+	config->rays[(int)x] = correct_dist;
+	
 	if (endY >= HEIGHT)
 		endY = HEIGHT - 1;
 
@@ -314,7 +316,6 @@ void draw_sprite(t_config *config)
 	diff.y = (config->sprite_pos.y - config->yPos);
 
 	float distance = sqrtf(diff.x * diff.x + diff.y * diff.y);
-	printf("%f\n", distance);
 	float diff_angle = normalize_angle(config->viewAngle - atan2(diff.y, diff.x) * (1.0 / DEG_TO_RAD));
 
 	float screen_angle = (config->fovAngle / 2.0) - diff_angle;
@@ -349,12 +350,12 @@ void draw_sprite(t_config *config)
 			x = startX;
 			if (x < 0)
 				x = 0;
-			while (x >= 0 && x < endX && x < WIDTH)
+			while (x < endX && x < WIDTH)
 			{
 				texture_y = (int)((y - startY) * ((float) UNIT / sprite_height));
 				texture_x = (int)((x - startX) * ((float) UNIT / sprite_width));
 				if (in_range(texture_x, 0, UNIT - 1) && in_range(texture_y, 0, UNIT - 1)
-				&& (char)config->sprite[texture_y][texture_x] != 0)
+				&& (char)config->sprite[texture_y][texture_x] != 0 && config->rays[x] >= distance)
 					mlx_put_pixel(config->img, x, y, config->sprite[texture_y][texture_x]);
 				x++;
 			}

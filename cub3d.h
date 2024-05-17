@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/17 18:06:14 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:15:42 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_config
 	int move_left;
 	int rotate_right;
 	int rotate_left;
+	int *rays;
 }	t_config;
 
 
