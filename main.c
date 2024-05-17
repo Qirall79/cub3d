@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/16 17:50:22 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/17 11:25:58 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void set_pos(t_config *config)
 		{
 			if (config->map[i][j] == 5)
 			{
-				config->yPos = i;
-				config->xPos = j;
+				config->yPos = i * UNIT + (UNIT - 10) / 2;
+				config->xPos = j * UNIT + (UNIT - 10) / 2;
 			}
 			if (config->map[i][j] == 2)
 			{
@@ -182,17 +182,10 @@ void init_config(t_config *config)
 	config->img = mlx_new_image(config->mlx, WIDTH, HEIGHT);
 	if (!config->img || (mlx_image_to_window(config->mlx, config->img, 0, 0) < 0))
 		printf("ERROR initializing MLX image\n");
-	config->xOffset = 0;
-	config->yOffset = 0;
 	config->fovAngle = 60.0;
-	config->viewAngle = 90.0;
+	config->viewAngle = 180.0;
 	config->dirY = sin(config->viewAngle * DEG_TO_RAD);
 	config->dirX = cos(config->viewAngle * DEG_TO_RAD);
-	config->initialX = config->xPos;
-	config->initialY = config->yPos;
-	config->xPos = config->initialX * UNIT + (UNIT - 10) / 2;
-	config->yPos = config->initialY * UNIT + (UNIT - 10) / 2;
-	config->last_distance = 1;
 
 	// init keys
 	config->move_forward = 0;
@@ -206,7 +199,7 @@ void init_config(t_config *config)
 	config->texture_west = generate_texture("./textures/hisoka_portrait.png", config);
 	config->texture_north = generate_texture("./textures/killua.png", config);
 	config->texture_south = generate_texture("./textures/meruem.png", config);
-	config->sprite = generate_enemy("./textures/barrel.png", config);
+	config->sprite = generate_enemy("./textures/monster.png", config);
 }
 
 void draw_texture(t_config *config)

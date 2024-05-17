@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/16 18:06:11 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/17 11:26:40 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,28 +311,44 @@ void draw_sprite(t_config *config)
 	float sprite_angle;
 	t_vector diff;
 
-	diff.x = config->sprite_pos.x - config->xPos;
-	diff.y = config->sprite_pos.y - config->yPos;
+	diff.x = (config->sprite_pos.x - config->xPos);
+	diff.y = (config->sprite_pos.y - config->yPos);
 
 	sprite_angle = normalize_angle(atan2(diff.y, diff.x) * (1.0 / DEG_TO_RAD));
-	float distance = sqrtf(diff.x * diff.x + diff.y * diff.y) / UNIT;
-	float diff_angle = normalize_angle(config->viewAngle - sprite_angle);
-	float screen_angle = normalize_angle((config->fovAngle / 2.0) - diff_angle);
-	float fov_ratio = WIDTH / config->fovAngle;
+	float distance = sqrtf(diff.x * diff.x + diff.y * diff.y);
+	float diff_angle = (config->viewAngle - sprite_angle);
 
-	int startY = 0;
-	int startX = fov_ratio * screen_angle;
+
+	float screen_angle = (config->fovAngle / 2.0) - diff_angle;
+	float fov_ratio = WIDTH / config->fovAngle;
+	float plane_dist = WIDTH / (2 * tan(30 * DEG_TO_RAD));
+
+	float sprite_height = roundf(fabs(ENEMY_SIZE / distance) * plane_dist);
+	int startY = (HEIGHT / 2) - (sprite_height / 2);
+	int endY = startY + sprite_height;
+	int startX = fov_ratio * screen_angle - (sprite_height / 2);
+	int endX = startX + sprite_height;
+	int texture_x;
+	int texture_y;
+	
+	// if (startX < 0)
+	// 	startX = 0;
+	// if (endX >= WIDTH)
+	// 	endX = WIDTH - 1;
 
 	y = startY;
 	if (in_range(sprite_angle, config->viewAngle - 30, config->viewAngle + 30))
 	{
-		while (y < startY + ENEMY_SIZE && y < HEIGHT)
+		while (y < endY && y < HEIGHT)
 		{
 			x = startX;
-			while (x < startX + ENEMY_SIZE && x < WIDTH)
+			while (x < endX && x < WIDTH)
 			{
-				if ((char)config->sprite[y - startY][x - startX] != 0)
-					mlx_put_pixel(config->img, x, y, config->sprite[y - startY][x - startX]);
+				texture_x = (x - startX) * ((float) ENEMY_SIZE / sprite_height);
+				texture_y = (int)(y - startY) * ((float) ENEMY_SIZE / sprite_height);
+				if (texture_x < ENEMY_SIZE && texture_y < ENEMY_SIZE
+				&& (char)config->sprite[texture_y][texture_x] != 0)
+					mlx_put_pixel(config->img, x, y, config->sprite[texture_y][texture_x]);
 				x++;
 			}
 			y++;
@@ -411,7 +427,7 @@ void draw_minimap(t_config *config)
 		while (x < MAP_WIDTH)
 		{
 			if (config->map[y][x] == 1)
-				fill_square(config, x, y, 0xFFFFFFFF);
+				fill_square(config, x, y, 0xFFFFFFAF);
 			else
 				fill_square(config, x, y, 0x0);
 			x++;
