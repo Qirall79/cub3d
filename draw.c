@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/17 11:26:40 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/17 18:05:19 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,45 +308,52 @@ void draw_sprite(t_config *config)
 {
 	int y = 0;
 	int x = 0;
-	float sprite_angle;
 	t_vector diff;
 
 	diff.x = (config->sprite_pos.x - config->xPos);
 	diff.y = (config->sprite_pos.y - config->yPos);
 
-	sprite_angle = normalize_angle(atan2(diff.y, diff.x) * (1.0 / DEG_TO_RAD));
 	float distance = sqrtf(diff.x * diff.x + diff.y * diff.y);
-	float diff_angle = (config->viewAngle - sprite_angle);
-
+	printf("%f\n", distance);
+	float diff_angle = normalize_angle(config->viewAngle - atan2(diff.y, diff.x) * (1.0 / DEG_TO_RAD));
 
 	float screen_angle = (config->fovAngle / 2.0) - diff_angle;
 	float fov_ratio = WIDTH / config->fovAngle;
-	float plane_dist = WIDTH / (2 * tan(30 * DEG_TO_RAD));
+	float plane_dist = WIDTH / (2.0 * tan(30 * DEG_TO_RAD));
 
-	float sprite_height = roundf(fabs(ENEMY_SIZE / distance) * plane_dist);
+	float sprite_height = ((float)UNIT / distance) * plane_dist;
 	int startY = (HEIGHT / 2) - (sprite_height / 2);
+	if (startY < 0)
+		startY = 0;
 	int endY = startY + sprite_height;
-	int startX = fov_ratio * screen_angle - (sprite_height / 2);
-	int endX = startX + sprite_height;
+
+	if (endY >= HEIGHT)
+		endY = HEIGHT - 1;
+
+	float sprite_angle = normalize_angle(-diff_angle);
+	float sprite_width = sprite_height;
+	float columnX = tan(sprite_angle * DEG_TO_RAD) * plane_dist;
+	float startX = (WIDTH / 2) + columnX - sprite_width / 2;
+	float endX = startX + sprite_width;
 	int texture_x;
 	int texture_y;
-	
-	// if (startX < 0)
-	// 	startX = 0;
-	// if (endX >= WIDTH)
-	// 	endX = WIDTH - 1;
 
+	if (diff_angle > 180)
+		diff_angle = 360 - diff_angle;
+	
 	y = startY;
-	if (in_range(sprite_angle, config->viewAngle - 30, config->viewAngle + 30))
+	if (diff_angle < (config->fovAngle / 2) + 10)
 	{
 		while (y < endY && y < HEIGHT)
 		{
 			x = startX;
-			while (x < endX && x < WIDTH)
+			if (x < 0)
+				x = 0;
+			while (x >= 0 && x < endX && x < WIDTH)
 			{
-				texture_x = (x - startX) * ((float) ENEMY_SIZE / sprite_height);
-				texture_y = (int)(y - startY) * ((float) ENEMY_SIZE / sprite_height);
-				if (texture_x < ENEMY_SIZE && texture_y < ENEMY_SIZE
+				texture_y = (int)((y - startY) * ((float) UNIT / sprite_height));
+				texture_x = (int)((x - startX) * ((float) UNIT / sprite_width));
+				if (in_range(texture_x, 0, UNIT - 1) && in_range(texture_y, 0, UNIT - 1)
 				&& (char)config->sprite[texture_y][texture_x] != 0)
 					mlx_put_pixel(config->img, x, y, config->sprite[texture_y][texture_x]);
 				x++;
