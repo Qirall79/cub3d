@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/18 01:52:18 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:15:52 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int is_wall_v(float newX, float newY, t_config *config)
 }
 int is_wall_h(float newX, float newY, t_config *config)
 {
-	
 	if (config->map[(int)(config->yPos) / UNIT][(int)(config->xPos + newX) / UNIT] == 1)
 		return 1;
 	return 0;
@@ -41,7 +40,7 @@ void move_player(t_config *config)
 	float newX;
 	float newY;
 	float mov_speed = config->mlx->delta_time * UNIT * 3.0;
-	float rot_speed = config->mlx->delta_time * 100.0;
+	float rot_speed = config->mlx->delta_time * 80.0;
 
 	// camera rotation
 	if (config->rotate_left)

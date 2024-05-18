@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:39:50 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/18 11:00:13 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/18 14:20:30 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ float	get_wall_height(t_config *config, float distance, float alpha, int x)
 	float	correct_dist;
 	float	wall_height;
 
-	plane_dist = WIDTH / (2 * tan((config->fovAngle / 2) * DEG_TO_RAD));
+	plane_dist = WIDTH / (2.0 * tan((config->fovAngle / 2) * DEG_TO_RAD));
 	correct_dist = distance * cos((config->viewAngle - alpha) * DEG_TO_RAD);
 	wall_height = roundf(fabs(UNIT / correct_dist) * plane_dist);
-	config->rays[x] = correct_dist;
+	config->rays[x] = distance;
 	return (wall_height);
 }
 
