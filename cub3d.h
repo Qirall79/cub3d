@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/17 19:43:41 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/18 12:07:51 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
 # define UNIT 640
+# define SUB_UNIT (WIDTH / MAP_WIDTH)
 # define MAP_UNIT 8
-# define ENEMY_SIZE (UNIT / 2)
+# define ENEMY_SIZE (UNIT)
 # define SPRITE_SIZE 640
 # define TEX_WIDTH UNIT
 # define TEX_HEIGHT UNIT
@@ -29,7 +30,7 @@
 
 // enum should be
 # define RIGHT 1
-# define BOT 1
+# define DOWN 1
 # define TOP 2
 # define LEFT 2
 
@@ -48,6 +49,25 @@ typedef struct s_vector
 	float z;
 	float distance;
 }	t_vector;
+
+typedef struct s_boundary
+{
+	float start;
+	float end;
+}	t_boundary;
+
+typedef struct s_sprite
+{
+	float	distance;
+	float	height;
+	float	angle;
+	float	angle_diff;
+	int		start_x;
+	int		end_x;
+	int		start_y;
+	int		end_y;
+	int		max_offset;
+} t_sprite;
 
 typedef struct s_config
 {
@@ -75,6 +95,8 @@ typedef struct s_config
 	int rotate_right;
 	int rotate_left;
 	int *rays;
+	int		sprite_offset;
+	int		flying_up;
 }	t_config;
 
 
@@ -91,12 +113,18 @@ void set_movement_params(mlx_key_data_t keydata, t_config *config);
 void loop_hook(t_config *config);
 
 // raycasting
-t_vector dda_casting(t_config *config, float alpha);
+t_vector find_intersection(t_config *config, float alpha);
+
+// rendering
+void draw_wall(t_config *config, t_vector p, float alpha, int x);
+void draw_sprite(t_config *config);
 
 // utils
 int in_range(int p, int min, int max);
 float normalize_angle(float angle);
 void normalize_vector(t_vector *vec);
 void draw_point(t_config *config, int x, int y);
+int vertical_facing(float angle);
+int horizontal_facing(float angle);
 
 #endif

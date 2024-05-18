@@ -6,78 +6,146 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 18:18:53 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/09 20:31:43 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/18 10:39:22 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-t_vector dda_casting(t_config *config, float alpha)
+int	set_params_h(t_config *config, t_vector *a, t_vector *step, float alpha)
 {
-	t_vector player = {config->xPos, config->yPos};
-	t_vector rayDir = {cos(alpha * DEG_TO_RAD), sin(alpha * DEG_TO_RAD)};
-	t_vector step;
-	t_vector sideDist;
-	t_vector deltaDist;
-	t_vector mapCheck = player;
-	t_vector p;
+	float	a_tan;
 
-	normalize_vector(&rayDir);
-
-	deltaDist.x = sqrtf(1 + (rayDir.y / rayDir.x) * (rayDir.y / rayDir.x));
-	deltaDist.y = sqrtf(1 + (rayDir.x / rayDir.y) * (rayDir.x / rayDir.y));
-	
-	if (rayDir.x < 0)
+	a_tan = -1.0f / tan(alpha * DEG_TO_RAD);
+	if (vertical_facing(alpha) == DOWN)
 	{
-		step.x = -1;
-		sideDist.x = (player.x - mapCheck.x) * deltaDist.x;
+		a->y = floorf(config->yPos / UNIT) * UNIT + UNIT;
+		step->y = UNIT;
+		step->x = -step->y * a_tan;
+	}
+	else if (vertical_facing(alpha) == TOP)
+	{
+		a->y = floorf(config->yPos / UNIT) * UNIT;
+		step->y = -UNIT;
+		step->x = -step->y * a_tan;
 	}
 	else
+		return (0);
+	if (step->x > 0 && horizontal_facing(alpha) == LEFT)
+		step->x *= -1;
+	if (step->x < 0 && horizontal_facing(alpha) == RIGHT)
+		step->x *= -1;
+	a->x = config->xPos + (config->yPos - a->y) * a_tan;
+	return (1);
+}
+
+int	set_params_v(t_config *config, t_vector *a, t_vector *step, float alpha)
+{
+	float	a_tan;
+
+	a_tan = -tan(alpha * DEG_TO_RAD);
+	if (horizontal_facing(alpha) == RIGHT)
 	{
-		step.x = 1;
-		sideDist.x = (mapCheck.x + 1.0 - player.x) * deltaDist.x;
+		a->x = floorf(config->xPos / UNIT) * UNIT + UNIT;
+		step->x = UNIT;
+		step->y = -step->x * a_tan;
 	}
-	
-	if (rayDir.y < 0)
+	else if (horizontal_facing(alpha) == LEFT)
 	{
-		step.y = -1;
-		sideDist.y = (player.y - mapCheck.y) * deltaDist.y;
+		a->x = floorf(config->xPos / UNIT) * UNIT;
+		step->x = -UNIT;
+		step->y = -step->x * a_tan;
 	}
 	else
-	{
-		step.y = 1;
-		sideDist.y = (mapCheck.y + 1.0 - player.y) * deltaDist.y;
-	}
+		return (0);
+	if (step->y > 0 && vertical_facing(alpha) == TOP)
+		step->y *= -1;
+	if (step->y < 0 && vertical_facing(alpha) == DOWN)
+		step->y *= -1;
+	a->y = config->yPos + (config->xPos - a->x) * a_tan;
+	return (1);
+}
 
-	int wallFound = 0;
-	float distance;
-	distance = 1;
+t_vector	raycasting_h(t_config *config, float alpha)
+{
+	t_vector	a;
+	t_vector	step;
+	t_vector	map_pos;
+	int			i;
 
-	while (!wallFound && distance < WIDTH)
+	a.x = config->xPos;
+	a.y = config->yPos;
+	if (!set_params_h(config, &a, &step, alpha))
+		return (a);
+	i = 0;
+	while (i < MAX_CHECK)
 	{
-		if (sideDist.x < sideDist.y)
-		{
-			sideDist.x += deltaDist.x;
-			mapCheck.x += step.x;
-			distance = sideDist.x;
-			p.z = 0;
-		}
-		else {
-			sideDist.y += deltaDist.y;
-			mapCheck.y += step.y;
-			distance = sideDist.y;
-			p.z = 1;
-		}
-		
-		if (in_range(mapCheck.x, 0, WIDTH) && in_range(mapCheck.y, 0, HEIGHT))
-		{
-			if (config->map[(int)mapCheck.y / UNIT][(int)mapCheck.x / UNIT] && config->map[(int)mapCheck.y / UNIT][(int)mapCheck.x / UNIT] != 5)
-				wallFound = 1;
-		}
-		else
+		map_pos.x = (int) a.x / UNIT;
+		map_pos.y = (int) a.y / UNIT;
+		if (vertical_facing(alpha) == TOP)
+			map_pos.y = (int)(a.y - 1) / UNIT;
+		if (in_range(map_pos.x, 0, MAP_WIDTH - 1)
+			&& in_range(map_pos.y, 0, MAP_HEIGHT - 1)
+			&& config->map[(int)map_pos.y][(int)map_pos.x] == 1)
 			break ;
+		a.x += step.x;
+		a.y += step.y;
+		i++;
 	}
-	
-	p.x = distance;
-	return p;
+	return (a);
+}
+
+t_vector	raycasting_v(t_config *config, float alpha)
+{
+	t_vector	a;
+	t_vector	step;
+	t_vector	map_pos;
+	int			i;
+
+	a.x = config->xPos;
+	a.y = config->yPos;
+	if (!set_params_v(config, &a, &step, alpha))
+		return (a);
+	i = 0;
+	while (i < MAX_CHECK)
+	{
+		map_pos.x = (int) a.x / UNIT;
+		if (horizontal_facing(alpha) == LEFT)
+			map_pos.x = (int)(a.x - 1) / UNIT;
+		map_pos.y = (int) a.y / UNIT;
+		if (in_range(map_pos.x, 0, MAP_WIDTH - 1)
+			&& in_range(map_pos.y, 0, MAP_HEIGHT - 1)
+			&& config->map[(int)map_pos.y][(int)map_pos.x] == 1)
+			break ;
+		a.x += step.x;
+		a.y += step.y;
+		i++;
+	}
+	return (a);
+}
+
+t_vector	find_intersection(t_config *config, float alpha)
+{
+	t_vector	p_h;
+	t_vector	p_v;
+	float		dist_h;
+	float		dist_v;
+
+	p_h = raycasting_h(config, alpha);
+	p_v = raycasting_v(config, alpha);
+	p_v.z = 1;
+	p_h.z = 0;
+	dist_h = sqrtf((config->xPos - p_h.x) * (config->xPos - p_h.x)
+			+ (config->yPos - p_h.y) * (config->yPos - p_h.y));
+	dist_v = sqrtf((config->xPos - p_v.x) * (config->xPos - p_v.x)
+			+ (config->yPos - p_v.y) * (config->yPos - p_v.y));
+	if (p_v.x == config->xPos && p_v.y == config->yPos)
+		dist_v = 1e9;
+	if (p_h.x == config->xPos && p_h.y == config->yPos)
+		dist_h = 1e9;
+	p_h.distance = dist_h;
+	p_v.distance = dist_v;
+	if (dist_h <= dist_v)
+		return (p_h);
+	return (p_v);
 }
