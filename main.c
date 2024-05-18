@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/18 14:17:45 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/18 22:07:09 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,16 +164,15 @@ void init_config(t_config *config)
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
-	{1,1,0,1,2,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,0,0,0,5,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1},
-	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1},
+	{1,1,0,1,0,0,0,0,1,0,2,0,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
 	{1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 
-	
 	copy_map(config, worldMap);
 	set_pos(config);
 	config->mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", 0);
@@ -189,6 +188,7 @@ void init_config(t_config *config)
 	config->rays = (int *) malloc(WIDTH * sizeof(int));
 	config->sprite_offset = 0;
 	config->flying_up = 0;
+	config->path_to_player = NULL;
 
 	// init keys
 	config->move_forward = 0;
@@ -197,12 +197,18 @@ void init_config(t_config *config)
 	config->move_left = 0;
 	config->rotate_left = 0;
 	config->rotate_right = 0;
+	
 
 	config->texture_east = generate_texture("./textures/wall_1.png", config);
 	config->texture_west = generate_texture("./textures/wall_3.png", config);
 	config->texture_north = generate_texture("./textures/wall_2.png", config);
 	config->texture_south = generate_texture("./textures/wall_4.png", config);
 	config->sprite = generate_enemy("./textures/monster.png", config);
+	
+
+	// A star
+	config->path_steps = 0;
+	solve_a_star(config);
 }
 
 void draw_texture(t_config *config)
@@ -229,12 +235,12 @@ int main(void)
 	t_config config;
 
 	init_config(&config);
-	draw_map(&config);
+	// draw_map(&config);
 	// draw_texture(&config);
 
 	// hooks
 	mlx_key_hook(config.mlx, (mlx_keyfunc) set_movement_params, &config);
-	mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
+	// mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
 
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);

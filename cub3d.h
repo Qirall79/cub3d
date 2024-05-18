@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/18 12:07:51 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/18 22:03:10 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@
 # define TOP 2
 # define LEFT 2
 
+// directions
+# define NORTH 0
+# define SOUTH 1
+# define EAST 2
+# define WEST 3
+
 
 # include <unistd.h>
 # include <stdio.h>
@@ -41,6 +47,8 @@
 # include <math.h>
 
 # include "./lib/MLX/include/MLX42/MLX42.h"
+
+
 
 typedef struct s_vector
 {
@@ -80,6 +88,8 @@ typedef struct s_config
 	int **texture_east;
 	int **texture_west;
 	int **sprite;
+	t_vector *path_to_player;
+	int path_steps;
 	mlx_texture_t *tex;
 	float xPos;
 	float yPos;
@@ -99,7 +109,17 @@ typedef struct s_config
 	int		flying_up;
 }	t_config;
 
-
+typedef struct s_node
+{
+	int x;
+	int y;
+	int visited;
+	int is_obstacle;
+	float local_goal;
+	float global_goal;
+	struct s_node *parent;
+	struct s_node **neighbors;
+}	t_node;
 
 // draw
 void draw_map(t_config *config);
@@ -118,6 +138,9 @@ t_vector find_intersection(t_config *config, float alpha);
 // rendering
 void draw_wall(t_config *config, t_vector p, float alpha, int x);
 void draw_sprite(t_config *config);
+
+// a star
+void solve_a_star(t_config *config);
 
 // utils
 int in_range(int p, int min, int max);
