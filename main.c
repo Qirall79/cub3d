@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/17 18:16:21 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/18 01:52:29 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,21 +117,21 @@ int **generate_enemy(char *path, t_config *config)
 	tex = mlx_load_png(path);
 	if (!tex)
 		(printf("FAIL\n"), exit(1));
-	arr = (int **)malloc(UNIT * sizeof(int *));
+	arr = (int **)malloc(ENEMY_SIZE * sizeof(int *));
 	iter.y = 0;
-    while (iter.y < UNIT) {
-        arr[(int)iter.y] = (int *)malloc(UNIT * sizeof(int));
+    while (iter.y < ENEMY_SIZE) {
+        arr[(int)iter.y] = (int *)malloc(ENEMY_SIZE * sizeof(int));
 		iter.y++;
     }
     pixels = (int *) tex->pixels;
-	step.x = tex->width / (float)UNIT;
-	step.y = tex->height / (float)UNIT;
+	step.x = tex->width / (float)ENEMY_SIZE;
+	step.y = tex->height / (float)ENEMY_SIZE;
 	iter.x = 0;
 	y = 0;
-	while (y < UNIT) {
+	while (y < ENEMY_SIZE) {
 		iter.y = 0;
 		x = 0;
-        while (x < UNIT)
+        while (x < ENEMY_SIZE)
 		{
 			arr[y][x] = abgr_to_rgba(pixels[(int)floorf(iter.x) * tex->width + (int)floorf(iter.y)]);
 			iter.y += step.x;
@@ -169,7 +169,7 @@ void init_config(t_config *config)
 	{1,1,0,1,0,0,0,0,1,0,2,0,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
-	{1,1,1,1,1,1,1,1,1,0,2,1,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 

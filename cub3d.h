@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/17 18:15:42 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/17 19:43:41 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define MAP_HEIGHT 24
 # define UNIT 640
 # define MAP_UNIT 8
-# define ENEMY_SIZE UNIT
+# define ENEMY_SIZE (UNIT / 2)
 # define SPRITE_SIZE 640
 # define TEX_WIDTH UNIT
 # define TEX_HEIGHT UNIT
