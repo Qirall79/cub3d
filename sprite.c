@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:01:46 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 12:04:45 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 12:26:13 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,66 +101,12 @@ void	draw_sprite(t_config *config)
 		plot_stripes(config, &sprite);
 }
 
-void draw_sprite_re(t_config *config)
-{
-	int y = 0;
-	int x = 0;
-	float sprite_angle;
-	t_vector diff;
-
-	diff.x = (config->sprite_pos.x - config->xPos);
-	diff.y = (config->sprite_pos.y - config->yPos);
-
-	sprite_angle = normalize_angle(atan2(diff.y, diff.x) * (1.0 / DEG_TO_RAD));
-	float distance = sqrtf(diff.x * diff.x + diff.y * diff.y);
-	float diff_angle = (config->viewAngle - sprite_angle);
-
-	if (in_range(config->viewAngle, 0, 90) && in_range(sprite_angle, 270, 360))
-		diff_angle += 360;
-	if (in_range(sprite_angle, 0, 90) && in_range(config->viewAngle, 270, 360))
-		diff_angle -= 360;
-	
-	float screen_angle = ((config->fovAngle / 2.0) - diff_angle);
-	float fov_ratio = (float)WIDTH / config->fovAngle;
-	float plane_dist = WIDTH / (2 * tan(30 * DEG_TO_RAD));
-	float sprite_height = roundf((ENEMY_SIZE / distance) * plane_dist);
-	int startY = (HEIGHT / 2) - (sprite_height / 2);
-	int endY = startY + sprite_height;
-	int startX = fov_ratio * screen_angle;
-	int endX = startX + sprite_height;
-	int texture_x;
-	int texture_y;
-
-	y = startY;
-	if (y < 0)
-		y = 0;
-	if (diff_angle <= config->fovAngle + 10)
-	{
-		while (y < endY && y < HEIGHT)
-		{
-			x = startX;
-			if (x < 0)
-				x = 0;
-			while (x < endX && x < WIDTH)
-			{
-				texture_x = (x - startX) * ((float) ENEMY_SIZE / sprite_height);
-				texture_y = (int)(y - startY) * ((float) ENEMY_SIZE / sprite_height);
-				if (texture_x < ENEMY_SIZE && texture_y < ENEMY_SIZE
-				&& (char)config->sprite[texture_y][texture_x] != 0
-				&& distance <= config->rays[x])
-					mlx_put_pixel(config->img, x, y, config->sprite[texture_y][texture_x]);
-				x++;
-			}
-			y++;
-		}
-	}
-}
-
 void move_sprite(t_config *config)
 {
 	t_vector map_pos;
 	t_vector player_pos;
 	t_vector next_step;
+	float mov_speed = config->mlx->delta_time * UNIT * 2.0;
 
 	map_pos.x = floorf(config->sprite_pos.x / UNIT);
 	map_pos.y = floorf(config->sprite_pos.y / UNIT);
@@ -184,16 +130,16 @@ void move_sprite(t_config *config)
 
 	// move sprite
 	if (next_step.x > map_pos.x || config->sprite_pos.x - next_step.x * UNIT < UNIT / 2)
-		config->sprite_pos.x += 12;
+		config->sprite_pos.x += mov_speed;
 	if ((next_step.x < map_pos.x
 	|| (next_step.x * UNIT - config->sprite_pos.x) < (UNIT / 2)) 
 	&& !(config->sprite_pos.x - next_step.x * UNIT < UNIT / 2))
-		config->sprite_pos.x -= 12;
+		config->sprite_pos.x -= mov_speed;
 	if (next_step.y > map_pos.y || (config->sprite_pos.y - next_step.y * UNIT) < UNIT / 2)
-		config->sprite_pos.y += 12;
+		config->sprite_pos.y += mov_speed;
 	if ((next_step.y < map_pos.y 
 	|| (next_step.y * UNIT - config->sprite_pos.y) < (UNIT / 2))
 	&& !((config->sprite_pos.y - next_step.y * UNIT) < UNIT / 2))
-		config->sprite_pos.y -= 12;
+		config->sprite_pos.y -= mov_speed;
 	
 }

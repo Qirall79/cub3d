@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 12:02:34 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 12:23:23 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void move_player(t_config *config)
 	float newX;
 	float newY;
 	float mov_speed = config->mlx->delta_time * UNIT * 3.0;
-	float rot_speed = config->mlx->delta_time * 80.0;
+	float rot_speed = config->mlx->delta_time * 100.0;
 
 	// camera rotation
 	if (config->rotate_left)
