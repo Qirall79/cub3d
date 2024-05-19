@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 18:18:53 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/18 10:39:22 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 20:51:02 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ t_vector	raycasting_h(t_config *config, float alpha)
 		map_pos.y = (int) a.y / UNIT;
 		if (vertical_facing(alpha) == TOP)
 			map_pos.y = (int)(a.y - 1) / UNIT;
-		if (in_range(map_pos.x, 0, MAP_WIDTH - 1)
-			&& in_range(map_pos.y, 0, MAP_HEIGHT - 1)
+		if (in_range(map_pos.x, 0, config->map_width - 1)
+			&& in_range(map_pos.y, 0, config->map_height - 1)
 			&& config->map[(int)map_pos.y][(int)map_pos.x] == 1)
 			break ;
 		a.x += step.x;
@@ -113,8 +113,8 @@ t_vector	raycasting_v(t_config *config, float alpha)
 		if (horizontal_facing(alpha) == LEFT)
 			map_pos.x = (int)(a.x - 1) / UNIT;
 		map_pos.y = (int) a.y / UNIT;
-		if (in_range(map_pos.x, 0, MAP_WIDTH - 1)
-			&& in_range(map_pos.y, 0, MAP_HEIGHT - 1)
+		if (in_range(map_pos.x, 0, config->map_width - 1)
+			&& in_range(map_pos.y, 0, config->map_height - 1)
 			&& config->map[(int)map_pos.y][(int)map_pos.x] == 1)
 			break ;
 		a.x += step.x;

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 10:25:22 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 14:49:03 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 20:50:31 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,10 @@ void draw_minimap(t_config *config)
 	int y;
 
 	y = 0;
-	while (y < MAP_HEIGHT)
+	while (y < config->map_height)
 	{
 		x = 0;
-		while (x < MAP_WIDTH)
+		while (x < config->map_width)
 		{
 			if (config->map[y][x] == 1)
 				fill_square(config, x, y, 0xFFFFFFAF);

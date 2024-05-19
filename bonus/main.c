@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 14:49:40 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 20:56:20 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ int count_sprites(t_config *config)
 
 	count = 0;
 	i = 0;
-	while (i < MAP_HEIGHT)
+	while (i < config->map_height)
 	{
 		j = 0;
-		while (j < MAP_WIDTH)
+		while (j < config->map_width)
 		{
 			if (config->map[i][j] == 2 || config->map[i][j] == 3)
 				count++;
@@ -40,10 +40,10 @@ void set_pos(t_config *config)
 	int j = 0;
 	int sprites_index = 0;
 
-	while (i < MAP_HEIGHT)
+	while (i < config->map_height)
 	{
 		j = 0;
-		while (j < MAP_WIDTH)
+		while (j < config->map_width)
 		{
 			if (config->map[i][j] == 5)
 			{
@@ -77,10 +77,10 @@ void copy_map(t_config *config, int map[MAP_WIDTH][MAP_HEIGHT])
 	int i = 0;
 	int j = 0;
 
-	while (i < MAP_HEIGHT)
+	while (i < config->map_height)
 	{
 		j = 0;
-		while (j < MAP_WIDTH)
+		while (j < config->map_width)
 		{
 			config->map[i][j] = map[i][j];
 			j++;
@@ -138,45 +138,6 @@ int **generate_texture(char *path, t_config *config)
 	return (arr);
 }
 
-int **generate_enemy(char *path, t_config *config)
-{
-	int **arr;
-	mlx_texture_t *tex;
-	int *pixels;
-	t_vector step;
-	t_vector iter;
-	int x;
-	int y;
-
-	tex = mlx_load_png(path);
-	if (!tex)
-		(printf("FAIL\n"), exit(1));
-	arr = (int **)malloc(ENEMY_SIZE * sizeof(int *));
-	iter.y = 0;
-    while (iter.y < ENEMY_SIZE) {
-        arr[(int)iter.y] = (int *)malloc(ENEMY_SIZE * sizeof(int));
-		iter.y++;
-    }
-    pixels = (int *) tex->pixels;
-	step.x = tex->width / (float)ENEMY_SIZE;
-	step.y = tex->height / (float)ENEMY_SIZE;
-	iter.x = 0;
-	y = 0;
-	while (y < ENEMY_SIZE) {
-		iter.y = 0;
-		x = 0;
-        while (x < ENEMY_SIZE)
-		{
-			arr[y][x] = abgr_to_rgba(pixels[(int)floorf(iter.x) * tex->width + (int)floorf(iter.y)]);
-			iter.y += step.x;
-			x++;
-		}
-		iter.x += step.y;
-		y++;
-	}
-	return (arr);
-}
-
 void assign_paths(t_config *config)
 {
 	int i;
@@ -192,6 +153,9 @@ void assign_paths(t_config *config)
 
 void init_config(t_config *config)
 {
+
+	/*---- parsing start ----*/
+
 	int worldMap[MAP_WIDTH][MAP_HEIGHT]=
 	{
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
@@ -210,17 +174,26 @@ void init_config(t_config *config)
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
-	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,1,1,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,1,3,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,1,0,0,5,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1},
-	{1,1,3,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1},
+	{1,1,3,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,2,0,0,3,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
 	{1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
-
+	
+	config->width = WIDTH;
+	config->height = HEIGHT;
+	config->map_width = MAP_WIDTH;
+	config->map_height = MAP_HEIGHT;
 	copy_map(config, worldMap);
+	
+	/*---- parsing end ----*/
+	
+
+	// initialize sprites
 	config->sprite_count = count_sprites(config);
 	config->sprites = (t_sprite *) malloc(config->sprite_count * sizeof(t_sprite));
 
@@ -229,21 +202,21 @@ void init_config(t_config *config)
 	config->texture_west = generate_texture("./textures/wall_3.png", config);
 	config->texture_north = generate_texture("./textures/wall_2.png", config);
 	config->texture_south = generate_texture("./textures/wall_4.png", config);
-	config->enemy_texture = generate_enemy("./textures/monster.png", config);
+	config->enemy_texture = generate_texture("./textures/monster.png", config);
 	config->collectible_texture = generate_texture("./textures/banana.png", config);
 
 	set_pos(config);
-	config->mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", 0);
+	config->mlx = mlx_init(config->width, config->height, "Cub3D", 0);
 	if (!config->mlx)
 		printf("ERROR initializing MLX\n");
-	config->img = mlx_new_image(config->mlx, WIDTH, HEIGHT);
+	config->img = mlx_new_image(config->mlx, config->width, config->height);
 	if (!config->img || (mlx_image_to_window(config->mlx, config->img, 0, 0) < 0))
 		printf("ERROR initializing MLX image\n");
 	config->fovAngle = 60.0;
 	config->viewAngle = 180.0;
 	config->dirY = sin(config->viewAngle * DEG_TO_RAD);
 	config->dirX = cos(config->viewAngle * DEG_TO_RAD);
-	config->rays = (int *) malloc(WIDTH * sizeof(int));
+	config->rays = (int *) malloc(config->width * sizeof(int));
 	config->sprite_offset = 0;
 	config->flying_up = 0;
 	config->path_to_player = NULL;
@@ -259,25 +232,6 @@ void init_config(t_config *config)
 	
 	// A star
 	assign_paths(config);
-}
-
-void draw_texture(t_config *config)
-{
-	int i = 0;
-	int j;
-
-	while (i < UNIT && i < HEIGHT)
-	{
-		j = 0;
-		while (j < UNIT && j < WIDTH)
-		{
-			if ((char)config->texture[i][j] != 0)
-				mlx_put_pixel(config->img, j, i, config->texture[i][j]);
-			j++;
-		}
-		i++;
-		
-	}
 }
 
 int main(void)

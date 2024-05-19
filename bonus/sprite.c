@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:01:46 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 14:45:07 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 20:53:41 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ void	plot_stripes(t_config *config, t_sprite *sprite)
 	y = sprite->start_y;
 	if (y < 0)
 		y = 0;
-	while (y < sprite->end_y && y < HEIGHT)
+	while (y < sprite->end_y && y < config->height)
 	{
 		x = sprite->start_x;
 		if (x < 0)
 			x = 0;
-		while (x < sprite->end_x && x < WIDTH)
+		while (x < sprite->end_x && x < config->width)
 		{
 			texture_pos.x = (x - sprite->start_x)
 				* ((float) ENEMY_SIZE / sprite->height);
@@ -58,12 +58,12 @@ void	get_sprite_boundaries(t_config *config, t_sprite *sprite)
 	float	plane_dist;
 
 	screen_angle = ((config->fovAngle / 2.0) - sprite->angle_diff);
-	fov_ratio = (float)WIDTH / config->fovAngle;
-	plane_dist = WIDTH / (2 * tan(30 * DEG_TO_RAD));
+	fov_ratio = (float)config->width / config->fovAngle;
+	plane_dist = config->width / (2 * tan(30 * DEG_TO_RAD));
 	sprite->height = roundf((ENEMY_SIZE / sprite->distance) * plane_dist);
 	if (sprite->type == COLLECTIBLE)
 		sprite->height /= 2;
-	sprite->start_y = (HEIGHT / 2) - (sprite->height / 2);
+	sprite->start_y = (config->height / 2) - (sprite->height / 2);
 	if (sprite->type == COLLECTIBLE)
 		sprite->start_y += (sprite->height / 2);
 	sprite->end_y = sprite->start_y + sprite->height;

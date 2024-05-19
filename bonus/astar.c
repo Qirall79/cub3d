@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 20:18:09 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 14:16:41 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 20:40:22 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,52 +70,52 @@ void solve_a_star(t_config *config)
 	int j;
 	float new_local;
 
-	nodes = (t_node *) malloc(sizeof(t_node) * MAP_WIDTH * MAP_HEIGHT);
-	nodes_to_check = (t_node **) malloc(sizeof(t_node *) * MAP_WIDTH * MAP_HEIGHT * 4);
+	nodes = (t_node *) malloc(sizeof(t_node) * config->map_width * config->map_height);
+	nodes_to_check = (t_node **) malloc(sizeof(t_node *) * config->map_width * config->map_height * 4);
 	i = -1;
-	while (++i < MAP_HEIGHT)
+	while (++i < config->map_height)
 	{
 		j = -1;
-		while (++j < MAP_WIDTH)
+		while (++j < config->map_width)
 		{
-			nodes[i * MAP_WIDTH + j].x = j;
-			nodes[i * MAP_WIDTH + j].y = i;
-			nodes[i * MAP_WIDTH + j].is_obstacle = config->map[i][j] == 1 ? 1 : 0;
-			nodes[i * MAP_WIDTH + j].visited = 0;
-			nodes[i * MAP_WIDTH + j].local_goal = 2147483647;
-			nodes[i * MAP_WIDTH + j].global_goal = 2147483647;
-			nodes[i * MAP_WIDTH + j].parent = NULL;
-			nodes[i * MAP_WIDTH + j].neighbors = (t_node **) malloc(sizeof(t_node *) * 4);
-			nodes[i * MAP_WIDTH + j].neighbors[NORTH] = NULL;
-			nodes[i * MAP_WIDTH + j].neighbors[SOUTH] = NULL;
-			nodes[i * MAP_WIDTH + j].neighbors[EAST] = NULL;
-			nodes[i * MAP_WIDTH + j].neighbors[WEST] = NULL;
+			nodes[i * config->map_width + j].x = j;
+			nodes[i * config->map_width + j].y = i;
+			nodes[i * config->map_width + j].is_obstacle = config->map[i][j] == 1 ? 1 : 0;
+			nodes[i * config->map_width + j].visited = 0;
+			nodes[i * config->map_width + j].local_goal = 2147483647;
+			nodes[i * config->map_width + j].global_goal = 2147483647;
+			nodes[i * config->map_width + j].parent = NULL;
+			nodes[i * config->map_width + j].neighbors = (t_node **) malloc(sizeof(t_node *) * 4);
+			nodes[i * config->map_width + j].neighbors[NORTH] = NULL;
+			nodes[i * config->map_width + j].neighbors[SOUTH] = NULL;
+			nodes[i * config->map_width + j].neighbors[EAST] = NULL;
+			nodes[i * config->map_width + j].neighbors[WEST] = NULL;
 
 			// set start and end
 			if ((int)(config->sprite_pos.y / UNIT) == i
 			&& (int)(config->sprite_pos.x / UNIT) == j)
-				start = &nodes[i * MAP_WIDTH + j];
+				start = &nodes[i * config->map_width + j];
 			if ((int)(config->yPos / UNIT) == i
 			&& (int)(config->xPos / UNIT) == j)
-				end = &nodes[i * MAP_WIDTH + j];
+				end = &nodes[i * config->map_width + j];
 		}
 	}
 
 	// set neighbors
 	i = -1;
-	while (++i < MAP_HEIGHT)
+	while (++i < config->map_height)
 	{
 		j = -1;
-		while (++j < MAP_WIDTH)
+		while (++j < config->map_width)
 		{
 			if (i > 0)
-				nodes[i * MAP_WIDTH + j].neighbors[NORTH] = &nodes[(i - 1) * MAP_WIDTH + j];
-			if (i < MAP_HEIGHT - 1)
-				nodes[i * MAP_WIDTH + j].neighbors[SOUTH] = &nodes[(i + 1) * MAP_WIDTH + j];
+				nodes[i * config->map_width + j].neighbors[NORTH] = &nodes[(i - 1) * config->map_width + j];
+			if (i < config->map_height - 1)
+				nodes[i * config->map_width + j].neighbors[SOUTH] = &nodes[(i + 1) * config->map_width + j];
 			if (j > 0)
-				nodes[i * MAP_WIDTH + j].neighbors[WEST] = &nodes[i * MAP_WIDTH + j - 1];
-			if (j < MAP_WIDTH - 1)
-				nodes[i * MAP_WIDTH + j].neighbors[EAST] = &nodes[i * MAP_WIDTH + j + 1];
+				nodes[i * config->map_width + j].neighbors[WEST] = &nodes[i * config->map_width + j - 1];
+			if (j < config->map_width - 1)
+				nodes[i * config->map_width + j].neighbors[EAST] = &nodes[i * config->map_width + j + 1];
 		}
 	}
 
@@ -191,52 +191,52 @@ void solve_a_star_sprite(t_config *config, t_sprite *sprite)
 	int j;
 	float new_local;
 
-	nodes = (t_node *) malloc(sizeof(t_node) * MAP_WIDTH * MAP_HEIGHT);
-	nodes_to_check = (t_node **) malloc(sizeof(t_node *) * MAP_WIDTH * MAP_HEIGHT * 4);
+	nodes = (t_node *) malloc(sizeof(t_node) * config->map_width * config->map_height);
+	nodes_to_check = (t_node **) malloc(sizeof(t_node *) * config->map_width * config->map_height * 4);
 	i = -1;
-	while (++i < MAP_HEIGHT)
+	while (++i < config->map_height)
 	{
 		j = -1;
-		while (++j < MAP_WIDTH)
+		while (++j < config->map_width)
 		{
-			nodes[i * MAP_WIDTH + j].x = j;
-			nodes[i * MAP_WIDTH + j].y = i;
-			nodes[i * MAP_WIDTH + j].is_obstacle = config->map[i][j] == 1 ? 1 : 0;
-			nodes[i * MAP_WIDTH + j].visited = 0;
-			nodes[i * MAP_WIDTH + j].local_goal = 2147483647;
-			nodes[i * MAP_WIDTH + j].global_goal = 2147483647;
-			nodes[i * MAP_WIDTH + j].parent = NULL;
-			nodes[i * MAP_WIDTH + j].neighbors = (t_node **) malloc(sizeof(t_node *) * 4);
-			nodes[i * MAP_WIDTH + j].neighbors[NORTH] = NULL;
-			nodes[i * MAP_WIDTH + j].neighbors[SOUTH] = NULL;
-			nodes[i * MAP_WIDTH + j].neighbors[EAST] = NULL;
-			nodes[i * MAP_WIDTH + j].neighbors[WEST] = NULL;
+			nodes[i * config->map_width + j].x = j;
+			nodes[i * config->map_width + j].y = i;
+			nodes[i * config->map_width + j].is_obstacle = config->map[i][j] == 1 ? 1 : 0;
+			nodes[i * config->map_width + j].visited = 0;
+			nodes[i * config->map_width + j].local_goal = 2147483647;
+			nodes[i * config->map_width + j].global_goal = 2147483647;
+			nodes[i * config->map_width + j].parent = NULL;
+			nodes[i * config->map_width + j].neighbors = (t_node **) malloc(sizeof(t_node *) * 4);
+			nodes[i * config->map_width + j].neighbors[NORTH] = NULL;
+			nodes[i * config->map_width + j].neighbors[SOUTH] = NULL;
+			nodes[i * config->map_width + j].neighbors[EAST] = NULL;
+			nodes[i * config->map_width + j].neighbors[WEST] = NULL;
 
 			// set start and end
 			if ((int)(sprite->y / UNIT) == i
 			&& (int)(sprite->x / UNIT) == j)
-				start = &nodes[i * MAP_WIDTH + j];
+				start = &nodes[i * config->map_width + j];
 			if ((int)(config->yPos / UNIT) == i
 			&& (int)(config->xPos / UNIT) == j)
-				end = &nodes[i * MAP_WIDTH + j];
+				end = &nodes[i * config->map_width + j];
 		}
 	}
 
 	// set neighbors
 	i = -1;
-	while (++i < MAP_HEIGHT)
+	while (++i < config->map_height)
 	{
 		j = -1;
-		while (++j < MAP_WIDTH)
+		while (++j < config->map_width)
 		{
 			if (i > 0)
-				nodes[i * MAP_WIDTH + j].neighbors[NORTH] = &nodes[(i - 1) * MAP_WIDTH + j];
-			if (i < MAP_HEIGHT - 1)
-				nodes[i * MAP_WIDTH + j].neighbors[SOUTH] = &nodes[(i + 1) * MAP_WIDTH + j];
+				nodes[i * config->map_width + j].neighbors[NORTH] = &nodes[(i - 1) * config->map_width + j];
+			if (i < config->map_height - 1)
+				nodes[i * config->map_width + j].neighbors[SOUTH] = &nodes[(i + 1) * config->map_width + j];
 			if (j > 0)
-				nodes[i * MAP_WIDTH + j].neighbors[WEST] = &nodes[i * MAP_WIDTH + j - 1];
-			if (j < MAP_WIDTH - 1)
-				nodes[i * MAP_WIDTH + j].neighbors[EAST] = &nodes[i * MAP_WIDTH + j + 1];
+				nodes[i * config->map_width + j].neighbors[WEST] = &nodes[i * config->map_width + j - 1];
+			if (j < config->map_width - 1)
+				nodes[i * config->map_width + j].neighbors[EAST] = &nodes[i * config->map_width + j + 1];
 		}
 	}
 

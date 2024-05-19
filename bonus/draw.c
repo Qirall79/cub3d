@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 14:39:44 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 20:55:36 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void redraw_image(t_config *config)
 {
 	mlx_delete_image(config->mlx, config->img);
-	config->img = mlx_new_image(config->mlx, WIDTH, HEIGHT);
+	config->img = mlx_new_image(config->mlx, config->width, config->height);
 	if (!config->img || (mlx_image_to_window(config->mlx, config->img, 0, 0) < 0))
 		(printf("ERROR initializing MLX image\n"));
 	draw_map(config);
@@ -37,7 +37,7 @@ void draw_map(t_config *config)
 
 	// player.x = (config->xPos / UNIT) * SUB_UNIT;
 	// player.y = (config->yPos / UNIT) * SUB_UNIT;
-	// div = WIDTH / MAP_WIDTH;
+	// div = config->width / MAP_WIDTH;
 	// i = 0;
 	// while (i < MAP_HEIGHT)
 	// {
@@ -177,14 +177,14 @@ void draw_rays(t_config *config)
 	player.y = (config->yPos / UNIT) * SUB_UNIT;
 	t_vector p;
 	float i = 0;
-	while (i < WIDTH)
+	while (i < config->width)
 	{
 		p = find_intersection(config, normalize_angle(min_angle));
 		// p.x = (p.x / UNIT) * SUB_UNIT;
 		// p.y = (p.y / UNIT) * SUB_UNIT;
 		// draw_line(player.x, player.y, p.x, p.y, config, 0xFF0000FF);
 		draw_wall(config, p, min_angle, i);
-		min_angle += config->fovAngle / (float) (WIDTH);
+		min_angle += config->fovAngle / (float) (config->width);
 		i++;
 	}
 
@@ -215,7 +215,7 @@ void draw_line(float xi, float yi, float xf, float yf, t_config *config, int col
     y_incr = (float)dy / steps;
     while (i++ < steps)
     {
-        if (xi >= 0 && xi < WIDTH && yi >= 0 && yi < HEIGHT)
+        if (xi >= 0 && xi < config->width && yi >= 0 && yi < config->height)
             mlx_put_pixel(config->img, round(xi), round(yi), color);
         xi += x_incr;
         yi += y_incr;
