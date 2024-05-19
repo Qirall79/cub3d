@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 12:23:23 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:12:34 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,18 +65,14 @@ void move_player(t_config *config)
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
 		if (is_wall_v(newX, newY, config))
+			config->xPos += newX;
+		else if (is_wall_h(newX, newY, config))
+			config->yPos += newY;
+		else
 		{
 			config->xPos += newX;
-			return ;
-		}
-		if (is_wall_h(newX, newY, config))
-		{
 			config->yPos += newY;
-			return ;
 		}
-
-		config->xPos += newX;
-		config->yPos += newY;
 	}
 	if (config->move_right)
 	{
@@ -86,17 +82,14 @@ void move_player(t_config *config)
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
 		if (is_wall_v(newX, newY, config))
+			config->xPos += newX;
+		else if (is_wall_h(newX, newY, config))
+			config->yPos += newY;
+		else
 		{
 			config->xPos += newX;
-			return ;
-		}
-		if (is_wall_h(newX, newY, config))
-		{
 			config->yPos += newY;
-			return ;
 		}
-		config->xPos += newX;
-		config->yPos += newY;
 	}
 	if (config->move_forward)
 	{
@@ -106,17 +99,14 @@ void move_player(t_config *config)
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
 		if (is_wall_v(newX, newY, config))
+			config->xPos += newX;
+		else if (is_wall_h(newX, newY, config))
+			config->yPos += newY;
+		else
 		{
 			config->xPos += newX;
-			return ;
-		}
-		if (is_wall_h(newX, newY, config))
-		{
 			config->yPos += newY;
-			return ;
 		}
-		config->xPos += newX;
-		config->yPos += newY;
 	}
 	if (config->move_backward)
 	{
@@ -126,22 +116,19 @@ void move_player(t_config *config)
 		if (is_wall_v(newX, newY, config) && is_wall_h(newX, newY, config))
 			return ;
 		if (is_wall_v(newX, newY, config))
+			config->xPos += newX;
+		else if (is_wall_h(newX, newY, config))
+			config->yPos += newY;
+		else
 		{
 			config->xPos += newX;
-			return ;
-		}
-		if (is_wall_h(newX, newY, config))
-		{
 			config->yPos += newY;
-			return ;
 		}
-		config->xPos += newX;
-		config->yPos += newY;
 	}
 
 	if (config->move_backward || config->move_forward
 	|| config->move_right || config->move_left)
-		solve_a_star(config);
+		assign_paths(config);
 }
 
 void set_movement_params(mlx_key_data_t keydata, t_config *config)

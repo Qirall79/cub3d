@@ -6,16 +6,39 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 11:48:37 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:49:40 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+int count_sprites(t_config *config)
+{
+	int count;
+	int i;
+	int j;
+
+	count = 0;
+	i = 0;
+	while (i < MAP_HEIGHT)
+	{
+		j = 0;
+		while (j < MAP_WIDTH)
+		{
+			if (config->map[i][j] == 2 || config->map[i][j] == 3)
+				count++;
+			j++;
+		}
+		i++;
+	}
+	return (count);
+}
+
 void set_pos(t_config *config)
 {
 	int i = 0;
 	int j = 0;
+	int sprites_index = 0;
 
 	while (i < MAP_HEIGHT)
 	{
@@ -27,10 +50,21 @@ void set_pos(t_config *config)
 				config->yPos = i * UNIT + (UNIT - 10) / 2;
 				config->xPos = j * UNIT + (UNIT - 10) / 2;
 			}
-			if (config->map[i][j] == 2)
+			if (config->map[i][j] == 2 || config->map[i][j] == 3)
 			{
 				config->sprite_pos.y = i * UNIT + UNIT / 2;
 				config->sprite_pos.x = j * UNIT + UNIT / 2;
+				config->sprites[sprites_index] = (t_sprite){
+					.x = config->sprite_pos.x,
+					.y = config->sprite_pos.y,
+					.type = config->map[i][j] - 2,
+					.visible = 1,
+					.texture = config->enemy_texture
+				};
+				if (config->sprites[sprites_index].type == COLLECTIBLE)
+					config->sprites[sprites_index].texture = config->collectible_texture;
+					
+				sprites_index++;
 			}
 			j++;
 		}
@@ -143,6 +177,19 @@ int **generate_enemy(char *path, t_config *config)
 	return (arr);
 }
 
+void assign_paths(t_config *config)
+{
+	int i;
+
+	i = 0;
+	while (i < config->sprite_count)
+	{
+		if (config->sprites[i].type == ENEMY)
+			solve_a_star_sprite(config, &config->sprites[i]);
+		i++;
+	}
+}
+
 void init_config(t_config *config)
 {
 	int worldMap[MAP_WIDTH][MAP_HEIGHT]=
@@ -164,16 +211,27 @@ void init_config(t_config *config)
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
-	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
-	{1,1,0,0,0,0,5,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1},
-	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1},
+	{1,1,0,1,3,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,1,0,1,0,0,5,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1},
+	{1,1,3,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1},
-	{1,1,0,2,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
+	{1,1,0,2,0,0,3,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
 	{1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 
 	copy_map(config, worldMap);
+	config->sprite_count = count_sprites(config);
+	config->sprites = (t_sprite *) malloc(config->sprite_count * sizeof(t_sprite));
+
+	// load textures
+	config->texture_east = generate_texture("./textures/wall_1.png", config);
+	config->texture_west = generate_texture("./textures/wall_3.png", config);
+	config->texture_north = generate_texture("./textures/wall_2.png", config);
+	config->texture_south = generate_texture("./textures/wall_4.png", config);
+	config->enemy_texture = generate_enemy("./textures/monster.png", config);
+	config->collectible_texture = generate_texture("./textures/banana.png", config);
+
 	set_pos(config);
 	config->mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", 0);
 	if (!config->mlx)
@@ -199,17 +257,8 @@ void init_config(t_config *config)
 	config->rotate_left = 0;
 	config->rotate_right = 0;
 	
-
-	config->texture_east = generate_texture("./textures/wall_1.png", config);
-	config->texture_west = generate_texture("./textures/wall_3.png", config);
-	config->texture_north = generate_texture("./textures/wall_2.png", config);
-	config->texture_south = generate_texture("./textures/wall_4.png", config);
-	config->sprite = generate_enemy("./textures/monster.png", config);
-	
-
 	// A star
-	config->path_steps = 0;
-	solve_a_star(config);
+	assign_paths(config);
 }
 
 void draw_texture(t_config *config)

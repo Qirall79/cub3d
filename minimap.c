@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 10:25:22 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 10:28:40 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:49:03 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ void fill_square(t_config *config, int x, int y, int color)
 	}
 }
 
-void draw_enemy(t_config *config)
+void draw_enemy(t_config *config, t_sprite sprite)
 {
 	float mini_x;
 	float mini_y;
 	int x;
 	int y;
 
-	mini_x = config->sprite_pos.x * ((float)MAP_UNIT / UNIT);
-	mini_y = config->sprite_pos.y * ((float)MAP_UNIT / UNIT);
+	mini_x = sprite.x * ((float)MAP_UNIT / UNIT);
+	mini_y = sprite.y * ((float)MAP_UNIT / UNIT);
 	
 	y = 0;
 	while (y < MAP_UNIT / 4)
@@ -97,6 +97,19 @@ void draw_miniray(t_config *config)
 	draw_line(mini_x, mini_y, end_x, end_y, config, 0xFF0F00FF);
 }
 
+void draw_enemies(t_config *config)
+{
+	int i;
+
+	i = 0;
+	while (i < config->sprite_count)
+	{
+		if (config->sprites[i].type == ENEMY)
+			draw_enemy(config, config->sprites[i]);
+		i++;
+	}
+}
+
 void draw_minimap(t_config *config)
 {
 	int x;
@@ -117,6 +130,6 @@ void draw_minimap(t_config *config)
 		y++;
 	}
 	draw_player(config);
-	draw_enemy(config);
+	draw_enemies(config);
 	draw_miniray(config);
 }

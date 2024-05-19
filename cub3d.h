@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 10:36:22 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 14:39:39 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # define SUB_UNIT (WIDTH / MAP_WIDTH)
 # define MAP_UNIT 8
 # define ENEMY_SIZE (UNIT)
-# define SPRITE_SIZE 640
 # define TEX_WIDTH UNIT
 # define TEX_HEIGHT UNIT
 # define DEG_TO_RAD (float)(M_PI / 180.0)
@@ -64,17 +63,31 @@ typedef struct s_boundary
 	float end;
 }	t_boundary;
 
+typedef enum e_type
+{
+	ENEMY,
+	COLLECTIBLE
+}	t_type;
+
 typedef struct s_sprite
 {
 	float	distance;
 	float	height;
 	float	angle;
 	float	angle_diff;
+	int		x;
+	int		y;
 	int		start_x;
 	int		end_x;
 	int		start_y;
 	int		end_y;
 	int		max_offset;
+	t_vector *path_to_player;
+	int		path_index;
+	int		path_steps;
+	int 	visible;
+	int		**texture;
+	t_type	type;
 } t_sprite;
 
 typedef struct s_config
@@ -88,6 +101,8 @@ typedef struct s_config
 	int **texture_east;
 	int **texture_west;
 	int **sprite;
+	int **enemy_texture;
+	int **collectible_texture;
 	t_vector *path_to_player;
 	int path_steps;
 	int path_index;
@@ -108,6 +123,8 @@ typedef struct s_config
 	int *rays;
 	int		sprite_offset;
 	int		flying_up;
+	t_sprite *sprites;
+	int sprite_count;
 }	t_config;
 
 typedef struct s_node
@@ -138,11 +155,13 @@ t_vector find_intersection(t_config *config, float alpha);
 
 // rendering
 void draw_wall(t_config *config, t_vector p, float alpha, int x);
-void draw_sprite(t_config *config);
+void	draw_sprite(t_config *config, t_sprite *sprite);
 
 // a star
 void solve_a_star(t_config *config);
-void move_sprite(t_config *config);
+void solve_a_star_sprite(t_config *config, t_sprite *sprite);
+void move_sprite(t_config *config, t_sprite *sprite);
+void assign_paths(t_config *config);
 
 // minimap
 void draw_minimap(t_config *config);
