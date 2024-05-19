@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/18 22:03:10 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 10:36:22 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct s_config
 	int **sprite;
 	t_vector *path_to_player;
 	int path_steps;
+	int path_index;
 	mlx_texture_t *tex;
 	float xPos;
 	float yPos;
@@ -141,6 +142,10 @@ void draw_sprite(t_config *config);
 
 // a star
 void solve_a_star(t_config *config);
+void move_sprite(t_config *config);
+
+// minimap
+void draw_minimap(t_config *config);
 
 // utils
 int in_range(int p, int min, int max);

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/18 22:07:09 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 11:48:37 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,9 +166,9 @@ void init_config(t_config *config)
 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,0,0,0,5,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1},
-	{1,1,0,1,0,0,0,0,1,0,2,0,0,0,0,0,0,1,0,0,1,0,0,1},
+	{1,1,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1},
-	{1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
+	{1,1,0,2,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
 	{1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
@@ -189,6 +189,7 @@ void init_config(t_config *config)
 	config->sprite_offset = 0;
 	config->flying_up = 0;
 	config->path_to_player = NULL;
+	config->path_index = 0;
 
 	// init keys
 	config->move_forward = 0;
@@ -235,12 +236,11 @@ int main(void)
 	t_config config;
 
 	init_config(&config);
-	// draw_map(&config);
-	// draw_texture(&config);
+	draw_map(&config);
 
 	// hooks
 	mlx_key_hook(config.mlx, (mlx_keyfunc) set_movement_params, &config);
-	// mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
+	mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
 
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 20:18:09 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/18 22:04:54 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 12:01:37 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,5 +173,6 @@ void solve_a_star(t_config *config)
 		current = current->parent;
 		i++;
 	}
+	config->path_index = 0;
 	config->path_to_player = path;
 }

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:01:46 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/18 14:21:07 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 12:04:45 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,4 +154,46 @@ void draw_sprite_re(t_config *config)
 			y++;
 		}
 	}
+}
+
+void move_sprite(t_config *config)
+{
+	t_vector map_pos;
+	t_vector player_pos;
+	t_vector next_step;
+
+	map_pos.x = floorf(config->sprite_pos.x / UNIT);
+	map_pos.y = floorf(config->sprite_pos.y / UNIT);
+	player_pos.x = floorf(config->xPos / UNIT);
+	player_pos.y = floorf(config->yPos / UNIT);
+	
+	if (config->path_index >= config->path_steps)
+		return ;
+
+	next_step = config->path_to_player[config->path_index];
+
+	// check if it's in the middle of the next cell
+	if (map_pos.x == floorf(next_step.x)
+	&& map_pos.y == floorf(next_step.y))
+	{
+		config->path_index++;
+		if (config->path_index >= config->path_steps)
+			return ;
+		next_step = config->path_to_player[config->path_index];
+	}
+
+	// move sprite
+	if (next_step.x > map_pos.x || config->sprite_pos.x - next_step.x * UNIT < UNIT / 2)
+		config->sprite_pos.x += 12;
+	if ((next_step.x < map_pos.x
+	|| (next_step.x * UNIT - config->sprite_pos.x) < (UNIT / 2)) 
+	&& !(config->sprite_pos.x - next_step.x * UNIT < UNIT / 2))
+		config->sprite_pos.x -= 12;
+	if (next_step.y > map_pos.y || (config->sprite_pos.y - next_step.y * UNIT) < UNIT / 2)
+		config->sprite_pos.y += 12;
+	if ((next_step.y < map_pos.y 
+	|| (next_step.y * UNIT - config->sprite_pos.y) < (UNIT / 2))
+	&& !((config->sprite_pos.y - next_step.y * UNIT) < UNIT / 2))
+		config->sprite_pos.y -= 12;
+	
 }

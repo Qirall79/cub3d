@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/18 14:15:52 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/19 12:02:34 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,10 @@ void move_player(t_config *config)
 		config->xPos += newX;
 		config->yPos += newY;
 	}
+
+	if (config->move_backward || config->move_forward
+	|| config->move_right || config->move_left)
+		solve_a_star(config);
 }
 
 void set_movement_params(mlx_key_data_t keydata, t_config *config)
