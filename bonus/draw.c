@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 13:48:12 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:05:43 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,25 +173,32 @@ void draw_score(t_config *config)
 	int j;
 	int x;
 	int y;
+	int n;
 
+	n = config->collectibles_left;
 	step = UNIT / 32;
-	i = 0;
-	y = HEIGHT - 40;
-	while (i < UNIT)
+
+	while (n > 0)
 	{
-		j = 0;
-		x = 8;
-		while (j < UNIT)
+		i = 0;
+		y = HEIGHT - (40 * n);
+		while (i < UNIT)
 		{
-			if ((char)config->collectible_texture[i][j])
-				mlx_put_pixel(config->img, x, y, config->collectible_texture[i][j]);
-			j += step;
-			x++;
+			j = 0;
+			x = 8;
+			while (j < UNIT)
+			{
+				if (in_range(x, 0, config->width - 1) && in_range(y, 0, config->height - 1)
+					&& (char)config->collectible_texture[i][j])
+					mlx_put_pixel(config->img, x, y, config->collectible_texture[i][j]);
+				j += step;
+				x++;
+			}
+			y++;
+			i += step;
 		}
-		y++;
-		i += step;
+		n--;
 	}
-	mlx_put_string(config->mlx, ft_itoa(config->collectibles_left), 48, HEIGHT - 36);
 }
 
 void draw_rays(t_config *config)

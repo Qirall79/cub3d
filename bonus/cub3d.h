@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 13:30:56 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 13:59:03 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,5 +177,6 @@ void draw_point(t_config *config, int x, int y);
 int vertical_facing(float angle);
 int horizontal_facing(float angle);
 char	*ft_itoa(int n);
+float get_distance(int xi, int yi, int xf, int yf);
 
 #endif

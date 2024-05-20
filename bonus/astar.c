@@ -6,13 +6,13 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 20:18:09 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 20:40:22 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:00:07 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static float get_distance(t_node *start, t_node *end)
+static float get_eucledian_distance(t_node *start, t_node *end)
 {
 	return (sqrtf((start->x - end->x) * (start->x - end->x) + (start->y - end->y) * (start->y - end->y)));
 }
@@ -122,7 +122,7 @@ void solve_a_star(t_config *config)
 	// solving
 	current = start;
 	current->local_goal = 0.0;
-	current->global_goal = get_distance(start, end);
+	current->global_goal = get_eucledian_distance(start, end);
 	k = 0;
 	nodes_to_check[k] = current;
 	k++;
@@ -145,12 +145,12 @@ void solve_a_star(t_config *config)
 			{
 				nodes_to_check[k] = current->neighbors[i];
 				k++;
-				new_local = current->local_goal + get_distance(current, current->neighbors[i]);
+				new_local = current->local_goal + get_eucledian_distance(current, current->neighbors[i]);
 				if (new_local < current->neighbors[i]->local_goal)
 				{
 					current->neighbors[i]->local_goal = new_local;
 					current->neighbors[i]->parent = current;
-					current->neighbors[i]->global_goal = new_local + get_distance(current->neighbors[i], end);
+					current->neighbors[i]->global_goal = new_local + get_eucledian_distance(current->neighbors[i], end);
 				}
 			}
 			i++;
@@ -243,7 +243,7 @@ void solve_a_star_sprite(t_config *config, t_sprite *sprite)
 	// solving
 	current = start;
 	current->local_goal = 0.0;
-	current->global_goal = get_distance(start, end);
+	current->global_goal = get_eucledian_distance(start, end);
 	k = 0;
 	nodes_to_check[k] = current;
 	k++;
@@ -266,12 +266,12 @@ void solve_a_star_sprite(t_config *config, t_sprite *sprite)
 			{
 				nodes_to_check[k] = current->neighbors[i];
 				k++;
-				new_local = current->local_goal + get_distance(current, current->neighbors[i]);
+				new_local = current->local_goal + get_eucledian_distance(current, current->neighbors[i]);
 				if (new_local < current->neighbors[i]->local_goal)
 				{
 					current->neighbors[i]->local_goal = new_local;
 					current->neighbors[i]->parent = current;
-					current->neighbors[i]->global_goal = new_local + get_distance(current->neighbors[i], end);
+					current->neighbors[i]->global_goal = new_local + get_eucledian_distance(current->neighbors[i], end);
 				}
 			}
 			i++;

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:01:46 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 20:53:41 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:10:29 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	draw_sprite(t_config *config, t_sprite *sprite)
 	t_boundary	h;
 	t_boundary	v;
 
+	if (!sprite->visible)
+		return ;
 	diff.x = (sprite->x - config->xPos);
 	diff.y = (sprite->y - config->yPos);
 	sprite->angle = normalize_angle(atan2(diff.y, diff.x) * (1.0 / DEG_TO_RAD));
@@ -109,6 +111,7 @@ void move_sprite(t_config *config, t_sprite *sprite)
 	t_vector map_pos;
 	t_vector player_pos;
 	t_vector next_step;
+	float distance_to_player;
 	float mov_speed = config->mlx->delta_time * UNIT * 2.0;
 
 	map_pos.x = floorf(sprite->x / UNIT);
@@ -140,9 +143,17 @@ void move_sprite(t_config *config, t_sprite *sprite)
 		sprite->x -= mov_speed;
 	if (next_step.y > map_pos.y || (sprite->y - next_step.y * UNIT) < UNIT / 2)
 		sprite->y += mov_speed;
-	if ((next_step.y < map_pos.y 
+	if ((next_step.y < map_pos.y
 	|| (next_step.y * UNIT - sprite->y) < (UNIT / 2))
 	&& !((sprite->y - next_step.y * UNIT) < UNIT / 2))
 		sprite->y -= mov_speed;
 	
+	// check if player reached
+	distance_to_player = get_distance(config->xPos, config->yPos, sprite->x, sprite->y);
+
+	// if (distance_to_player < UNIT)
+	// {
+	// 	printf("YOU LOST!\n");
+	// 	exit(0);
+	// }
 }
