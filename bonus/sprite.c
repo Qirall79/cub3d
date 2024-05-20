@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:01:46 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 14:10:29 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 14:45:39 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	draw_sprite(t_config *config, t_sprite *sprite)
 	// 	config->flying_up = 1;
 	// else if (config->sprite_offset <= 0)
 	// 	config->flying_up = 0;
-	
+
 	// if (config->flying_up)
 	// 	config->sprite_offset--;
 	// else
@@ -151,9 +151,6 @@ void move_sprite(t_config *config, t_sprite *sprite)
 	// check if player reached
 	distance_to_player = get_distance(config->xPos, config->yPos, sprite->x, sprite->y);
 
-	// if (distance_to_player < UNIT)
-	// {
-	// 	printf("YOU LOST!\n");
-	// 	exit(0);
-	// }
+	if (distance_to_player < UNIT)
+		config->lost = 1;
 }

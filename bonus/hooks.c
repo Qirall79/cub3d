@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 14:09:53 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:35:33 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,14 @@ void check_collection(t_config *config)
 	}
 
 	if (config->collectibles_left <= 0)
-	{
-		printf("YOU WON!\n");
-		exit(0);
-	}
+		config->won = 1;
 }
 
 void move_player(t_config *config)
 {
 	float newX;
 	float newY;
-	float mov_speed = config->mlx->delta_time * UNIT * 3.0;
+	float mov_speed = config->mlx->delta_time * UNIT * 3.5;
 	float rot_speed = config->mlx->delta_time * 100.0;
 
 	// camera rotation
@@ -170,6 +167,31 @@ void move_player(t_config *config)
 		assign_paths(config);
 }
 
+void reset_game(t_config *config)
+{
+	int i;
+	t_vector map_pos;
+
+	config->lost = 0;
+	config->won = 0;
+	config->collectibles_left = config->collectibles_tmp;
+	i = 0;
+	while (i < config->sprite_count)
+	{
+		config->sprites[i].visible = 1;
+		config->sprites[i].x = config->sprites[i].initial_x;
+		config->sprites[i].y = config->sprites[i].initial_y;
+		map_pos.x = floorf(config->sprites[i].x / UNIT);
+		map_pos.y = floorf(config->sprites[i].y / UNIT);
+		config->map[(int)map_pos.y][(int)map_pos.x] = config->sprites[i].type + 2;
+		i++;
+	}
+	config->xPos = config->initial_player_x;
+	config->yPos = config->initial_player_y;
+	config->viewAngle = 180.0;
+	assign_paths(config);
+}
+
 void set_movement_params(mlx_key_data_t keydata, t_config *config)
 {
 	if (keydata.key == MLX_KEY_W && keydata.action != MLX_RELEASE)
@@ -196,10 +218,48 @@ void set_movement_params(mlx_key_data_t keydata, t_config *config)
 		config->rotate_left = 1;
 	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_RELEASE)
 		config->rotate_left = 0;
+	if (keydata.key == MLX_KEY_SPACE && config->is_starting)
+		config->is_starting = 0;
+	if (keydata.key == MLX_KEY_ENTER && (config->lost || config->won))
+		reset_game(config);
+}
+
+void display_full(t_config *config, int **texture)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < config->height)
+	{
+		j = 0;
+		while (j < config->width)
+		{
+			mlx_put_pixel(config->img, j, i, texture[i][j]);
+			j++;
+		}
+		i++;
+	}
 }
 
 void loop_hook(t_config *config)
 {
+	if (config->is_starting)
+	{
+		display_full(config, config->entry_texture);
+		return ;
+	}
+	if (config->lost)
+	{
+		display_full(config, config->loss_texture);
+		return ;
+	}
+	if (config->won)
+	{
+		display_full(config, config->win_texture);
+		return ;
+	}
+
 	move_player(config);
 	redraw_image(config);
 }

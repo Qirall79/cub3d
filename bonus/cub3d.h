@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 13:59:03 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:32:34 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
  
 # define CUB3D_H
 
-# define WIDTH 720
-# define HEIGHT 720
+# define WIDTH 1280
+# define HEIGHT 960
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
 # define UNIT 640
@@ -75,6 +75,8 @@ typedef struct s_sprite
 	float	angle_diff;
 	int		x;
 	int		y;
+	int		initial_x;
+	int		initial_y;
 	int		start_x;
 	int		end_x;
 	int		start_y;
@@ -97,11 +99,13 @@ typedef struct s_config
 	int map_width;
 	int map_height;
 	int map[MAP_WIDTH][MAP_HEIGHT];
-	int **texture;
 	int **texture_north;
 	int **texture_south;
 	int **texture_east;
 	int **texture_west;
+	int **entry_texture;
+	int **loss_texture;
+	int **win_texture;
 	int **sprite;
 	int **enemy_texture;
 	int **collectible_texture;
@@ -111,6 +115,8 @@ typedef struct s_config
 	mlx_texture_t *tex;
 	float xPos;
 	float yPos;
+	int		initial_player_x;
+	int		initial_player_y;
 	t_vector sprite_pos;
 	float viewAngle;
 	float fovAngle;
@@ -128,6 +134,10 @@ typedef struct s_config
 	t_sprite *sprites;
 	int sprite_count;
 	int collectibles_left;
+	int collectibles_tmp;
+	int lost;
+	int won;
+	int is_starting;
 }	t_config;
 
 typedef struct s_node

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 13:26:32 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 15:27:09 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void set_pos(t_config *config)
 				config->sprites[sprites_index] = (t_sprite){
 					.x = config->sprite_pos.x,
 					.y = config->sprite_pos.y,
+					.initial_x = config->sprite_pos.x,
+					.initial_y = config->sprite_pos.y,
 					.type = config->map[i][j] - 2,
 					.visible = 1,
 					.texture = config->enemy_texture
@@ -101,7 +103,7 @@ uint32_t abgr_to_rgba(uint32_t abgr_color) {
   return (red << 24) | (green << 16) | (blue << 8) | alpha;
 }
 
-int **generate_texture(char *path, t_config *config)
+int **generate_texture(char *path, t_config *config, int height, int width)
 {
 	int **arr;
 	mlx_texture_t *tex;
@@ -115,21 +117,21 @@ int **generate_texture(char *path, t_config *config)
 	if (!tex)
 		(printf("FAIL\n"), exit(1));
 	config->tex = tex;
-	arr = (int **)malloc(UNIT * sizeof(int *));
+	arr = (int **)malloc(height * sizeof(int *));
 	iter.y = 0;
-    while (iter.y < UNIT) {
-        arr[(int)iter.y] = (int *)malloc(UNIT * sizeof(int));
+    while (iter.y < height) {
+        arr[(int)iter.y] = (int *)malloc(width * sizeof(int));
 		iter.y++;
     }
     pixels = (int *) tex->pixels;
-	step.x = tex->width / (float)UNIT;
-	step.y = tex->height / (float)UNIT;
+	step.x = tex->width / (float)width;
+	step.y = tex->height / (float)height;
 	iter.x = 0;
 	y = 0;
-	while (y < UNIT) {
+	while (y < height) {
 		iter.y = 0;
 		x = 0;
-        while (x < UNIT)
+        while (x < width)
 		{
 			arr[y][x] = abgr_to_rgba(pixels[(int)floorf(iter.x) * tex->width + (int)floorf(iter.y)]);
 			iter.y += step.x;
@@ -162,12 +164,12 @@ void init_config(t_config *config)
 	int worldMap[MAP_HEIGHT][MAP_WIDTH]=
 	{
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
-	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
-	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1,0,0,0,1},
+	{1,0,0,0,0,0,1,0,3,0,1,0,0,0,0,0,0,3,0,0,0,0,0,1},
+	{1,0,0,0,0,0,1,0,2,0,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
 	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -180,9 +182,9 @@ void init_config(t_config *config)
 	{1,1,1,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,1,3,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,1,0,0,5,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1},
-	{1,1,3,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1},
+	{1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,3,1},
 	{1,1,0,1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1},
-	{1,1,0,2,0,0,3,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
+	{1,1,0,0,0,0,3,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
@@ -202,14 +204,19 @@ void init_config(t_config *config)
 	config->sprites = (t_sprite *) malloc(config->sprite_count * sizeof(t_sprite));
 
 	// load textures
-	config->texture_east = generate_texture("./textures/wall_1.png", config);
-	config->texture_west = generate_texture("./textures/wall_3.png", config);
-	config->texture_north = generate_texture("./textures/wall_2.png", config);
-	config->texture_south = generate_texture("./textures/wall_4.png", config);
-	config->enemy_texture = generate_texture("./textures/monster.png", config);
-	config->collectible_texture = generate_texture("./textures/banana.png", config);
+	config->texture_east = generate_texture("./textures/wall_1.png", config, UNIT, UNIT);
+	config->texture_west = generate_texture("./textures/wall_3.png", config, UNIT, UNIT);
+	config->texture_north = generate_texture("./textures/wall_2.png", config, UNIT, UNIT);
+	config->texture_south = generate_texture("./textures/wall_4.png", config, UNIT, UNIT);
+	config->enemy_texture = generate_texture("./textures/monster.png", config, UNIT, UNIT);
+	config->collectible_texture = generate_texture("./textures/banana.png", config, UNIT, UNIT);
+	config->entry_texture = generate_texture("./textures/start_screen.png", config, config->height, config->width);
+	config->win_texture = generate_texture("./textures/win_screen.png", config, config->height, config->width);
+	config->loss_texture = generate_texture("./textures/loss_screen.png", config, config->height, config->width);
 
 	set_pos(config);
+	config->collectibles_tmp = config->collectibles_left;
+
 	config->mlx = mlx_init(config->width, config->height, "Cub3D", 0);
 	if (!config->mlx)
 		printf("ERROR initializing MLX\n");
@@ -225,6 +232,11 @@ void init_config(t_config *config)
 	config->flying_up = 0;
 	config->path_to_player = NULL;
 	config->path_index = 0;
+	config->lost = 0;
+	config->won = 0;
+	config->is_starting = 1;
+	config->initial_player_x = config->xPos;
+	config->initial_player_y = config->yPos;
 
 	// init keys
 	config->move_forward = 0;
