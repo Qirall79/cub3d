@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:39:50 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 21:04:01 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 11:41:26 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	get_color(t_config *config, int side, float alpha, t_vector texture_pos)
 	int	color;
 
 	color = 0;
+	if (!in_range(texture_pos.x, 0, UNIT - 1) || !in_range(texture_pos.y, 0, UNIT - 1))
+		return color;
 	if (side && horizontal_facing(alpha) == LEFT)
 		color = config->texture_east[(int)texture_pos.y][(int)texture_pos.x];
 	else if (side && horizontal_facing(alpha) == RIGHT)
