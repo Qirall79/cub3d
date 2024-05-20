@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 11:59:18 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 13:30:56 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
  
 # define CUB3D_H
 
-# define WIDTH 1280
-# define HEIGHT 960
+# define WIDTH 720
+# define HEIGHT 720
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
 # define UNIT 640
@@ -46,8 +46,6 @@
 # include <math.h>
 
 # include "./lib/MLX/include/MLX42/MLX42.h"
-
-
 
 typedef struct s_vector
 {
@@ -129,6 +127,7 @@ typedef struct s_config
 	int		flying_up;
 	t_sprite *sprites;
 	int sprite_count;
+	int collectibles_left;
 }	t_config;
 
 typedef struct s_node
@@ -177,5 +176,6 @@ void normalize_vector(t_vector *vec);
 void draw_point(t_config *config, int x, int y);
 int vertical_facing(float angle);
 int horizontal_facing(float angle);
+char	*ft_itoa(int n);
 
 #endif

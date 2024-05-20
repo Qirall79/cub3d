@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 20:55:36 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 13:48:12 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,23 +166,45 @@ void draw_all(t_config *config)
 	}
 }
 
+void draw_score(t_config *config)
+{
+	float step;
+	int i;
+	int j;
+	int x;
+	int y;
+
+	step = UNIT / 32;
+	i = 0;
+	y = HEIGHT - 40;
+	while (i < UNIT)
+	{
+		j = 0;
+		x = 8;
+		while (j < UNIT)
+		{
+			if ((char)config->collectible_texture[i][j])
+				mlx_put_pixel(config->img, x, y, config->collectible_texture[i][j]);
+			j += step;
+			x++;
+		}
+		y++;
+		i += step;
+	}
+	mlx_put_string(config->mlx, ft_itoa(config->collectibles_left), 48, HEIGHT - 36);
+}
+
 void draw_rays(t_config *config)
 {
-	t_vector player;
-
 	float min_angle = config->viewAngle - config->fovAngle / 2;
 	float max_angle = config->viewAngle + config->fovAngle / 2;
-
-	player.x = (config->xPos / UNIT) * SUB_UNIT;
-	player.y = (config->yPos / UNIT) * SUB_UNIT;
 	t_vector p;
-	float i = 0;
+	int i;
+
+	i = 0;
 	while (i < config->width)
 	{
 		p = find_intersection(config, normalize_angle(min_angle));
-		// p.x = (p.x / UNIT) * SUB_UNIT;
-		// p.y = (p.y / UNIT) * SUB_UNIT;
-		// draw_line(player.x, player.y, p.x, p.y, config, 0xFF0000FF);
 		draw_wall(config, p, min_angle, i);
 		min_angle += config->fovAngle / (float) (config->width);
 		i++;
@@ -193,7 +215,7 @@ void draw_rays(t_config *config)
 	sort_sprites(config);
 	draw_all(config);
 	draw_minimap(config);
-
+	draw_score(config);
 }
 
 void draw_line(float xi, float yi, float xf, float yf, t_config *config, int color)

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 11:57:44 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/20 13:26:32 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ void set_pos(t_config *config)
 					.texture = config->enemy_texture
 				};
 				if (config->sprites[sprites_index].type == COLLECTIBLE)
+				{
 					config->sprites[sprites_index].texture = config->collectible_texture;
+					config->collectibles_left++;
+				}
 					
 				sprites_index++;
 			}
@@ -174,13 +177,13 @@ void init_config(t_config *config)
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
-	{1,1,1,1,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,1,1,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,1,3,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,1,0,0,5,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1},
 	{1,1,3,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,2,0,0,3,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
-	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 	
@@ -195,6 +198,7 @@ void init_config(t_config *config)
 
 	// initialize sprites
 	config->sprite_count = count_sprites(config);
+	config->collectibles_left = 0;
 	config->sprites = (t_sprite *) malloc(config->sprite_count * sizeof(t_sprite));
 
 	// load textures
