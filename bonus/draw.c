@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 14:05:43 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 10:56:13 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ void move_all(t_config *config)
 		i++;
 	}
 }
-float get_distance(int xi, int yi, int xf, int yf)
+float get_distance(float xi, float yi, float xf, float yf)
 {
 	return (sqrtf((xi - xf) * (xi - xf) + (yi - yf) * (yi - yf)));
 }

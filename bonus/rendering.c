@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:39:50 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 20:53:16 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:59:57 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,14 @@ void	draw_wall(t_config *config, t_vector p, float alpha, int x)
 	float		end_y;
 	float		y;
 	t_vector	texture_pos;
+	t_vector	map_pos;
 
+	map_pos.x = floorf((p.x) / UNIT);
+	map_pos.y = floorf((p.y) / UNIT);
+	if (p.z && horizontal_facing(alpha) == LEFT)
+		map_pos.x--;
+	if (!p.z && vertical_facing(alpha) == TOP)
+		map_pos.y--;
 	wall_height = get_wall_height(config, p.distance, alpha, x);
 	start_y = (config->height / 2) - (wall_height / 2);
 	end_y = start_y + wall_height;
@@ -82,8 +89,11 @@ void	draw_wall(t_config *config, t_vector p, float alpha, int x)
 				* ((float) UNIT / wall_height));
 		if (y < 0)
 			y = 0;
-		mlx_put_pixel(config->img, x, y,
-			get_color(config, p.z, alpha, texture_pos));
+		if (config->map[(int)map_pos.y][(int)map_pos.x] == 4)
+			mlx_put_pixel(config->img, x, y, config->door_texture[(int)texture_pos.y][(int)texture_pos.x]);
+		else
+			mlx_put_pixel(config->img, x, y,
+				get_color(config, p.z, alpha, texture_pos));
 		y++;
 	}
 }

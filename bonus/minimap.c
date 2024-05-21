@@ -6,13 +6,13 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 10:25:22 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 20:50:31 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:56:25 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void fill_square(t_config *config, int x, int y, int color)
+void fill_square(t_config *config, int x, int y, long int color)
 {
 	int i;
 	int j;
@@ -123,6 +123,8 @@ void draw_minimap(t_config *config)
 		{
 			if (config->map[y][x] == 1)
 				fill_square(config, x, y, 0xFFFFFFAF);
+			else if (config->map[y][x] == 4)
+				fill_square(config, x, y, 0xFFFF00FFF);
 			else
 				fill_square(config, x, y, 0x0);
 			x++;

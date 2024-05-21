@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 15:35:33 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:43:41 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,15 @@ float normalize_angle(float angle)
 int is_wall_v(float newX, float newY, t_config *config)
 {
 	
-	if (config->map[(int)(config->yPos+ newY) / UNIT][(int)(config->xPos) / UNIT] == 1)
+	if (config->map[(int)(config->yPos + newY) / UNIT][(int)(config->xPos) / UNIT] == 1
+	|| config->map[(int)(config->yPos + newY) / UNIT][(int)(config->xPos) / UNIT] == 4)
 		return 1;
 	return 0;
 }
 int is_wall_h(float newX, float newY, t_config *config)
 {
-	if (config->map[(int)(config->yPos) / UNIT][(int)(config->xPos + newX) / UNIT] == 1)
+	if (config->map[(int)(config->yPos) / UNIT][(int)(config->xPos + newX) / UNIT] == 1
+	|| config->map[(int)(config->yPos) / UNIT][(int)(config->xPos + newX) / UNIT] == 4)
 		return 1;
 	return 0;
 }
@@ -192,6 +194,27 @@ void reset_game(t_config *config)
 	assign_paths(config);
 }
 
+int enemy_in_door(t_config *config)
+{
+	t_vector enemy_pos;
+	int i;
+
+	i = 0;
+	while (i < config->sprite_count)
+	{
+		if (config->sprites[i].type == ENEMY)
+		{
+			enemy_pos.x = floorf(config->sprites[i].x / UNIT);
+			enemy_pos.y = floorf(config->sprites[i].y / UNIT);
+			if (enemy_pos.x == config->visible_door.x
+			&& enemy_pos.y == config->visible_door.y)
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 void set_movement_params(mlx_key_data_t keydata, t_config *config)
 {
 	if (keydata.key == MLX_KEY_W && keydata.action != MLX_RELEASE)
@@ -222,6 +245,17 @@ void set_movement_params(mlx_key_data_t keydata, t_config *config)
 		config->is_starting = 0;
 	if (keydata.key == MLX_KEY_ENTER && (config->lost || config->won))
 		reset_game(config);
+	if (keydata.key == MLX_KEY_TAB && keydata.action == MLX_PRESS && config->visible_door.x != -1)
+	{
+		if (!enemy_in_door(config))
+		{
+			if (config->map[(int)config->visible_door.y][(int)config->visible_door.x] == 4)
+				config->map[(int)config->visible_door.y][(int)config->visible_door.x] = 6;
+			else
+				config->map[(int)config->visible_door.y][(int)config->visible_door.x] = 4;
+			assign_paths(config);
+		}
+	}
 }
 
 void display_full(t_config *config, int **texture)
@@ -244,6 +278,8 @@ void display_full(t_config *config, int **texture)
 
 void loop_hook(t_config *config)
 {
+	t_vector door;
+
 	if (config->is_starting)
 	{
 		display_full(config, config->entry_texture);
@@ -260,6 +296,7 @@ void loop_hook(t_config *config)
 		return ;
 	}
 
+	config->visible_door = (t_vector) {.x = -1, .y = -1};
 	move_player(config);
 	redraw_image(config);
 }

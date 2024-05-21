@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 15:51:55 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:59:51 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,8 +169,8 @@ void init_config(t_config *config)
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
 	{1,0,0,0,0,0,1,0,3,0,1,0,0,0,0,0,0,3,0,0,0,0,0,1},
-	{1,0,0,0,0,0,1,0,2,0,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
-	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
+	{1,0,0,0,0,0,1,0,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -179,10 +179,10 @@ void init_config(t_config *config)
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
-	{1,1,1,1,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
+	{1,1,1,1,1,1,1,6,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,1,3,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1},
 	{1,1,0,1,0,0,5,0,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,1},
-	{1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,3,1},
+	{1,1,0,4,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,1,0,3,1},
 	{1,1,0,1,1,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1},
 	{1,1,0,0,0,0,3,0,0,0,0,1,0,0,0,0,0,1,1,1,1,0,0,1},
 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -212,6 +212,7 @@ void init_config(t_config *config)
 	config->entry_texture = generate_texture("./textures/start_screen.png", config, config->height, config->width);
 	config->win_texture = generate_texture("./textures/win_screen.png", config, config->height, config->width);
 	config->loss_texture = generate_texture("./textures/loss_screen.png", config, config->height, config->width);
+	config->door_texture = generate_texture("./textures/door.png", config, UNIT, UNIT);
 
 	set_pos(config);
 	config->collectibles_tmp = config->collectibles_left;
@@ -236,6 +237,7 @@ void init_config(t_config *config)
 	config->is_starting = 1;
 	config->initial_player_x = config->xPos;
 	config->initial_player_y = config->yPos;
+	config->visible_door = (t_vector) {.x = -1, .y = -1};
 
 	// init keys
 	config->move_forward = 0;
@@ -264,4 +266,3 @@ int main(void)
 	mlx_terminate(config.mlx);
 	return (EXIT_SUCCESS);
 }
-

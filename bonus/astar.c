@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 20:18:09 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 14:00:07 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:34:17 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ void solve_a_star_sprite(t_config *config, t_sprite *sprite)
 		{
 			nodes[i * config->map_width + j].x = j;
 			nodes[i * config->map_width + j].y = i;
-			nodes[i * config->map_width + j].is_obstacle = config->map[i][j] == 1 ? 1 : 0;
+			nodes[i * config->map_width + j].is_obstacle = config->map[i][j] == 1 || config->map[i][j] == 4 ? 1 : 0;
 			nodes[i * config->map_width + j].visited = 0;
 			nodes[i * config->map_width + j].local_goal = 2147483647;
 			nodes[i * config->map_width + j].global_goal = 2147483647;

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 15:32:34 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 11:50:02 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ typedef struct s_config
 	int **texture_south;
 	int **texture_east;
 	int **texture_west;
+	int **door_texture;
 	int **entry_texture;
 	int **loss_texture;
 	int **win_texture;
@@ -138,6 +139,7 @@ typedef struct s_config
 	int lost;
 	int won;
 	int is_starting;
+	t_vector visible_door;
 }	t_config;
 
 typedef struct s_node
@@ -179,6 +181,9 @@ void assign_paths(t_config *config);
 // minimap
 void draw_minimap(t_config *config);
 
+// doors
+t_vector check_door(t_config *config);
+
 // utils
 int in_range(int p, int min, int max);
 float normalize_angle(float angle);
@@ -187,6 +192,6 @@ void draw_point(t_config *config, int x, int y);
 int vertical_facing(float angle);
 int horizontal_facing(float angle);
 char	*ft_itoa(int n);
-float get_distance(int xi, int yi, int xf, int yf);
+float get_distance(float xi, float yi, float xf, float yf);
 
 #endif
