@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/21 15:43:03 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 18:01:47 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,16 +186,12 @@ void draw_wall(t_config *config, t_vector p, float alpha, int x);
 void	draw_sprite(t_config *config, t_sprite *sprite);
 
 // a star
-void solve_a_star(t_config *config);
-void solve_a_star_sprite(t_config *config, t_sprite *sprite);
+void solve_a_star(t_config *config, t_sprite *sprite);
 void move_sprite(t_config *config, t_sprite *sprite);
 void assign_paths(t_config *config);
 
 // minimap
 void draw_minimap(t_config *config);
-
-// doors
-t_vector check_door(t_config *config);
 
 // utils
 int in_range(int p, int min, int max);
@@ -204,7 +200,6 @@ void normalize_vector(t_vector *vec);
 void draw_point(t_config *config, int x, int y);
 int vertical_facing(float angle);
 int horizontal_facing(float angle);
-char	*ft_itoa(int n);
 float get_distance(float xi, float yi, float xf, float yf);
 
 #endif

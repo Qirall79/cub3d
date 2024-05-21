@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/21 15:48:23 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 17:59:12 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void check_collection(t_config *config)
 
 	map_pos.x = floorf(config->xPos / UNIT);
 	map_pos.y = floorf(config->yPos / UNIT);
-
 	if (config->map[(int)map_pos.y][(int)map_pos.x] == 3)
 	{
 		config->map[(int)map_pos.y][(int)map_pos.x] = 0;
@@ -55,7 +54,6 @@ void check_collection(t_config *config)
 		{
 			collectible_pos.x = floorf(config->sprites[i].x / UNIT);
 			collectible_pos.y = floorf(config->sprites[i].y / UNIT);
-			
 			if (collectible_pos.x == map_pos.x
 			&& collectible_pos.y == map_pos.y)
 			{
@@ -66,7 +64,6 @@ void check_collection(t_config *config)
 			i++;
 		}
 	}
-
 	if (config->collectibles_left <= 0)
 		config->won = 1;
 }
