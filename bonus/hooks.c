@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/21 11:43:41 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:48:23 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -299,4 +299,17 @@ void loop_hook(t_config *config)
 	config->visible_door = (t_vector) {.x = -1, .y = -1};
 	move_player(config);
 	redraw_image(config);
+}
+
+void handle_mouse(double xpos, double ypos, t_config *config)
+{
+	double increment;
+	
+	increment = (xpos - config->width / 2.0) / 8;
+
+	config->viewAngle = normalize_angle(config->viewAngle + increment);
+	config->dirY = sin(config->viewAngle * DEG_TO_RAD);
+	config->dirX = cos(config->viewAngle * DEG_TO_RAD);
+
+	mlx_set_mouse_pos(config->mlx, config->width / 2.0, config->height / 2.0);
 }

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/21 15:00:31 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:38:51 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void init_config(t_config *config)
 	{1,0,0,0,0,0,1,1,1,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
 	{1,0,0,0,0,0,1,0,3,0,1,0,0,0,0,0,0,3,0,0,0,0,0,1},
 	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
-	{1,0,0,0,0,0,1,0,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
+	{1,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,1,1,0,1,1,0,0,0,0,1,0,1,0,1,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -223,6 +223,7 @@ void init_config(t_config *config)
 	config->img = mlx_new_image(config->mlx, config->width, config->height);
 	if (!config->img || (mlx_image_to_window(config->mlx, config->img, 0, 0) < 0))
 		printf("ERROR initializing MLX image\n");
+	mlx_set_cursor_mode(config->mlx, MLX_MOUSE_HIDDEN);
 	config->fovAngle = 60.0;
 	config->viewAngle = 180.0;
 	config->dirY = sin(config->viewAngle * DEG_TO_RAD);
@@ -249,9 +250,6 @@ void init_config(t_config *config)
 	
 	// A star
 	assign_paths(config);
-
-	// minimap
-	config->minimap.map = config->map;
 }
 
 int main(void)
@@ -263,6 +261,7 @@ int main(void)
 
 	// hooks
 	mlx_key_hook(config.mlx, (mlx_keyfunc) set_movement_params, &config);
+	mlx_cursor_hook(config.mlx, (mlx_cursorfunc) handle_mouse, &config);
 	mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
 
 	mlx_loop(config.mlx);

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/21 14:55:10 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:43:03 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,8 @@ typedef struct s_config
 	int is_starting;
 	t_vector visible_door;
 	t_minimap minimap;
+	double old_mouse_x;
+	double old_mouse_y;
 }	t_config;
 
 typedef struct s_node
@@ -174,6 +176,7 @@ void draw_rays(t_config *config);
 void move_player(t_config *config);
 void set_movement_params(mlx_key_data_t keydata, t_config *config);
 void loop_hook(t_config *config);
+void handle_mouse(double xpos, double ypos, t_config *config);
 
 // raycasting
 t_vector find_intersection(t_config *config, float alpha);
