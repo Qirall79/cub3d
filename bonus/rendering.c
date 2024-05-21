@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:39:50 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/21 11:59:57 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 12:46:28 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ int	get_color(t_config *config, int side, float alpha, t_vector texture_pos)
 	int	color;
 
 	color = 0;
+	if (!in_range(texture_pos.y, 0, UNIT - 1) || !in_range(texture_pos.x, 0, UNIT - 1))
+		return 0;
+
 	if (side && horizontal_facing(alpha) == LEFT)
 		color = config->texture_east[(int)texture_pos.y][(int)texture_pos.x];
 	else if (side && horizontal_facing(alpha) == RIGHT)
@@ -89,7 +92,9 @@ void	draw_wall(t_config *config, t_vector p, float alpha, int x)
 				* ((float) UNIT / wall_height));
 		if (y < 0)
 			y = 0;
-		if (config->map[(int)map_pos.y][(int)map_pos.x] == 4)
+		if (in_range(map_pos.y, 0, config->map_height - 1)
+		&& in_range(map_pos.x, 0, config->map_width - 1)
+		&& config->map[(int)map_pos.y][(int)map_pos.x] == 4)
 			mlx_put_pixel(config->img, x, y, config->door_texture[(int)texture_pos.y][(int)texture_pos.x]);
 		else
 			mlx_put_pixel(config->img, x, y,

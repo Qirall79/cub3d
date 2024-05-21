@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 10:25:22 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/21 11:56:25 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:14:37 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ void draw_enemy(t_config *config, t_sprite sprite)
 	mini_y = sprite.y * ((float)MAP_UNIT / UNIT);
 	
 	y = 0;
-	while (y < MAP_UNIT / 4)
+	while (y < 2)
 	{
 		x = 0;
-		while (x < MAP_UNIT / 4)
+		while (x < 2)
 		{
 			mlx_put_pixel(config->img, mini_x + x, mini_y + y, 0xFFFF00FF);
 			mlx_put_pixel(config->img, mini_x - x, mini_y - y, 0xFFFF00FF);
@@ -63,9 +63,9 @@ void draw_player(t_config *config)
 	int x;
 	int y;
 
-	mini_x = config->xPos * ((float)MAP_UNIT / UNIT);
-	mini_y = config->yPos * ((float)MAP_UNIT / UNIT);
-	
+	mini_x = config->xPos * ((float)MAP_UNIT / UNIT) - config->minimap.start_x * MAP_UNIT;
+	mini_y = config->yPos * ((float)MAP_UNIT / UNIT) - config->minimap.start_y * MAP_UNIT;
+
 	y = 0;
 	while (y < MAP_UNIT / 4)
 	{
@@ -73,9 +73,9 @@ void draw_player(t_config *config)
 		while (x < MAP_UNIT / 4)
 		{
 			mlx_put_pixel(config->img, mini_x + x, mini_y + y, 0xFF0000FF);
-			mlx_put_pixel(config->img, mini_x - x, mini_y - y, 0xFF0000FF);
-			mlx_put_pixel(config->img, mini_x + x, mini_y - y, 0xFF0000FF);
 			mlx_put_pixel(config->img, mini_x - x, mini_y + y, 0xFF0000FF);
+			mlx_put_pixel(config->img, mini_x + x, mini_y - y, 0xFF0000FF);
+			mlx_put_pixel(config->img, mini_x - x, mini_y - y, 0xFF0000FF);
 			x++;
 		}
 		y++;
@@ -89,8 +89,8 @@ void draw_miniray(t_config *config)
 	float end_x;
 	float end_y;
 
-	mini_x = config->xPos * ((float)MAP_UNIT / UNIT) - MAP_UNIT / 8;
-	mini_y = config->yPos * ((float)MAP_UNIT / UNIT) - MAP_UNIT / 8;
+	mini_x = config->xPos * ((float)MAP_UNIT / UNIT) - 1 - config->minimap.start_x * MAP_UNIT;
+	mini_y = config->yPos * ((float)MAP_UNIT / UNIT) - 1 - config->minimap.start_y * MAP_UNIT;
 	end_x = mini_x + config->dirX * 10;
 	end_y = mini_y + config->dirY * 10;
 	
@@ -110,28 +110,65 @@ void draw_enemies(t_config *config)
 	}
 }
 
+void init_minimap(t_config *config)
+{
+	int start_x;
+	int start_y;
+	int end_x;
+	int end_y;
+
+	start_x = (int)floorf(config->xPos / UNIT) - 6;
+	if (start_x < 0)
+		start_x = 0;
+	
+	start_y = (int)floorf(config->yPos / UNIT) - 6;
+	if (start_y < 0)
+		start_y = 0;
+
+	end_x = start_x + 13;
+	if (end_x >= config->map_width)
+	{
+		end_x = config->map_width - 1;
+		start_x = end_x - 13;
+	}
+	
+	end_y = start_y + 13;
+	if (end_y >= config->map_height)
+	{
+		end_y = config->map_height - 1;
+		start_y = end_y - 13;
+	}
+	config->minimap = (t_minimap) {
+		.start_x = start_x,
+		.start_y = start_y,
+		.end_x = end_x,
+		.end_y = end_y,
+	};
+}
+
 void draw_minimap(t_config *config)
 {
 	int x;
 	int y;
 
-	y = 0;
-	while (y < config->map_height)
+	init_minimap(config);
+	y = config->minimap.start_y;
+	while (y <= config->minimap.end_y)
 	{
-		x = 0;
-		while (x < config->map_width)
+		x = config->minimap.start_x;
+		while (x <= config->minimap.end_x)
 		{
 			if (config->map[y][x] == 1)
-				fill_square(config, x, y, 0xFFFFFFAF);
+				fill_square(config, x - config->minimap.start_x, y - config->minimap.start_y, 0xFFFFFFAF);
 			else if (config->map[y][x] == 4)
-				fill_square(config, x, y, 0xFFFF00FFF);
+				fill_square(config, x - config->minimap.start_x, y - config->minimap.start_y, 0xFFFF00FFF);
 			else
-				fill_square(config, x, y, 0x0);
+				fill_square(config, x - config->minimap.start_x, y - config->minimap.start_y, 0x0);
 			x++;
 		}
 		y++;
 	}
 	draw_player(config);
-	draw_enemies(config);
+	// draw_enemies(config);
 	draw_miniray(config);
 }

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/21 11:50:02 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:55:10 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define MAP_HEIGHT 24
 # define UNIT 640
 # define SUB_UNIT (WIDTH / MAP_WIDTH)
-# define MAP_UNIT 8
+# define MAP_UNIT 16
 # define ENEMY_SIZE (UNIT)
 # define TEX_WIDTH UNIT
 # define TEX_HEIGHT UNIT
@@ -90,6 +90,15 @@ typedef struct s_sprite
 	t_type	type;
 } t_sprite;
 
+typedef struct s_minimap
+{
+	int **map;
+	int start_x;
+	int start_y;
+	int end_x;
+	int end_y;
+}	t_minimap;
+
 typedef struct s_config
 {
 	mlx_t		*mlx;
@@ -98,7 +107,7 @@ typedef struct s_config
 	int height;
 	int map_width;
 	int map_height;
-	int map[MAP_WIDTH][MAP_HEIGHT];
+	int map[MAP_HEIGHT][MAP_WIDTH];
 	int **texture_north;
 	int **texture_south;
 	int **texture_east;
@@ -140,6 +149,7 @@ typedef struct s_config
 	int won;
 	int is_starting;
 	t_vector visible_door;
+	t_minimap minimap;
 }	t_config;
 
 typedef struct s_node
