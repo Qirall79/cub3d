@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/22 12:47:02 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:11:42 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	set_sprites_pos(t_config *config, int index, int i, int j)
 		.initial_y = config->sprite_pos.y,
 		.type = config->map[i][j] - 2,
 		.visible = 1,
-		.texture = config->enemy_texture
+		.texture = config->enemy_texture,
+		.path_to_player = NULL
 	};
 	if (config->sprites[index].type == COLLECTIBLE)
 	{
