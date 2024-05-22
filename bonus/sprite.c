@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:01:46 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 14:45:39 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/22 12:17:11 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ void	get_sprite_boundaries(t_config *config, t_sprite *sprite)
 void	draw_sprite(t_config *config, t_sprite *sprite)
 {
 	t_vector	diff;
-	t_boundary	h;
-	t_boundary	v;
 
 	if (!sprite->visible)
 		return ;
