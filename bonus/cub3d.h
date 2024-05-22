@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/22 12:10:04 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:53:56 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,6 +175,7 @@ void draw_rays(t_config *config);
 // hooks
 void move_player(t_config *config);
 void set_movement_params(mlx_key_data_t keydata, t_config *config);
+void handle_click(mlx_key_data_t keydata, t_config *config);
 void loop_hook(t_config *config);
 void handle_mouse(double xpos, double ypos, t_config *config);
 

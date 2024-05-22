@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/22 13:11:42 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/22 13:52:49 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,7 +324,7 @@ int main(void)
 	draw_map(&config);
 
 	// hooks
-	mlx_key_hook(config.mlx, (mlx_keyfunc) set_movement_params, &config);
+	mlx_key_hook(config.mlx, (mlx_keyfunc) handle_click, &config);
 	mlx_cursor_hook(config.mlx, (mlx_cursorfunc) handle_mouse, &config);
 	mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
 
