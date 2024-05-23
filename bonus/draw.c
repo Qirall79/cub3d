@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/21 10:56:13 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:21:31 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,49 +28,8 @@ int in_range(int p, int min, int max)
 
 void draw_map(t_config *config)
 {
-	// int div;
-	// int i;
-	// int j;
-	// int x;
-	// int y;
-	// t_vector player;
-
-	// player.x = (config->xPos / UNIT) * SUB_UNIT;
-	// player.y = (config->yPos / UNIT) * SUB_UNIT;
-	// div = config->width / MAP_WIDTH;
-	// i = 0;
-	// while (i < MAP_HEIGHT)
-	// {
-	// 	j = 0;
-	// 	while (j < MAP_WIDTH)
-	// 	{
-	// 		y = i * div;
-	// 		while (y < (i + 1) * div)
-	// 		{
-	// 			x = j * div;
-	// 			while (x < (j + 1) * div)
-	// 			{
-						
-	// 				if (in_range(x, player.x - 2, player.x + 2)
-	// 				&& in_range(y, player.y - 2, player.y + 2))
-	// 					mlx_put_pixel(config->img, x, y, 0xFFFF00FF);
-	// 				else if (config->map[i][j] == 1)
-	// 					mlx_put_pixel(config->img, x, y, 0x0FFFFFFF);
-	// 				else
-	// 					mlx_put_pixel(config->img, x, y, 0x0);
-					
-	// 				// draw grids
-	// 				if (x % div == 0 || y % div == 0)
-	// 					mlx_put_pixel(config->img, x, y, 0xFFFFFFFF);
-
-	// 				x++;
-	// 			}
-	// 			y++;
-	// 		}
-	// 		j++;
-	// 	}
-	// 	i++;
-	// }
+	if (config->fail)
+		return ;
 	draw_rays(config);
 }
 

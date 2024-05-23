@@ -6,19 +6,19 @@
 #    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/05/22 11:18:20 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/05/23 12:19:48 by wbelfatm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CFLAGS = -fsanitize=address -g -Ofast #-Wall -Wextra -Werror 
+CFLAGS = -Ofast  #-fsanitize=address -g  #-Wall -Wextra -Werror 
 CC = cc
 RM = rm -f
 
 SRCS = main.c hooks.c draw.c raycasting.c utils.c rendering.c sprite.c astar.c minimap.c doors.c
 OBJS = ${SRCS:.c=.o}
 LIBMLX = ./lib/MLX
-# GLFW = /Users/wbelfatm/.brew/Cellar/glfw/3.4/lib
-GLFW = /opt/homebrew/Cellar/glfw/3.4/lib
+GLFW = /Users/wbelfatm/.brew/Cellar/glfw/3.4/lib
+# GLFW = /opt/homebrew/Cellar/glfw/3.4/lib
 LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -L$(GLFW) -lm
 INCLUDES = -I $(LIBMLX)/include
 NAME = cub3d

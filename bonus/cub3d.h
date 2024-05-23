@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/22 13:53:56 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/23 12:11:40 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,8 @@ typedef struct s_config
 	int **entry_texture;
 	int **loss_texture;
 	int **win_texture;
-	int **sprite;
 	int **enemy_texture;
 	int **collectible_texture;
-	t_vector *path_to_player;
 	int path_steps;
 	int path_index;
 	mlx_texture_t *tex;
@@ -152,6 +150,7 @@ typedef struct s_config
 	t_minimap minimap;
 	double old_mouse_x;
 	double old_mouse_y;
+	int fail;
 }	t_config;
 
 typedef struct s_node
@@ -202,5 +201,7 @@ void draw_point(t_config *config, int x, int y);
 int vertical_facing(float angle);
 int horizontal_facing(float angle);
 float get_distance(float xi, float yi, float xf, float yf);
+void free_config(t_config *config);
+void set_failure(t_config *config);
 
 #endif

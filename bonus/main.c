@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/22 13:52:49 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:19:37 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,24 @@ int	**allocate_texture(t_config *config, t_dimensions d)
 {
 	int	**arr;
 	int	y;
+	int i;
 
+	if (config->fail)
+		return (NULL);
 	arr = (int **)malloc(d.height * sizeof(int *));
+	if (!arr)
+		return (set_failure(config), NULL);
 	y = 0;
 	while (y < d.height)
 	{
 		arr[y] = (int *)malloc(d.width * sizeof(int));
+		if (!arr[y])
+		{
+			i = -1;
+			while (++i < y)
+				free(arr[i]);
+			return (set_failure(config), NULL);
+		}
 		y++;
 	}
 	return (arr);
@@ -145,24 +157,25 @@ void	load_texture(t_config *config, char *path)
 {
 	mlx_texture_t	*tex;
 
+	if (config->fail)
+		return ;
 	tex = mlx_load_png(path);
 	if (!tex)
-		(printf("FAIL\n"), exit(EXIT_FAILURE));
+		return (set_failure(config));
 	config->tex = tex;
 }
 
 int	**generate_texture(char *path, t_config *config, t_dimensions d)
 {
 	int				**arr;
-	mlx_texture_t	*tex;
 	int				*pixels;
 	int				x;
 	int				y;
 
 	load_texture(config, path);
 	arr = allocate_texture(config, d);
-	if (!arr)
-		return (NULL);
+	if (!arr || config->fail)
+		return (set_failure(config), NULL);
 	pixels = (int *) config->tex->pixels;
 	y = 0;
 	while (y < d.height)
@@ -176,6 +189,7 @@ int	**generate_texture(char *path, t_config *config, t_dimensions d)
 		}
 		y++;
 	}
+	mlx_delete_texture(config->tex);
 	return (arr);
 }
 
@@ -183,11 +197,15 @@ void	assign_paths(t_config *config)
 {
 	int	i;
 
+	if (config->fail)
+		return ;
 	i = 0;
 	while (i < config->sprite_count)
 	{
 		if (config->sprites[i].type == ENEMY)
 			solve_a_star(config, &config->sprites[i]);
+		if (config->fail)
+			break ;
 		i++;
 	}
 }
@@ -222,6 +240,8 @@ void	init_sprites_textures(t_config *config)
 	config->collectibles_left = 0;
 	config->sprites
 		= (t_sprite *)malloc(config->sprite_count * sizeof(t_sprite));
+	if (!config->sprites)
+		return (set_failure(config));
 	config->texture_east
 		= generate_texture("./textures/wall_1.png", config, wall_d);
 	config->texture_west
@@ -246,9 +266,10 @@ void	init_config(t_config *config)
 	config->dirY = sin(config->viewAngle * DEG_TO_RAD);
 	config->dirX = cos(config->viewAngle * DEG_TO_RAD);
 	config->rays = (int *) malloc(config->width * sizeof(int));
+	if (!config->rays)
+		set_failure(config);
 	config->sprite_offset = 0;
 	config->flying_up = 0;
-	config->path_to_player = NULL;
 	config->path_index = 0;
 	config->lost = 0;
 	config->won = 0;
@@ -267,7 +288,6 @@ void	init_config(t_config *config)
 
 void init_game(t_config *config)
 {
-
 	/*---- parsing start ----*/
 
 	int worldMap[MAP_HEIGHT][MAP_WIDTH]=
@@ -297,15 +317,17 @@ void init_game(t_config *config)
 	{1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
-	
+
 	set_dimensions(config);
 	copy_map(config, worldMap);
-	
+
 	/*---- parsing end ----*/
+	config->fail = 0;
 	init_sprites_textures(config);
+	if (config->fail)
+		return ;
 	set_pos(config);
 	config->collectibles_tmp = config->collectibles_left;
-
 	config->mlx = mlx_init(config->width, config->height, "Cub3D", 0);
 	if (!config->mlx)
 		printf("ERROR initializing MLX\n");
@@ -316,8 +338,14 @@ void init_game(t_config *config)
 	init_config(config);
 }
 
+void wtf(void)
+{
+	system("leaks cub3d");
+}
+
 int main(void)
 {
+	atexit(wtf);
 	t_config config;
 
 	init_game(&config);
@@ -330,5 +358,6 @@ int main(void)
 
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);
+	free_config(&config);
 	return (EXIT_SUCCESS);
 }
