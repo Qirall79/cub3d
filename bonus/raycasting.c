@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 18:18:53 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/21 11:00:21 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:42:15 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,22 +66,19 @@ int	set_params_v(t_config *config, t_vector *a, t_vector *step, float alpha)
 	return (1);
 }
 
-int check_wall_hit(t_config *config, t_vector map_pos)
+int	check_wall_hit(t_config *config, t_vector map_pos)
 {
 	if (!(in_range(map_pos.x, 0, config->map_width - 1)
-		&& in_range(map_pos.y, 0, config->map_height - 1)))
+			&& in_range(map_pos.y, 0, config->map_height - 1)))
 		return (0);
-
-	// check door hit
 	if (config->map[(int)map_pos.y][(int)map_pos.x] == 4
 	|| config->map[(int)map_pos.y][(int)map_pos.x] == 6)
 	{
-		// calculate distance to door
-			// if it's less than 2 UNITs then it;s manageable
-		if (get_distance(map_pos.x * UNIT + UNIT / 2, map_pos.y * UNIT + UNIT / 2, config->xPos, config->yPos) <= 3 * UNIT)
+		if (get_distance(map_pos.x * UNIT + UNIT / 2,
+				map_pos.y * UNIT + UNIT / 2, config->xPos,
+				config->yPos) <= 3 * UNIT)
 			config->visible_door = map_pos;
 	}
-
 	if (config->map[(int)map_pos.y][(int)map_pos.x] == 1
 		|| config->map[(int)map_pos.y][(int)map_pos.x] == 4)
 		return (1);

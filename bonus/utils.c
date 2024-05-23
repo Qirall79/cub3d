@@ -6,34 +6,34 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:29:38 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/23 12:11:33 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:39:32 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int vertical_facing(float angle)
+int	vertical_facing(float angle)
 {
 	if (sin(angle * DEG_TO_RAD) > 0.000001f)
-		return 1;
+		return (1);
 	else if (sin(angle * DEG_TO_RAD) < -0.000001f)
-		return 2;
-	return 0;
+		return (2);
+	return (0);
 }
 
-int horizontal_facing(float angle)
+int	horizontal_facing(float angle)
 {
 	if (cos(angle * DEG_TO_RAD) > 0.000001f)
-		return 1;
+		return (1);
 	else if (cos(angle * DEG_TO_RAD) < -0.000001f)
-		return 2;
-	return 0;
+		return (2);
+	return (0);
 }
 
-void free_texture(t_config *config, int **texture, char op)
+void	free_texture(t_config *config, int **texture, char op)
 {
-	int width;
-	int i;
+	int	width;
+	int	i;
 
 	width = config->width;
 	if (op == 'u')
@@ -47,9 +47,9 @@ void free_texture(t_config *config, int **texture, char op)
 	free(texture);
 }
 
-void free_config(t_config *config)
+void	free_config(t_config *config)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < config->sprite_count)
@@ -71,7 +71,7 @@ void free_config(t_config *config)
 	free(config->rays);
 }
 
-void set_failure(t_config *config)
+void	set_failure(t_config *config)
 {
 	config->fail = true;
 }

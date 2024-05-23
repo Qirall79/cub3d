@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/23 11:55:58 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:53:03 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,6 +273,13 @@ void	set_movement_params(mlx_key_data_t keydata, t_config *config)
 		config->rotate_left = 0;
 }
 
+void	end_game(t_config *config)
+{
+	mlx_terminate(config->mlx);
+	free_config(config);
+	exit(EXIT_SUCCESS);
+}
+
 void	handle_click(mlx_key_data_t keydata, t_config *config)
 {
 	int	x;
@@ -298,11 +305,7 @@ void	handle_click(mlx_key_data_t keydata, t_config *config)
 		}
 	}
 	if (keydata.key == MLX_KEY_ESCAPE)
-	{
-		mlx_terminate(config->mlx);
-		free_config(config);
-		exit(EXIT_SUCCESS);
-	}
+		end_game(config);
 }
 
 void	display_full(t_config *config, int **texture)

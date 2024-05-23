@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 20:18:09 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/23 12:11:29 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:37:06 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,6 @@ void	sort_list(t_node **nodes_to_check, int end, t_node **current)
 		*current = NULL;
 }
 
-
-
 void	initialize_node(t_config *config, t_node *node, int x, int y)
 {
 	node->x = x;
@@ -93,16 +91,16 @@ void	initialize_node(t_config *config, t_node *node, int x, int y)
 	node->neighbors[WEST] = NULL;
 }
 
-void free_previous_nodes(t_node *nodes, int i, int j)
+void	free_previous_nodes(t_node *nodes, int i, int j)
 {
-	int y;
-	int x;
+	int	y;
+	int	x;
 
 	y = 0;
 	while (y <= i)
 	{
 		x = 0;
-		while(x <= j)
+		while (x <= j)
 		{
 			free(nodes[y * MAP_WIDTH + x].neighbors);
 			x++;
@@ -110,6 +108,17 @@ void free_previous_nodes(t_node *nodes, int i, int j)
 		y++;
 	}
 	free(nodes);
+}
+
+int	is_special_node(t_config *config, t_sprite *sprite, int i, int j)
+{
+	if ((int)(sprite->y / UNIT) == i
+		&& (int)(sprite->x / UNIT) == j)
+		return (1);
+	if ((int)(config->yPos / UNIT) == i
+		&& (int)(config->xPos / UNIT) == j)
+		return (2);
+	return (0);
 }
 
 t_node	*allocate_nodes(t_config *config,
@@ -132,11 +141,9 @@ t_sprite *sprite, t_node **start, t_node **end)
 			initialize_node(config, &nodes[i * config->map_width + j], j, i);
 			if (config->fail)
 				return (free_previous_nodes(nodes, i, j), NULL);
-			if ((int)(sprite->y / UNIT) == i
-			&& (int)(sprite->x / UNIT) == j)
+			if (is_special_node(config, sprite, i, j) == 1)
 				*start = &nodes[i * config->map_width + j];
-			if ((int)(config->yPos / UNIT) == i
-			&& (int)(config->xPos / UNIT) == j)
+			if (is_special_node(config, sprite, i, j) == 2)
 				*end = &nodes[i * config->map_width + j];
 		}
 	}
@@ -198,7 +205,7 @@ t_node *end, t_node **nodes_to_check, int *k)
 	}
 }
 
-void free_path(t_sprite *sprite)
+void	free_path(t_sprite *sprite)
 {
 	free(sprite->path_to_player);
 	sprite->path_to_player = NULL;
@@ -233,11 +240,12 @@ void	generate_path(t_config *config, t_sprite *sprite, t_node *current)
 	sprite->path_to_player = path;
 }
 
-void free_nodes(t_config *config, t_node *nodes, t_node **nodes_to_check, char op)
+void	free_nodes(t_config *config, t_node *nodes,
+t_node **nodes_to_check, char op)
 {
-	int i;
-	int j;
-	
+	int	i;
+	int	j;
+
 	i = 0;
 	while (i < config->map_height)
 	{
@@ -255,6 +263,21 @@ void free_nodes(t_config *config, t_node *nodes, t_node **nodes_to_check, char o
 		set_failure(config);
 }
 
+t_node	**get_nodes_to_check(t_config *config)
+{
+	t_node	**nodes_to_check;
+
+	nodes_to_check = (t_node **) malloc(sizeof(t_node *)
+			* config->map_width * config->map_height * 4);
+	return (nodes_to_check);
+}
+
+void	init_current(t_node *current, t_node *end)
+{
+	current->local_goal = 0.0;
+	current->global_goal = get_eucledian_distance(current, end);
+}
+
 void	solve_a_star(t_config *config, t_sprite *sprite)
 {
 	t_node	*nodes;
@@ -267,12 +290,10 @@ void	solve_a_star(t_config *config, t_sprite *sprite)
 	if (!nodes)
 		return ;
 	set_neighbors(config, &nodes);
-	nodes_to_check = (t_node **) malloc(sizeof(t_node *)
-			* config->map_width * config->map_height * 4);
+	nodes_to_check = get_nodes_to_check(config);
 	if (!nodes_to_check)
 		return (free_nodes(config, nodes, NULL, 'f'));
-	current->local_goal = 0.0;
-	current->global_goal = get_eucledian_distance(current, end);
+	init_current(current, end);
 	nodes_to_check[0] = current;
 	k = 1;
 	while (!list_empty(nodes_to_check, k, current, end))

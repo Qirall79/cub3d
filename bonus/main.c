@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/23 15:19:37 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/23 15:25:16 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -289,7 +289,6 @@ void	init_config(t_config *config)
 void init_game(t_config *config)
 {
 	/*---- parsing start ----*/
-
 	int worldMap[MAP_HEIGHT][MAP_WIDTH]=
 	{
 	{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
