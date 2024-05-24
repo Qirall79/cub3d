@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:29:38 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/23 15:39:32 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/05/24 14:10:13 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ int	horizontal_facing(float angle)
 
 void	free_texture(t_config *config, int **texture, char op)
 {
-	int	width;
+	int	height;
 	int	i;
 
-	width = config->width;
+	height = config->height;
 	if (op == 'u')
-		width = UNIT;
+		height = UNIT;
 	i = 0;
-	while (i < width)
+	while (i < height)
 	{
 		free(texture[i]);
 		i++;
