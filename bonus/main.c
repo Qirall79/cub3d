@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/23 15:25:16 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/06/21 15:39:24 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,13 +243,13 @@ void	init_sprites_textures(t_config *config)
 	if (!config->sprites)
 		return (set_failure(config));
 	config->texture_east
-		= generate_texture("./textures/wall_1.png", config, wall_d);
+		= generate_texture("./textures/chrollo_portrait.png", config, wall_d);
 	config->texture_west
-		= generate_texture("./textures/wall_3.png", config, wall_d);
+		= generate_texture("./textures/hisoka_portrait.png", config, wall_d);
 	config->texture_north
-		= generate_texture("./textures/wall_2.png", config, wall_d);
+		= generate_texture("./textures/killua.png", config, wall_d);
 	config->texture_south
-		= generate_texture("./textures/wall_4.png", config, wall_d);
+		= generate_texture("./textures/meruem.png", config, wall_d);
 	config->enemy_texture
 		= generate_texture("./textures/monster.png", config, wall_d);
 	config->collectible_texture

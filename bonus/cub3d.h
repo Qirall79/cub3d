@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/24 14:01:57 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/07/03 21:37:50 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@
 # include <stdlib.h>
 # include <math.h>
 
-# include "./lib/MLX/include/MLX42/MLX42.h"
+# include "./lib/MLX42.h"
 
 typedef struct s_vector
 {

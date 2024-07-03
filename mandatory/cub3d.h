@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/20 11:55:27 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/07/03 21:41:18 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 # define WIDTH 720
 # define HEIGHT 720
-# define MAP_WIDTH 5
+# define MAP_WIDTH 24
 # define MAP_HEIGHT 24
 # define UNIT 640
 # define SUB_UNIT (WIDTH / MAP_WIDTH)
@@ -45,7 +45,7 @@
 # include <stdlib.h>
 # include <math.h>
 
-# include "./lib/MLX/include/MLX42/MLX42.h"
+# include "./lib/MLX42.h"
 
 typedef struct s_vector
 {
