@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 10:25:22 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 15:42:48 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/04 23:01:36 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,6 @@ void	draw_miniray(t_config *config)
 	end.x = start.x + config->dirX * 10;
 	end.y = start.y + config->dirY * 10;
 	draw_line(start, end, config, 0xFF0F00FF);
-}
-
-void	draw_enemies(t_config *config)
-{
-	int	i;
-
-	i = 0;
-	while (i < config->sprite_count)
-	{
-		if (config->sprites[i].type == ENEMY)
-			draw_enemy(config, config->sprites[i]);
-		i++;
-	}
 }
 
 void	set_minimap_params(t_config *config, t_vector start, t_vector end)
@@ -101,6 +88,5 @@ void	draw_minimap(t_config *config)
 		y++;
 	}
 	draw_player(config);
-	draw_enemies(config);
 	draw_miniray(config);
 }

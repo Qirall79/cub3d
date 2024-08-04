@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 20:18:09 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 15:56:26 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/04 23:00:10 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,6 @@ void	init_current(t_node *current, t_node *end)
 {
 	current->local_goal = 0.0;
 	current->global_goal = get_eucledian_distance(current, end);
-	// current->parent = NULL;
-	// current->x = sprite->x;
-	// current->y = sprite->y;
-	// current->visited = 0;
-	// current->neighbors = NULL;
 }
 
 void	solve_a_star(t_config *config, t_sprite *sprite)
