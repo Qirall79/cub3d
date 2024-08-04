@@ -6,21 +6,11 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:01:46 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/23 15:27:12 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/04 14:10:40 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
-
-int	is_drawable(t_config *config, t_vector texture_pos, t_sprite *sprite, int x)
-{
-	if (in_range(texture_pos.x, 0, UNIT)
-		&& in_range(texture_pos.y, 0, UNIT)
-		&& (char)sprite->texture[(int)texture_pos.y][(int)texture_pos.x]
-		&& (int)roundf(sprite->distance) <= config->rays[x])
-		return (1);
-	return (0);
-}
+#include "../../cub3d.h"
 
 void	plot_stripes(t_config *config, t_sprite *sprite)
 {

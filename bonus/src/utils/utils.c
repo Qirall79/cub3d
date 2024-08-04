@@ -6,11 +6,11 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:29:38 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/24 14:10:13 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/04 14:10:48 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
+#include "../../cub3d.h"
 
 int	vertical_facing(float angle)
 {

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 10:05:13 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:55:40 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
 # define UNIT 640
+# define COLLECTIBLE_STEP (UNIT / 32)
 # define SUB_UNIT (WIDTH / MAP_WIDTH)
 # define MAP_UNIT 16
 # define ENEMY_SIZE (UNIT)
@@ -168,8 +169,12 @@ typedef struct s_node
 // draw
 void draw_map(t_config *config);
 void redraw_image(t_config *config);
-void draw_line(float yi, float xi, float yf, float xf, t_config *config, int color);
+void	draw_line(t_vector start, t_vector end,
+t_config *config, int color);
 void draw_rays(t_config *config);
+void	draw_score(t_config *config);
+void	redraw_image(t_config *config);
+
 
 // hooks
 void move_player(t_config *config);
@@ -177,13 +182,38 @@ void set_movement_params(mlx_key_data_t keydata, t_config *config);
 void handle_click(mlx_key_data_t keydata, t_config *config);
 void loop_hook(t_config *config);
 void handle_mouse(double xpos, double ypos, t_config *config);
+int	is_wall_v(float newX, float newY, t_config *config);
+float	normalize_angle(float angle);
+int	is_wall_h(float newX, float newY, t_config *config);
+int	is_wall_v(float newX, float newY, t_config *config);
+void	check_collection(t_config *config);
+void	move_forward(t_config *config, float mov_speed);
+void	move_backward(t_config *config, float mov_speed);
+void	move_right(t_config *config, float mov_speed);
+void	move_left(t_config *config, float mov_speed);
+void	move_player(t_config *config);
+void	display_full(t_config *config, int **texture);
+void	handle_click(mlx_key_data_t keydata, t_config *config);
+void	end_game(t_config *config);
+void	set_movement_params(mlx_key_data_t keydata, t_config *config);
+void	handle_mouse(double xpos, double ypos, t_config *config);
+void	reset_game(t_config *config);
+int	enemy_in_door(t_config *config);
+void	rotate(t_config *config, float rot_speed);
 
 // raycasting
 t_vector find_intersection(t_config *config, float alpha);
+int	check_wall_hit(t_config *config, t_vector map_pos);
+int	set_params_v(t_config *config, t_vector *a, t_vector *step, float alpha);
+int	set_params_h(t_config *config, t_vector *a, t_vector *step, float alpha);
 
 // rendering
 void draw_wall(t_config *config, t_vector p, float alpha, int x);
 void	draw_sprite(t_config *config, t_sprite *sprite);
+float	get_wall_height(t_config *config, float distance, float alpha, int x);
+t_vector	get_map_pos(t_vector p, float alpha);
+int	get_color(t_config *config, t_vector p, float alpha, t_vector texture_pos);
+int	get_texture_x(t_vector p);
 
 // a star
 void solve_a_star(t_config *config, t_sprite *sprite);
@@ -192,6 +222,32 @@ void assign_paths(t_config *config);
 
 // minimap
 void draw_minimap(t_config *config);
+void	draw_player(t_config *config);
+void	draw_enemy(t_config *config, t_sprite sprite);
+void	fill_square(t_config *config, int x, int y, long int color);
+
+// astar
+void	swap_nodes(t_node **nodes, int i, int j);
+void	initialize_node(t_config *config, t_node *node, int x, int y);
+t_node	*allocate_nodes(t_config *config,
+t_sprite *sprite, t_node **start, t_node **end);
+t_node	**get_nodes_to_check(t_config *config);
+void	free_previous_nodes(t_node *nodes, int i, int j);
+int	is_special_node(t_config *config, t_sprite *sprite, int i, int j);
+void	free_nodes(t_config *config, t_node *nodes,
+t_node **nodes_to_check, char op);
+void	free_path(t_sprite *sprite);
+void	generate_path(t_config *config, t_sprite *sprite, t_node *current);
+void	update_neighbors(t_node *current,
+t_node *end, t_node **nodes_to_check, int *k);
+t_node *	set_neighbors(t_config *config, t_node **nodes, t_sprite *sprite);
+float	get_eucledian_distance(t_node *start, t_node *end);
+
+// sprites
+void	set_sprites_distance(t_config *config);
+void	sort_sprites(t_config *config);
+void	move_all(t_config *config);
+int	is_drawable(t_config *config, t_vector texture_pos, t_sprite *sprite, int x);
 
 // utils
 int in_range(int p, int min, int max);
@@ -203,5 +259,22 @@ int horizontal_facing(float angle);
 float get_distance(float xi, float yi, float xf, float yf);
 void free_config(t_config *config);
 void set_failure(t_config *config);
+uint32_t	abgr_to_rgba(uint32_t abgr_color);
+int	**generate_texture(char *path, t_config *config, t_dimensions d);
+void	load_texture(t_config *config, char *path);
+int	**allocate_texture(t_config *config, t_dimensions d);
+int	get_color_index(mlx_texture_t *tex, int x, int y, t_dimensions d);
+int	count_sprites(t_config *config);
+void	set_dimensions(t_config *config);
+int	count_sprites(t_config *config);
+void	set_sprites_pos(t_config *config, int index, int i, int j);
+void	set_pos(t_config *config);
+void	copy_map(t_config *config, int map[MAP_HEIGHT][MAP_WIDTH]);
+void	assign_paths(t_config *config);
+void	init_game(t_config *config);
+void	init_config(t_config *config);
+void	init_sprites_textures(t_config *config);
+void	init_screens(t_config *config);
+void	set_dimensions(t_config *config);
 
 #endif

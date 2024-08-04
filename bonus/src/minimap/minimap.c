@@ -6,97 +6,24 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 10:25:22 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/23 15:50:27 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/04 15:42:48 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub3d.h"
-
-void	fill_square(t_config *config, int x, int y, long int color)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < MAP_UNIT)
-	{
-		j = 0;
-		while (j < MAP_UNIT)
-		{
-			mlx_put_pixel(config->img, x * MAP_UNIT + j,
-				y * MAP_UNIT + i, color);
-			j++;
-		}
-		i++;
-	}
-}
-
-void	draw_enemy(t_config *config, t_sprite sprite)
-{
-	float	mini_x;
-	float	mini_y;
-	int		x;
-	int		y;
-
-	mini_x = sprite.x * ((float)MAP_UNIT / UNIT);
-	mini_y = sprite.y * ((float)MAP_UNIT / UNIT);
-	y = 0;
-	while (y < 2)
-	{
-		x = 0;
-		while (x < 2)
-		{
-			mlx_put_pixel(config->img, mini_x + x, mini_y + y, 0xFFFF00FF);
-			mlx_put_pixel(config->img, mini_x - x, mini_y - y, 0xFFFF00FF);
-			mlx_put_pixel(config->img, mini_x + x, mini_y - y, 0xFFFF00FF);
-			mlx_put_pixel(config->img, mini_x - x, mini_y + y, 0xFFFF00FF);
-			x++;
-		}
-		y++;
-	}
-}
-
-void	draw_player(t_config *config)
-{
-	float	mini_x;
-	float	mini_y;
-	int		x;
-	int		y;
-
-	mini_x = config->xPos * ((float)MAP_UNIT / UNIT)
-		- config->minimap.start_x * MAP_UNIT;
-	mini_y = config->yPos * ((float)MAP_UNIT / UNIT)
-		- config->minimap.start_y * MAP_UNIT;
-	y = 0;
-	while (y < MAP_UNIT / 4)
-	{
-		x = 0;
-		while (x < MAP_UNIT / 4)
-		{
-			mlx_put_pixel(config->img, mini_x + x, mini_y + y, 0xFF0000FF);
-			mlx_put_pixel(config->img, mini_x - x, mini_y + y, 0xFF0000FF);
-			mlx_put_pixel(config->img, mini_x + x, mini_y - y, 0xFF0000FF);
-			mlx_put_pixel(config->img, mini_x - x, mini_y - y, 0xFF0000FF);
-			x++;
-		}
-		y++;
-	}
-}
+#include "../../cub3d.h"
 
 void	draw_miniray(t_config *config)
 {
-	float	mini_x;
-	float	mini_y;
-	float	end_x;
-	float	end_y;
+	t_vector	start;
+	t_vector	end;
 
-	mini_x = config->xPos * ((float)MAP_UNIT / UNIT) - 1
+	start.x = config->xPos * ((float)MAP_UNIT / UNIT) - 1
 		- config->minimap.start_x * MAP_UNIT;
-	mini_y = config->yPos * ((float)MAP_UNIT / UNIT) - 1
+	start.y = config->yPos * ((float)MAP_UNIT / UNIT) - 1
 		- config->minimap.start_y * MAP_UNIT;
-	end_x = mini_x + config->dirX * 10;
-	end_y = mini_y + config->dirY * 10;
-	draw_line(mini_x, mini_y, end_x, end_y, config, 0xFF0F00FF);
+	end.x = start.x + config->dirX * 10;
+	end.y = start.y + config->dirY * 10;
+	draw_line(start, end, config, 0xFF0F00FF);
 }
 
 void	draw_enemies(t_config *config)
@@ -174,5 +101,6 @@ void	draw_minimap(t_config *config)
 		y++;
 	}
 	draw_player(config);
+	draw_enemies(config);
 	draw_miniray(config);
 }
