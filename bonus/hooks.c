@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/23 15:53:03 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/04 10:28:44 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	is_wall_v(float newX, float newY, t_config *config)
 	int	x;
 	int	y;
 
+	(void) newX;
 	y = (int)(config->yPos + newY) / UNIT;
 	x = (int)(config->xPos) / UNIT;
 	if (config->map[y][x] == 1
@@ -39,6 +40,7 @@ int	is_wall_h(float newX, float newY, t_config *config)
 	int	x;
 	int	y;
 
+	(void) newY;
 	x = (int)(config->xPos + newX) / UNIT;
 	y = (int)(config->yPos) / UNIT;
 	if (config->map[y][x] == 1
@@ -328,8 +330,6 @@ void	display_full(t_config *config, int **texture)
 
 void	loop_hook(t_config *config)
 {
-	t_vector	door;
-
 	if (config->fail)
 	{
 		free_config(config);
@@ -359,6 +359,7 @@ void	handle_mouse(double xpos, double ypos, t_config *config)
 {
 	double	increment;
 
+	(void) ypos;
 	increment = (xpos - config->width / 2.0) / 8;
 	config->viewAngle = normalize_angle(config->viewAngle + increment);
 	config->dirY = sin(config->viewAngle * DEG_TO_RAD);

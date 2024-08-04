@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:39:50 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/22 19:28:16 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/04 10:31:20 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	draw_ceiling_floor(t_config *config, int start_y, int end_y, int x)
 	}
 }
 
-t_vector	get_map_pos(t_config *config, t_vector p, float alpha)
+t_vector	get_map_pos(t_vector p, float alpha)
 {
 	t_vector	map_pos;
 
@@ -63,7 +63,7 @@ int	get_color(t_config *config, t_vector p, float alpha, t_vector texture_pos)
 	t_vector	map_pos;
 
 	color = 0;
-	map_pos = get_map_pos(config, p, alpha);
+	map_pos = get_map_pos(p, alpha);
 	if (!in_range(texture_pos.y, 0, UNIT - 1)
 		|| !in_range(texture_pos.x, 0, UNIT - 1))
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/23 15:21:31 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/04 10:30:24 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,11 +162,11 @@ void draw_score(t_config *config)
 
 void draw_rays(t_config *config)
 {
-	float min_angle = config->viewAngle - config->fovAngle / 2;
-	float max_angle = config->viewAngle + config->fovAngle / 2;
+	float min_angle;
 	t_vector p;
 	int i;
 
+	min_angle = config->viewAngle - config->fovAngle / 2;
 	i = 0;
 	while (i < config->width)
 	{
@@ -175,7 +175,6 @@ void draw_rays(t_config *config)
 		min_angle += config->fovAngle / (float) (config->width);
 		i++;
 	}
-
 	move_all(config);
 	set_sprites_distance(config);
 	sort_sprites(config);

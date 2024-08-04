@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/05/19 21:27:42 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/04 10:57:13 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void redraw_image(t_config *config)
 	config->img = mlx_new_image(config->mlx, config->width, config->height);
 	if (!config->img || (mlx_image_to_window(config->mlx, config->img, 0, 0) < 0))
 		(printf("ERROR initializing MLX image\n"));
-	draw_three_d(config);
+	draw_map(config);
 }
 
 int in_range(int p, int min, int max)
@@ -26,7 +26,12 @@ int in_range(int p, int min, int max)
 	return (p >= min && p <= max);
 }
 
-
+void draw_map(t_config *config)
+{
+	if (config->fail)
+		return ;
+	draw_rays(config);
+}
 
 void draw_point(t_config *config, int x, int y)
 {
@@ -54,23 +59,23 @@ void normalize_vector(t_vector *vec)
 	vec->y = vec->y / length;
 }
 
+float get_distance(float xi, float yi, float xf, float yf)
+{
+	return (sqrtf((xi - xf) * (xi - xf) + (yi - yf) * (yi - yf)));
+}
+
 void draw_rays(t_config *config)
 {
-	t_vector player;
 	float min_angle;
-	float i;
 	t_vector p;
+	int i;
 
-	i = 0;
-	player.x = (config->xPos / UNIT) * SUB_UNIT;
-	player.y = (config->yPos / UNIT) * SUB_UNIT;
 	min_angle = config->viewAngle - config->fovAngle / 2;
+	i = 0;
 	while (i < config->width)
 	{
 		p = find_intersection(config, normalize_angle(min_angle));
-		p.x = (p.x / UNIT) * SUB_UNIT;
-		p.y = (p.y / UNIT) * SUB_UNIT;
-		draw_line(player.x, player.y, p.x, p.y, config, 0xFF0000FF);
+		draw_wall(config, p, min_angle, i);
 		min_angle += config->fovAngle / (float) (config->width);
 		i++;
 	}
@@ -100,21 +105,4 @@ void draw_line(float xi, float yi, float xf, float yf, t_config *config, int col
         xi += x_incr;
         yi += y_incr;
     }
-}
-
-void draw_three_d(t_config *config)
-{
-	float min_angle;
-	float i;
-	t_vector p;
-
-	i = 0;
-	min_angle = config->viewAngle - config->fovAngle / 2;
-	while (i < config->width)
-	{
-		p = find_intersection(config, normalize_angle(min_angle));
-		draw_wall(config, p, min_angle, i);
-		min_angle += config->fovAngle / (float) (config->width);
-		i++;
-	}
 }
