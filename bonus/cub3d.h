@@ -6,13 +6,15 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 15:55:40 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/05 23:03:19 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
  
 # define CUB3D_H
+
+#include "../parsing/cub3d.h"
 
 # define WIDTH 960
 # define HEIGHT 840
@@ -108,7 +110,7 @@ typedef struct s_config
 	int height;
 	int map_width;
 	int map_height;
-	int map[MAP_HEIGHT][MAP_WIDTH];
+	int **map;
 	int **texture_north;
 	int **texture_south;
 	int **texture_east;
@@ -276,5 +278,8 @@ void	init_config(t_config *config);
 void	init_sprites_textures(t_config *config);
 void	init_screens(t_config *config);
 void	set_dimensions(t_config *config);
+
+// parsing
+int	parssing(char *s, t_tools *itms);
 
 #endif
