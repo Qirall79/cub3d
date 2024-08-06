@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:39:50 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 11:09:05 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:47:52 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ void	draw_ceiling_floor(t_config *config, int start_y, int end_y, int x)
 	y = 0;
 	while (y < start_y)
 	{
-		mlx_put_pixel(config->img, x, y, 0x0F00FF4F);
+		mlx_put_pixel(config->img, x, y, config->c_color);
 		y++;
 	}
 	y = end_y;
 	while (y < config->height)
 	{
-		mlx_put_pixel(config->img, x, y, 0xFF0F000F);
+		mlx_put_pixel(config->img, x, y, config->f_color);
 		y++;
 	}
 }

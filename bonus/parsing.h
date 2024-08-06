@@ -125,13 +125,4 @@ char	**free_2d(char **tbl);
 
 int     ft_strncmp(char *s1, char *s2, int c);
 
-
-// void draw_map(t_tools *itms);
-
-
-
-// void draw_line(t_tools *itm, double end_y, double end_x);
-// void dda(t_tools *itm, int p_x , int p_y , int x2, int y2);
-
-
 #endif

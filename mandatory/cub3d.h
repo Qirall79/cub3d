@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 11:14:15 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:46:50 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ typedef struct s_config
 	int rotate_left;
 	int fail;
 	char orientation;
+	int c_color;
+	int f_color;
 }	t_config;
 
 typedef struct s_node
@@ -198,6 +200,7 @@ void	init_config(t_config *config);
 void	init_sprites_textures(t_config *config);
 void	init_screens(t_config *config);
 void	set_dimensions(t_config *config);
+int	ft_atoi(const char *str);
 
 // parsing
 int	parssing(char *s, t_tools *itms);

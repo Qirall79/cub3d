@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 11:29:38 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:45:54 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ int **get_map(char **map_lines, t_config *config)
 	return res;
 }
 
+static int get_rgba(int red, int green, int blue)
+{
+	return ((red << 24) | (green << 16) | (blue << 8) | 255);
+}
+
 int	main(int argc, char **argv)
 {
 	// atexit(wtf);
@@ -86,11 +91,10 @@ int	main(int argc, char **argv)
 	int i = 0;
 	int width = my_strlen(items.maps[0]) - 1;
 	while (items.maps[i])
-	{
 		i++;
-	}
 
-
+	config.c_color = get_rgba(ft_atoi(items.c_color[0]), ft_atoi(items.c_color[1]), ft_atoi(items.c_color[2]));
+	config.f_color = get_rgba(ft_atoi(items.f_color[0]), ft_atoi(items.f_color[1]), ft_atoi(items.f_color[2]));
 	config.path_n = items.path_NO;
 	config.path_e = items.path_EA;
 	config.path_w = items.path_WE;
