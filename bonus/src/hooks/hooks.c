@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/05 23:07:47 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 10:19:00 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,26 +77,26 @@ int	enemy_in_door(t_config *config)
 
 void	loop_hook(t_config *config)
 {
-	// if (config->fail)
-	// {
-	// 	free_config(config);
-	// 	exit(EXIT_FAILURE);
-	// }
-	// if (config->is_starting)
-	// {
-	// 	display_full(config, config->entry_texture);
-	// 	return ;
-	// }
-	// if (config->lost)
-	// {
-	// 	display_full(config, config->loss_texture);
-	// 	return ;
-	// }
-	// if (config->won)
-	// {
-	// 	display_full(config, config->win_texture);
-	// 	return ;
-	// }
+	if (config->fail)
+	{
+		free_config(config);
+		exit(EXIT_FAILURE);
+	}
+	if (config->is_starting)
+	{
+		display_full(config, config->entry_texture);
+		return ;
+	}
+	if (config->lost)
+	{
+		display_full(config, config->loss_texture);
+		return ;
+	}
+	if (config->won)
+	{
+		display_full(config, config->win_texture);
+		return ;
+	}
 	config->visible_door = (t_vector){.x = -1, .y = -1};
 	move_player(config);
 	redraw_image(config);

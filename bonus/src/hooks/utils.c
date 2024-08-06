@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:17:06 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 14:06:08 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 10:23:55 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	check_collection(t_config *config)
 			}
 		}
 	}
-	if (config->collectibles_left <= 0)
+	if (!config->no_collectibles && config->collectibles_left <= 0)
 		config->won = 1;
 }
 

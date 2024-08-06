@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:07:39 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 23:00:50 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 10:22:08 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	set_sprites_pos(t_config *config, int index, int i, int j)
 	{
 		config->sprites[index].texture = config->collectible_texture;
 		config->collectibles_left++;
+		config->no_collectibles = 0;
 	}
 }
 

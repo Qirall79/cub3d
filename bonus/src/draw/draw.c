@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/05 23:06:30 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 09:53:20 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	draw_rays(t_config *config)
 	i = 0;
 	while (i < config->width)
 	{
+		// printf("%i\n", i);
 		p = find_intersection(config, normalize_angle(min_angle));
 		draw_wall(config, p, min_angle, i);
 		min_angle += config->fovAngle / (float)(config->width);
@@ -70,7 +71,7 @@ void	draw_rays(t_config *config)
 	set_sprites_distance(config);
 	sort_sprites(config);
 	draw_all(config);
-	// draw_minimap(config);
+	draw_minimap(config);
 	draw_score(config);
 }
 

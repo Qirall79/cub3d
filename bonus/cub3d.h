@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/05 23:03:19 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 10:38:26 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
  
 # define CUB3D_H
 
-#include "../parsing/cub3d.h"
 
 # define WIDTH 960
 # define HEIGHT 840
@@ -49,6 +48,7 @@
 # include <math.h>
 
 # include "./lib/MLX42/include/MLX42/MLX42.h"
+# include "parsing.h"
 
 typedef struct s_vector
 {
@@ -115,6 +115,10 @@ typedef struct s_config
 	int **texture_south;
 	int **texture_east;
 	int **texture_west;
+	char *path_n;
+	char *path_s;
+	char *path_e;
+	char *path_w;
 	int **door_texture;
 	int **entry_texture;
 	int **loss_texture;
@@ -154,6 +158,8 @@ typedef struct s_config
 	double old_mouse_x;
 	double old_mouse_y;
 	int fail;
+	int no_collectibles;
+	char orientation;
 }	t_config;
 
 typedef struct s_node

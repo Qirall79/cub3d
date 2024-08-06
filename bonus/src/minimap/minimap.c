@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 10:25:22 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 23:01:36 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 09:59:54 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	init_minimap(t_config *config)
 	{
 		end.y = config->map_height - 1;
 		start.y = end.y - 13;
+		if (start.y < 0)
+			start.y = 0;
 	}
 	set_minimap_params(config, start, end);
 }
@@ -68,6 +70,8 @@ void	draw_minimap(t_config *config)
 	int	y;
 
 	init_minimap(config);
+	// printf("(%i, %i) (%i, %i)\n", config->minimap.start_x, config->minimap.start_y, config->minimap.end_x, config->minimap.end_y);
+
 	y = config->minimap.start_y;
 	while (y <= config->minimap.end_y)
 	{
