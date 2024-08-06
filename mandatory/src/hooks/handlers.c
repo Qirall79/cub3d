@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:48:34 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 10:58:41 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:14:45 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,8 @@ void	handle_click(mlx_key_data_t keydata, t_config *config)
 		end_game(config);
 }
 
-void	handle_mouse(double xpos, double ypos, t_config *config)
+void handle_resize(int32_t width, int32_t height, t_config *config)
 {
-	double	increment;
-
-	(void) ypos;
-	increment = (xpos - config->width / 2.0) / 8;
-	config->viewAngle = normalize_angle(config->viewAngle + increment);
-	config->dirY = sin(config->viewAngle * DEG_TO_RAD);
-	config->dirX = cos(config->viewAngle * DEG_TO_RAD);
-	mlx_set_mouse_pos(config->mlx, config->width / 2.0, config->height / 2.0);
+	config->width = width;
+	config->height = height;
 }

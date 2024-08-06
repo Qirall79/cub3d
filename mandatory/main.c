@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 10:51:44 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:14:22 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ int	main(int argc, char **argv)
 
 	// hooks
 	mlx_key_hook(config.mlx, (mlx_keyfunc) handle_click, &config);
-	mlx_cursor_hook(config.mlx, (mlx_cursorfunc) handle_mouse, &config);
 	mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
+	mlx_resize_hook(config.mlx, (mlx_resizefunc) handle_resize, &config);
 
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);

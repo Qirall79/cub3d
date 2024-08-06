@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 10:59:08 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:14:15 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,7 @@ void	handle_mouse(double xpos, double ypos, t_config *config);
 void	reset_game(t_config *config);
 int	enemy_in_door(t_config *config);
 void	rotate(t_config *config, float rot_speed);
+void handle_resize(int32_t width, int32_t height, t_config *config);
 
 // raycasting
 t_vector find_intersection(t_config *config, float alpha);

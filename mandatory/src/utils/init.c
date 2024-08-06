@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:10:37 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 11:02:15 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:11:19 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,12 @@ void	init_game(t_config *config)
 	if (config->fail)
 		return ;
 	set_pos(config);
-	config->mlx = mlx_init(config->width, config->height, "Cub3D", 0);
+	config->mlx = mlx_init(config->width, config->height, "Cub3D", 1);
 	if (!config->mlx)
 		printf("ERROR initializing MLX\n");
 	config->img = mlx_new_image(config->mlx, config->width, config->height);
 	if (!config->img
 		|| (mlx_image_to_window(config->mlx, config->img, 0, 0) < 0))
 		printf("ERROR initializing MLX image\n");
-	mlx_set_cursor_mode(config->mlx, MLX_MOUSE_HIDDEN);
 	init_config(config);
 }

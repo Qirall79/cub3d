@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:39:50 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 10:48:58 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 11:09:05 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	draw_wall(t_config *config, t_vector p, float alpha, int x)
 	float		y;
 	t_vector	texture_pos;
 
-	wall_height = get_wall_height(config, p.distance, alpha, x);
+	wall_height = get_wall_height(config, p.distance, alpha);
 	start_y = (config->height / 2) - (wall_height / 2);
 	end_y = start_y + wall_height;
 	draw_ceiling_floor(config, start_y, end_y, x);
