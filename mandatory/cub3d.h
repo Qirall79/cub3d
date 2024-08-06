@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 11:04:36 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/06 10:59:08 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
  
 # define CUB3D_H
 
+
 # define WIDTH 960
 # define HEIGHT 840
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
 # define UNIT 640
+# define COLLECTIBLE_STEP (UNIT / 32)
 # define SUB_UNIT (WIDTH / MAP_WIDTH)
 # define MAP_UNIT 16
 # define ENEMY_SIZE (UNIT)
@@ -46,6 +48,7 @@
 # include <math.h>
 
 # include "./lib/MLX42/include/MLX42/MLX42.h"
+# include "parsing.h"
 
 typedef struct s_vector
 {
@@ -61,34 +64,6 @@ typedef struct s_dimensions
 	int width;
 }	t_dimensions;
 
-typedef enum e_type
-{
-	ENEMY,
-	COLLECTIBLE
-}	t_type;
-
-typedef struct s_sprite
-{
-	float	distance;
-	float	height;
-	float	angle;
-	float	angle_diff;
-	int		x;
-	int		y;
-	int		initial_x;
-	int		initial_y;
-	int		start_x;
-	int		end_x;
-	int		start_y;
-	int		end_y;
-	int		max_offset;
-	t_vector *path_to_player;
-	int		path_index;
-	int		path_steps;
-	int 	visible;
-	int		**texture;
-	t_type	type;
-} t_sprite;
 
 typedef struct s_minimap
 {
@@ -107,13 +82,15 @@ typedef struct s_config
 	int height;
 	int map_width;
 	int map_height;
-	int map[MAP_HEIGHT][MAP_WIDTH];
+	int **map;
 	int **texture_north;
 	int **texture_south;
 	int **texture_east;
 	int **texture_west;
-	int path_steps;
-	int path_index;
+	char *path_n;
+	char *path_s;
+	char *path_e;
+	char *path_w;
 	mlx_texture_t *tex;
 	float xPos;
 	float yPos;
@@ -129,9 +106,8 @@ typedef struct s_config
 	int move_left;
 	int rotate_right;
 	int rotate_left;
-	double old_mouse_x;
-	double old_mouse_y;
 	int fail;
+	char orientation;
 }	t_config;
 
 typedef struct s_node
@@ -149,29 +125,50 @@ typedef struct s_node
 // draw
 void draw_map(t_config *config);
 void redraw_image(t_config *config);
-void draw_line(float yi, float xi, float yf, float xf, t_config *config, int color);
+void	draw_line(t_vector start, t_vector end,
+t_config *config, int color);
 void draw_rays(t_config *config);
+void	draw_score(t_config *config);
+void	redraw_image(t_config *config);
+
 
 // hooks
+void move_player(t_config *config);
 void set_movement_params(mlx_key_data_t keydata, t_config *config);
 void handle_click(mlx_key_data_t keydata, t_config *config);
 void loop_hook(t_config *config);
 void handle_mouse(double xpos, double ypos, t_config *config);
+int	is_wall_v(float newX, float newY, t_config *config);
+float	normalize_angle(float angle);
+int	is_wall_h(float newX, float newY, t_config *config);
+int	is_wall_v(float newX, float newY, t_config *config);
+void	check_collection(t_config *config);
+void	move_forward(t_config *config, float mov_speed);
+void	move_backward(t_config *config, float mov_speed);
+void	move_right(t_config *config, float mov_speed);
+void	move_left(t_config *config, float mov_speed);
+void	move_player(t_config *config);
+void	display_full(t_config *config, int **texture);
+void	handle_click(mlx_key_data_t keydata, t_config *config);
+void	end_game(t_config *config);
+void	set_movement_params(mlx_key_data_t keydata, t_config *config);
+void	handle_mouse(double xpos, double ypos, t_config *config);
+void	reset_game(t_config *config);
+int	enemy_in_door(t_config *config);
+void	rotate(t_config *config, float rot_speed);
 
 // raycasting
 t_vector find_intersection(t_config *config, float alpha);
+int	check_wall_hit(t_config *config, t_vector map_pos);
+int	set_params_v(t_config *config, t_vector *a, t_vector *step, float alpha);
+int	set_params_h(t_config *config, t_vector *a, t_vector *step, float alpha);
 
 // rendering
 void draw_wall(t_config *config, t_vector p, float alpha, int x);
-void	draw_sprite(t_config *config, t_sprite *sprite);
-
-// a star
-void solve_a_star(t_config *config, t_sprite *sprite);
-void move_sprite(t_config *config, t_sprite *sprite);
-void assign_paths(t_config *config);
-
-// minimap
-void draw_minimap(t_config *config);
+float	get_wall_height(t_config *config, float distance, float alpha);
+t_vector	get_map_pos(t_vector p, float alpha);
+int	get_color(t_config *config, t_vector p, float alpha, t_vector texture_pos);
+int	get_texture_x(t_vector p);
 
 // utils
 int in_range(int p, int min, int max);
@@ -183,5 +180,25 @@ int horizontal_facing(float angle);
 float get_distance(float xi, float yi, float xf, float yf);
 void free_config(t_config *config);
 void set_failure(t_config *config);
+uint32_t	abgr_to_rgba(uint32_t abgr_color);
+int	**generate_texture(char *path, t_config *config, t_dimensions d);
+void	load_texture(t_config *config, char *path);
+int	**allocate_texture(t_config *config, t_dimensions d);
+int	get_color_index(mlx_texture_t *tex, int x, int y, t_dimensions d);
+int	count_sprites(t_config *config);
+void	set_dimensions(t_config *config);
+int	count_sprites(t_config *config);
+void	set_sprites_pos(t_config *config, int index, int i, int j);
+void	set_pos(t_config *config);
+void	copy_map(t_config *config, int map[MAP_HEIGHT][MAP_WIDTH]);
+void	assign_paths(t_config *config);
+void	init_game(t_config *config);
+void	init_config(t_config *config);
+void	init_sprites_textures(t_config *config);
+void	init_screens(t_config *config);
+void	set_dimensions(t_config *config);
+
+// parsing
+int	parssing(char *s, t_tools *itms);
 
 #endif
