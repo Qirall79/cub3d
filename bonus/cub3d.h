@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 09:43:43 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 13:54:46 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,13 +282,15 @@ void	set_sprites_pos(t_config *config, int index, int i, int j);
 void	set_pos(t_config *config);
 void	copy_map(t_config *config, int map[MAP_HEIGHT][MAP_WIDTH]);
 void	assign_paths(t_config *config);
-void	init_game(t_config *config);
+void	init_game(t_config *config, t_tools *items);
 void	init_config(t_config *config);
 void	init_sprites_textures(t_config *config);
 void	init_screens(t_config *config);
 void	set_dimensions(t_config *config);
 int	ft_atoi(const char *str);
 void free_items(t_tools *items);
+int **get_map(char **map_lines, t_config *config);
+void	init_map(t_config *config, t_tools *items);
 
 // parsing
 int	parssing(char *s, t_tools *itms);

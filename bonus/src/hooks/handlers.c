@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:48:34 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 09:49:08 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:02:33 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	set_movement_params(mlx_key_data_t keydata, t_config *config)
 	if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_RELEASE)
 		config->rotate_left = 0;
 }
-
 
 void	end_game(t_config *config)
 {

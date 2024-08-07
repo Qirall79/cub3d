@@ -6,7 +6,7 @@
 #    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/08/07 13:16:59 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/08/07 13:59:40 by wbelfatm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@ CC = cc
 RM = rm -f
 
 SRCS = main.c src/utils/utils.c src/utils/init.c src/utils/position.c src/utils/textures.c src/utils/ft_atoi.c \
-	   src/astar/astar.c src/astar/neighbors.c src/astar/nodes.c src/astar/utils.c \
-	   src/draw/draw.c src/draw/redraw.c src/draw/score.c src/draw/utils.c \
+	   src/astar/astar.c src/astar/neighbors.c src/astar/nodes.c src/astar/utils.c src/utils/map.c \
+	   src/draw/draw.c src/draw/redraw.c src/draw/score.c src/draw/utils.c src/utils/ft_free.c\
 	   src/sprite/sprite.c src/sprite/utils.c src/raycasting/raycasting.c src/raycasting/utils.c \
 	   src/hooks/hooks.c src/hooks/handlers.c src/hooks/move.c src/hooks/utils.c \
 	   src/minimap/minimap.c src/minimap/utils.c src/rendering/rendering.c src/rendering/utils.c \

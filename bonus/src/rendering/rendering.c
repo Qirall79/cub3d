@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:39:50 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 11:45:18 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:03:09 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	draw_ceiling_floor(t_config *config, int start_y, int end_y, int x)
 {
 	int	y;
-
-	
 
 	y = 0;
 	while (y < start_y)
