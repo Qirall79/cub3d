@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:29:38 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 14:10:48 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 10:06:04 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,43 @@ void	free_texture(t_config *config, int **texture, char op)
 	free(texture);
 }
 
+void free_items(t_tools *items)
+{
+	int i;
+
+	i = 0;
+	while (items->maps[i])
+	{
+		free(items->maps[i]);
+		i++;
+	}
+	free(items->maps);
+	items->maps = NULL;
+	i = 0;
+	while (i < 3)
+	{
+		free(items->f_color[i]);
+		free(items->c_color[i]);	
+		i++;	
+	}
+	free(items->f_color);
+	free(items->c_color);
+	i = 0;
+	printf("\n\n");
+	while (items->tmp_map[i])
+	{
+		printf("%s\n", items->tmp_map[i]);
+		free(items->tmp_map[i]);
+		i++;
+	}
+	free(items->tmp_map);
+	// free(items->map_2);
+	// free(items->path_NO);
+	// free(items->path_EA);
+	// free(items->path_WE);
+	// free(items->path_SO);
+}
+
 void	free_config(t_config *config)
 {
 	int	i;
@@ -68,6 +105,7 @@ void	free_config(t_config *config)
 	free_texture(config, config->win_texture, 'w');
 	free_texture(config, config->loss_texture, 'w');
 	free_texture(config, config->entry_texture, 'w');
+	free_items(config->items);
 	free(config->rays);
 }
 
