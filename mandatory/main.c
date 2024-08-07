@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 11:47:21 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 13:03:17 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static int get_rgba(int red, int green, int blue)
 
 int	main(int argc, char **argv)
 {
-	// atexit(wtf);
+	atexit(wtf);
 	t_config config;
 	t_tools items;
 

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:29:38 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 10:06:04 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 13:04:53 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,11 @@ void free_items(t_tools *items)
 	printf("\n\n");
 	while (items->tmp_map[i])
 	{
-		printf("%s\n", items->tmp_map[i]);
 		free(items->tmp_map[i]);
 		i++;
 	}
+	free(items->m_tmp);
 	free(items->tmp_map);
-	// free(items->map_2);
-	// free(items->path_NO);
-	// free(items->path_EA);
-	// free(items->path_WE);
-	// free(items->path_SO);
 }
 
 void	free_config(t_config *config)

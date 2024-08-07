@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 20:38:22 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/07 10:19:45 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 13:02:50 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,7 +309,7 @@ void open_image(char *path, t_tools *itm, mlx_image_t *img)
 	texture = mlx_load_png(path);
 	if (!texture)
 		ft_putstr_fd("Error\ninvalid texture file", 2);
-	free(texture);
+	mlx_delete_texture(texture);
 	// ptr = mlx_texture_to_image(itm->mlx, texture);
 	// if (!ptr)
 	// 	ft_putstr_fd("Error\ninvalid texture file", 2);

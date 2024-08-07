@@ -6,7 +6,7 @@
 #    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/08/07 09:48:18 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/08/07 13:05:40 by wbelfatm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,9 @@ SRCS = main.c src/utils/utils.c src/utils/init.c src/utils/position.c src/utils/
 
 OBJS = ${SRCS:.c=.o}
 LIBMLX = ./lib/MLX42
-GLFW = /Users/wbelfatm/homebrew/Cellar/glfw/3.4
+GLFW = /Users/wbelfatm/homebrew/Cellar/glfw/3.4/lib
 # GLFW = /opt/homebrew/Cellar/glfw/3.4/lib
-LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -L$(GLFW)/lib -lm
+LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -L$(GLFW) -lm
 PARSING = parsing/parsing.a
 INCLUDES = -I $(LIBMLX)
 NAME = cub3d

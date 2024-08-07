@@ -6,20 +6,20 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 11:46:50 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 12:04:20 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB3D_H
  
 # define CUB3D_H
-
+ 
 
 # define WIDTH 960
 # define HEIGHT 840
 # define MAP_WIDTH 24
 # define MAP_HEIGHT 24
-# define UNIT 640
+# define UNIT 64
 # define COLLECTIBLE_STEP (UNIT / 32)
 # define SUB_UNIT (WIDTH / MAP_WIDTH)
 # define MAP_UNIT 16
@@ -201,6 +201,7 @@ void	init_sprites_textures(t_config *config);
 void	init_screens(t_config *config);
 void	set_dimensions(t_config *config);
 int	ft_atoi(const char *str);
+void free_items(t_tools *items);
 
 // parsing
 int	parssing(char *s, t_tools *itms);

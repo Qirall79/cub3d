@@ -51,7 +51,7 @@ typedef struct tools
     int cp__W;
     int len_y; // i
     int len_x; // j
-
+    
     double      player_x;
     double      player_y;
     double      end_y;

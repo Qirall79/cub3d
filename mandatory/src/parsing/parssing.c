@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 20:38:22 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/06 11:03:11 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 13:02:50 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,8 @@ void 	ft_init(t_tools *itms)
 	itms->maps = NULL;
 	itms->player_x = 0;
 	itms->player_y = 0;
-
-
 }
+
 int ft_read_map(char *name, t_tools *itms)
 {
     int		fd;
@@ -73,6 +72,7 @@ int ft_read_map(char *name, t_tools *itms)
 	{
         itms->m_tmp = ft_strjoin(itms->m_tmp, str);
         itms->m_tmp = ft_strjoin(itms->m_tmp, "#");
+		free(str);
 		str = get_next_line(fd);
 	}
     close(fd);
@@ -210,7 +210,8 @@ int is_valid(char *s, t_tools *all)
 	{
 		if (s[i] == '0' || s[i] == '1' || s[i] == 'N'
 		|| s[i] == 'S' || s[i] == 'E' || s[i] == 'W'
-		|| s[i] == ' ' || s[i] == '\n')
+		|| s[i] == 'T' || s[i] == 'D' || s[i] == 'O'
+		|| s[i] == 'C' || s[i] == ' ' || s[i] == '\n')
 		{
 			if (s[i] == 'N' || s[i] == 'S' || s[i] == 'E' || s[i] == 'W')
 			{
@@ -301,16 +302,17 @@ int is_valid_map(t_tools *itms)
 void open_image(char *path, t_tools *itm, mlx_image_t *img)
 {
 	mlx_texture_t *texture;
-	printf("|%s|\n",path);
+	// printf("|%s|\n",path);
 	(void)img;
 	(void)itm;
-// mlx_image_t *ptr = NULL;
+	// mlx_image_t *ptr = NULL;
 	texture = mlx_load_png(path);
 	if (!texture)
 		ft_putstr_fd("Error\ninvalid texture file", 2);
-// ptr = mlx_texture_to_image(itm->mlx, texture);
-// if (!ptr)
-// 	ft_putstr_fd("Error\ninvalid texture file", 2);
+	mlx_delete_texture(texture);
+	// ptr = mlx_texture_to_image(itm->mlx, texture);
+	// if (!ptr)
+	// 	ft_putstr_fd("Error\ninvalid texture file", 2);
 }
 int check_texture_1(char *s, t_tools *itms, void **p)
 {
@@ -407,12 +409,14 @@ int	check_texture_2(char *s, t_tools *itms, char c)
 	}
 	return 0;
 }
+
 int	parssing(char *s, t_tools *itms)
 {
 	ft_read_map(s, itms);
 	itms->map_2 = ft_split(itms->m_tmp, '#');
+	itms->tmp_map = itms->map_2;
 	ft_init(itms);
-	check_items(itms); 
+	check_items(itms);
 	is_valid_map(itms);
 	if (check_texture_1(itms->path_NO, itms, (void *)itms->N) || check_texture_1(itms->path_SO, itms, (void *)itms->S) \
 		|| check_texture_1(itms->path_WE, itms, (void *)itms->W) || check_texture_1(itms->path_EA, itms, (void *)itms->E))
