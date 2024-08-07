@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 18:18:53 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 09:46:16 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:28:25 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ t_vector	find_intersection(t_config *config, float alpha)
 	dist_v = sqrtf((config->xPos - p_v.x) * (config->xPos - p_v.x)
 			+ (config->yPos - p_v.y) * (config->yPos - p_v.y));
 	if ((p_v.x == config->xPos && p_v.y == config->yPos)
-	|| (dist_v < 0.00001 && dist_v > -0.00001))
+		|| (dist_v < 0.00001 && dist_v > -0.00001))
 		dist_v = 1e9;
 	if ((p_h.x == config->xPos && p_h.y == config->yPos)
-	|| (dist_h < 0.00001 && dist_h > -0.00001))
+		|| (dist_h < 0.00001 && dist_h > -0.00001))
 		dist_h = 1e9;
 	p_h.distance = dist_h;
 	p_v.distance = dist_v;

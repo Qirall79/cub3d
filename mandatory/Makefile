@@ -6,7 +6,7 @@
 #    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/08/07 12:58:05 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/08/07 14:27:21 by wbelfatm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CC = cc
 RM = rm -f
 
 SRCS = main.c src/utils/utils.c src/utils/init.c src/utils/position.c src/utils/textures.c src/utils/ft_atoi.c \
-	   src/draw/draw.c src/draw/redraw.c src/draw/utils.c \
+	   src/draw/draw.c src/draw/redraw.c src/draw/utils.c src/utils/map.c src/utils/ft_free.c \
 		src/raycasting/raycasting.c src/raycasting/utils.c \
 	   src/hooks/hooks.c src/hooks/handlers.c src/hooks/move.c src/hooks/utils.c \
 		src/rendering/rendering.c src/rendering/utils.c \

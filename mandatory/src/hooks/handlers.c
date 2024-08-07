@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:48:34 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 11:14:45 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:28:09 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	handle_click(mlx_key_data_t keydata, t_config *config)
 		end_game(config);
 }
 
-void handle_resize(int32_t width, int32_t height, t_config *config)
+void	handle_resize(int32_t width, int32_t height, t_config *config)
 {
 	config->width = width;
 	config->height = height;

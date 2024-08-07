@@ -6,17 +6,11 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:10:37 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 11:11:19 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:29:20 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
-
-void	set_dimensions(t_config *config)
-{
-	config->width = WIDTH;
-	config->height = HEIGHT;
-}
 
 void	init_sprites_textures(t_config *config)
 {
@@ -33,7 +27,7 @@ void	init_sprites_textures(t_config *config)
 		= generate_texture(config->path_s, config, wall_d);
 }
 
-float get_view_angle(t_config *config)
+float	get_view_angle(t_config *config)
 {
 	if (config->orientation == 'N')
 		return (270.0);
@@ -60,12 +54,14 @@ void	init_config(t_config *config)
 	config->rotate_right = 0;
 }
 
-void	init_game(t_config *config)
+void	init_game(t_config *config, t_tools *items)
 {
-	/*---- parsing start ----*/
-	set_dimensions(config);
-	/*---- parsing end ----*/
 	config->fail = 0;
+	init_map(config, items);
+	if (config->fail)
+		return ;
+	config->width = WIDTH;
+	config->height = HEIGHT;
 	init_sprites_textures(config);
 	if (config->fail)
 		return ;

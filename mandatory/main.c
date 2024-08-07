@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 13:03:17 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:29:42 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,91 +17,21 @@ void wtf(void)
 	system("leaks cub3d");
 }
 
-int my_strlen(char *str)
-{
-	int i = 0;
-
-	while (str[i])
-		i++;
-	return i;
-}
-
-int **get_map(char **map_lines, t_config *config)
-{
-	int size = 0;
-	int i;
-	int j;
-	int **res;
-	int *row;
-
-	while (map_lines[size])
-		size++;
-	res = (int **) malloc(sizeof(int *) * (size + 1));
-	i = 0;
-	while (i < size)
-	{
-		j = 0;
-		row = (int *) malloc(sizeof(int) * (my_strlen(map_lines[i]) - 1));
-		while (map_lines[i][j] && map_lines[i][j] != '\n')
-		{
-			if (map_lines[i][j] == 'N' || map_lines[i][j] == 'S'
-			|| map_lines[i][j] == 'W' || map_lines[i][j] == 'E')
-			{
-				row[j] = 5;
-				config->orientation = map_lines[i][j];
-			}
-			else if (map_lines[i][j] == '1')
-				row[j] = 1;
-			else
-				row[j] = 0;
-			j++;
-		}
-		res[i] = row;
-		i++;
-	}
-	res[i] = NULL;
-	return res;
-}
-
-static int get_rgba(int red, int green, int blue)
-{
-	return ((red << 24) | (green << 16) | (blue << 8) | 255);
-}
-
 int	main(int argc, char **argv)
 {
 	atexit(wtf);
-	t_config config;
-	t_tools items;
+	t_config	config;
+	t_tools		items;
 
 	if (argc != 2)
 		exit(printf("Invalid args\n"));
+	config.items = &items;
 	parssing(argv[1], &items);
-
-	int **map = get_map(items.maps, &config);
-	
-	int i = 0;
-	int width = my_strlen(items.maps[0]) - 1;
-	while (items.maps[i])
-		i++;
-
-	config.f_color = get_rgba(ft_atoi(items.f_color[0]), ft_atoi(items.f_color[1]), ft_atoi(items.f_color[2]));
-	config.c_color = get_rgba(ft_atoi(items.c_color[0]), ft_atoi(items.c_color[1]), ft_atoi(items.c_color[2]));
-	config.path_n = items.path_NO;
-	config.path_e = items.path_EA;
-	config.path_w = items.path_WE;
-	config.path_s = items.path_SO;
-	config.map = map;
-	config.map_width = width;
-	config.map_height = i;
-	init_game(&config);
+	init_game(&config, &items);
 	draw_map(&config);
-
-	// hooks
 	mlx_key_hook(config.mlx, (mlx_keyfunc) handle_click, &config);
 	mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
 	mlx_resize_hook(config.mlx, (mlx_resizefunc) handle_resize, &config);
-
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);
 	free_config(&config);

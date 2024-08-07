@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 11:40:21 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 11:40:44 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 14:29:10 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static unsigned long	calc_result(char *str, int sign, int i)
 {
-	unsigned long res;
-	unsigned long old_res;
-	
+	unsigned long	res;
+	unsigned long	old_res;
+
 	res = 0;
 	while (str[i] && (str[i] >= '0' && str[i] <= '9'))
 	{
