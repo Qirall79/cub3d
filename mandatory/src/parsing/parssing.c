@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 20:38:22 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/07 13:02:50 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 13:17:40 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,8 +210,7 @@ int is_valid(char *s, t_tools *all)
 	{
 		if (s[i] == '0' || s[i] == '1' || s[i] == 'N'
 		|| s[i] == 'S' || s[i] == 'E' || s[i] == 'W'
-		|| s[i] == 'T' || s[i] == 'D' || s[i] == 'O'
-		|| s[i] == 'C' || s[i] == ' ' || s[i] == '\n')
+		|| s[i] == ' ' || s[i] == '\n')
 		{
 			if (s[i] == 'N' || s[i] == 'S' || s[i] == 'E' || s[i] == 'W')
 			{
@@ -278,7 +277,7 @@ int is_valid_map(t_tools *itms)
 	int i = 0;
 	int j = 0;
 	while(itms->maps[i][0] == '#')
-		itms->maps++;
+		i++;
 	while (itms->maps[i])
 	{
 		j = 0;

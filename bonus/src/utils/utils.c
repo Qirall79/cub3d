@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 10:29:38 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 13:04:53 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/07 13:13:16 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void free_items(t_tools *items)
 	free(items->f_color);
 	free(items->c_color);
 	i = 0;
-	printf("\n\n");
 	while (items->tmp_map[i])
 	{
 		free(items->tmp_map[i]);
