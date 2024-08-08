@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:54:38 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 23:01:48 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:35:08 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,6 @@ void	fill_square(t_config *config, int x, int y, long int color)
 			j++;
 		}
 		i++;
-	}
-}
-
-void	draw_enemy(t_config *config, t_sprite sprite)
-{
-	float	mini_x;
-	float	mini_y;
-	int		x;
-	int		y;
-
-	mini_x = sprite.x * ((float)MAP_UNIT / UNIT);
-	mini_y = sprite.y * ((float)MAP_UNIT / UNIT);
-	y = 0;
-	while (y < 2)
-	{
-		x = 0;
-		while (x < 2)
-		{
-			mlx_put_pixel(config->img, mini_x + x, mini_y + y, 0xFFFF00FF);
-			mlx_put_pixel(config->img, mini_x - x, mini_y - y, 0xFFFF00FF);
-			mlx_put_pixel(config->img, mini_x + x, mini_y - y, 0xFFFF00FF);
-			mlx_put_pixel(config->img, mini_x - x, mini_y + y, 0xFFFF00FF);
-			x++;
-		}
-		y++;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:03:15 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 23:01:03 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/08 21:31:20 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	**allocate_texture(t_config *config, t_dimensions d)
 			i = -1;
 			while (++i < y)
 				free(arr[i]);
+			free(arr);
 			return (set_failure(config), NULL);
 		}
 		y++;
