@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 20:18:09 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 16:00:44 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:12:59 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	solve_a_star(t_config *config, t_sprite *sprite)
 	t_node	**nodes_to_check;
 	int		k;
 
+	current = NULL;
+	end = NULL;
 	nodes = allocate_nodes(config, sprite, &current, &end);
 	if (!nodes)
 		return ;

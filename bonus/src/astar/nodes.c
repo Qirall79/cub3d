@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 11:08:37 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 16:00:57 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:24:48 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ t_sprite *sprite, t_node **start, t_node **end)
 	int		i;
 	int		j;
 
-	*start = NULL;
 	nodes = (t_node *) malloc(sizeof(t_node)
 			* config->map_width * config->map_height);
 	if (!nodes)
@@ -62,9 +61,9 @@ t_sprite *sprite, t_node **start, t_node **end)
 			initialize_node(config, &nodes[i * config->map_width + j], j, i);
 			if (config->fail)
 				return (free_previous_nodes(nodes, i, j), NULL);
-			if (is_special_node(config, sprite, i, j) == 1)
+			if (is_sprite_node(sprite, i, j))
 				*start = &nodes[i * config->map_width + j];
-			if (is_special_node(config, sprite, i, j) == 2)
+			if (is_player_node(config, i, j))
 				*end = &nodes[i * config->map_width + j];
 		}
 	}

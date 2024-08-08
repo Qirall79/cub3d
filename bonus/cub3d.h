@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 14:05:29 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/08 17:22:16 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,7 +244,8 @@ t_node	*allocate_nodes(t_config *config,
 t_sprite *sprite, t_node **start, t_node **end);
 t_node	**get_nodes_to_check(t_config *config);
 void	free_previous_nodes(t_node *nodes, int i, int j);
-int	is_special_node(t_config *config, t_sprite *sprite, int i, int j);
+int	is_sprite_node(t_sprite *sprite, int i, int j);
+int	is_player_node(t_config *config, int i, int j);
 void	free_nodes(t_config *config, t_node *nodes,
 t_node **nodes_to_check, char op);
 void	free_path(t_sprite *sprite);
