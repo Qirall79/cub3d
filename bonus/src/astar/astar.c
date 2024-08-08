@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 20:18:09 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 23:00:10 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:00:44 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ void	sort_list(t_node **nodes_to_check, int end, t_node **current)
 
 void	init_current(t_node *current, t_node *end)
 {
-	current->local_goal = 0.0;
-	current->global_goal = get_eucledian_distance(current, end);
+	(current)->local_goal = 0.0;
+	(current)->global_goal = get_eucledian_distance(current, end);
 }
 
 void	solve_a_star(t_config *config, t_sprite *sprite)
@@ -79,7 +79,7 @@ void	solve_a_star(t_config *config, t_sprite *sprite)
 	nodes = allocate_nodes(config, sprite, &current, &end);
 	if (!nodes)
 		return ;
-	current = set_neighbors(config, &nodes, sprite);
+	set_neighbors(config, &nodes, sprite);
 	nodes_to_check = get_nodes_to_check(config);
 	if (!nodes_to_check)
 		return (free_nodes(config, nodes, NULL, 'f'));

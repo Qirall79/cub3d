@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 10:19:00 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:06:20 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	reset_game(t_config *config)
 	}
 	config->xPos = config->initial_player_x;
 	config->yPos = config->initial_player_y;
-	config->viewAngle = 180.0;
+	config->viewAngle = get_view_angle(config);
 	assign_paths(config);
 }
 

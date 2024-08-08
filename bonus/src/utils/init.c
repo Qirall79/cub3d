@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:10:37 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 13:54:26 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/08 14:03:22 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,13 @@ void	init_config(t_config *config)
 	config->move_left = 0;
 	config->rotate_left = 0;
 	config->rotate_right = 0;
-	config->no_collectibles = 1;
 	assign_paths(config);
 }
 
 void	init_game(t_config *config, t_tools *items)
 {
 	config->fail = 0;
+	config->no_collectibles = 1;
 	init_map(config, items);
 	if (config->fail)
 		return ;

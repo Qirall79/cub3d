@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 11:08:37 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 14:05:12 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/08 16:00:57 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	initialize_node(t_config *config, t_node *node, int x, int y)
 	if (config->map[y][x] == 1 || config->map[y][x] == 4)
 		node->is_obstacle = 1;
 	node->visited = 0;
-	node->local_goal = 2147483647;
-	node->global_goal = 2147483647;
+	node->local_goal = 2147483647.0f;
+	node->global_goal = 2147483647.0f;
 	node->parent = NULL;
 	node->neighbors = (t_node **) malloc(sizeof(t_node *) * 4);
 	if (!node->neighbors)
@@ -48,6 +48,7 @@ t_sprite *sprite, t_node **start, t_node **end)
 	int		i;
 	int		j;
 
+	*start = NULL;
 	nodes = (t_node *) malloc(sizeof(t_node)
 			* config->map_width * config->map_height);
 	if (!nodes)
