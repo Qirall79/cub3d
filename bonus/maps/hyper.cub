@@ -1,7 +1,7 @@
-NO ./textures/meruem.png
-WE ./textures/killua.png
-SO ./textures/hisoka_portrait.png
-EA ./textures/chrollo_portrait.png
+NO ./textures/wall_1.png
+WE ./textures/wall_2.png
+SO ./textures/wall_3.png
+EA ./textures/wall_4.png
 
 F    0,0,0
 C  36,26,0

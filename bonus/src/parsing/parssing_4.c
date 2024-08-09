@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing_4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 18:02:15 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/08 18:45:36 by zmoumni          ###   ########.fr       */
+/*   Updated: 2024/08/09 11:53:06 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ int	check_items(t_tools *itms)
 		if (cp > 5)
 			break ;
 	}
-	if (itms->cp_C != 1 || itms->cp_F != 1 || itms->cp_SO != 1 || \
-			itms->cp_NO != 1 || itms->cp_EA != 1 || itms->cp_WE != 1)
+	if (itms->cp_c != 1 || itms->cp_f != 1 || itms->cp_so != 1 || \
+			itms->cp_no != 1 || itms->cp_ea != 1 || itms->cp_we != 1)
 		ft_putstr_fd("Error\nBad texture", 2);
 	if (update_map(itms, i + 1))
 		ft_putstr_fd("Error\nBad map map", 2);
