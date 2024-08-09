@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:01:46 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/09 11:18:50 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 13:37:55 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	draw_sprite(t_config *config, t_sprite *sprite)
 		&& in_range(config->view_angle, 270, 360))
 		sprite->angle_diff -= 360;
 	set_sprite_boundaries(config, sprite);
-	if (sprite->angle_diff <= (config->fov_angle / 2) + 20)
+	if (fabs(sprite->angle_diff) <= (config->fov_angle / 2) + 20)
 		plot_stripes(config, sprite);
 }
 

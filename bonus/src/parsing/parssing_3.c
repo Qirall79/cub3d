@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:46:56 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/09 11:32:34 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:14:46 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,19 +117,19 @@ int	is_valid_map(t_tools *itms)
 	{
 		j = 0;
 		if (is_valid(itms->map_2[i], itms))
-			ft_putstr_fd("Error\nFound invalid caracter in map", 2);
+			ft_putstr_fd("Error\nFound invalid caracter in map\n", 2);
 		while (itms->maps[i][j])
 		{
 			if (is_valid_2(itms->maps[i][j], itms, i, j))
 			{
 				if (valid_edge(i, j, itms->maps))
-					ft_putstr_fd("Error\nFound invalid caracter in map", 2);
+					ft_putstr_fd("Error\nFound invalid caracter in map\n", 2);
 			}
 			j++;
 		}
 		i++;
 	}
 	if (itms->snew != 1)
-		ft_putstr_fd("Error\nBad map direction in map", 2);
+		ft_putstr_fd("Error\nBad map direction in map\n", 2);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 20:38:22 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/09 11:33:10 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:15:26 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ void	check_color(char **s)
 		while (s && s[i] && s[i][j] && is_digit(s[i][j]))
 			j++;
 		if (s[i][j] != '\0')
-			ft_putstr_fd("Error\nBad texture", 2);
+			ft_putstr_fd("Error\nBad texture\n", 2);
 		nb = atoi(s[i]);
 		if (nb < 0 || nb > 255)
-			ft_putstr_fd("Error\nBad texture", 2);
+			ft_putstr_fd("Error\nBad texture\n", 2);
 		i++;
 	}
 	if (i != 3)
-		ft_putstr_fd("Error\nBad texture", 2);
+		ft_putstr_fd("Error\nBad texture\n", 2);
 }
 
 void	helper(char *s, char c, t_tools *itms)
@@ -73,7 +73,7 @@ int	check_texture_2(char *s, t_tools *itms, char c)
 	while (s && s[i] && s[i] == ' ')
 		i++;
 	if (s[i] != '\0' || cp != 2)
-		ft_putstr_fd("Error\nBad texture", 2);
+		ft_putstr_fd("Error\nBad texture\n", 2);
 	s[k] = '\0';
 	helper(s, c, itms);
 	return (0);
@@ -91,7 +91,7 @@ int	parssing(char *s, t_tools *itms)
 		|| check_texture_1(itms->path_so, itms, (void *)itms->s) \
 			|| check_texture_1(itms->path_we, itms, (void *)itms->w) \
 				|| check_texture_1(itms->path_ea, itms, (void *)itms->e))
-		ft_putstr_fd("Errpr\nBad texture !!!", 2);
+		ft_putstr_fd("Errpr\nBad texture !!!\n", 2);
 	check_texture_2(itms->path_c, itms, 'c');
 	check_texture_2(itms->path_f, itms, 'f');
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:46:54 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/09 11:36:18 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:13:24 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_read_map(char *name, t_tools *itms)
 	itms->m_tmp = NULL;
 	fd = open(name, O_RDONLY);
 	if (check_extention(name) == 0 || fd < 0)
-		ft_putstr_fd("Error\nInvalid file", 2);
+		ft_putstr_fd("Error\nInvalid file\n", 2);
 	str = get_next_line(fd);
 	while (str)
 	{
@@ -32,7 +32,7 @@ int	ft_read_map(char *name, t_tools *itms)
 	close(fd);
 	if (!itms->m_tmp)
 		return (free(str), free(itms->m_tmp), \
-			ft_putstr_fd("Error\nBad map Map!", 2), 1);
+			ft_putstr_fd("Error\nBad map Map!\n", 2), 1);
 	return (0);
 }
 

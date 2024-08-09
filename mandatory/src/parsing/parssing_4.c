@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 18:02:15 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/09 11:38:22 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 12:13:53 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	check_items(t_tools *itms)
 		cp = 0;
 		while (itms->map_2[i][cp])
 			if (itms->map_2[i][cp++] == '\t')
-				ft_putstr_fd("Error\nBad map", 2);
+				ft_putstr_fd("Error\nBad map\n", 2);
 	}
 	(1) && (cp = 0, i = -1);
 	while (itms->map_2[++i])
@@ -35,9 +35,9 @@ int	check_items(t_tools *itms)
 	}
 	if (itms->cp_c != 1 || itms->cp_f != 1 || itms->cp_so != 1 || \
 			itms->cp_no != 1 || itms->cp_ea != 1 || itms->cp_we != 1)
-		ft_putstr_fd("Error\nBad texture", 2);
+		ft_putstr_fd("Error\nBad texture\n", 2);
 	if (update_map(itms, i + 1))
-		ft_putstr_fd("Error\nBad map map", 2);
+		ft_putstr_fd("Error\nBad map map\n", 2);
 	return (1);
 }
 
@@ -49,7 +49,7 @@ void	open_image(char *path, t_tools *itm, mlx_image_t *img)
 	(void)img;
 	texture = mlx_load_png(path);
 	if (!texture)
-		ft_putstr_fd("Error\ninvalid texture file", 2);
+		ft_putstr_fd("Error\ninvalid texture file\n", 2);
 	mlx_delete_texture(texture);
 }
 
