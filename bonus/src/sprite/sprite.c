@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:01:46 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 14:10:40 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:18:50 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ void	set_sprite_boundaries(t_config *config, t_sprite *sprite)
 	float	fov_ratio;
 	float	plane_dist;
 
-	screen_angle = ((config->fovAngle / 2.0) - sprite->angle_diff);
-	fov_ratio = (float)config->width / config->fovAngle;
+	screen_angle = ((config->fov_angle / 2.0) - sprite->angle_diff);
+	fov_ratio = (float)config->width / config->fov_angle;
 	plane_dist = config->width / (2 * tan(30 * DEG_TO_RAD));
 	sprite->height = roundf((ENEMY_SIZE / sprite->distance) * plane_dist);
 	if (sprite->type == COLLECTIBLE)
@@ -67,18 +67,18 @@ void	draw_sprite(t_config *config, t_sprite *sprite)
 
 	if (!sprite->visible)
 		return ;
-	diff.x = (sprite->x - config->xPos);
-	diff.y = (sprite->y - config->yPos);
+	diff.x = (sprite->x - config->x_pos);
+	diff.y = (sprite->y - config->y_pos);
 	sprite->angle = normalize_angle(atan2(diff.y, diff.x) * (1.0 / DEG_TO_RAD));
-	sprite->angle_diff = (config->viewAngle - sprite->angle);
-	if (in_range(config->viewAngle, 0, 90)
+	sprite->angle_diff = (config->view_angle - sprite->angle);
+	if (in_range(config->view_angle, 0, 90)
 		&& in_range(sprite->angle, 270, 360))
 		sprite->angle_diff += 360;
 	if (in_range(sprite->angle, 0, 90)
-		&& in_range(config->viewAngle, 270, 360))
+		&& in_range(config->view_angle, 270, 360))
 		sprite->angle_diff -= 360;
 	set_sprite_boundaries(config, sprite);
-	if (sprite->angle_diff <= (config->fovAngle / 2) + 20)
+	if (sprite->angle_diff <= (config->fov_angle / 2) + 20)
 		plot_stripes(config, sprite);
 }
 
@@ -112,8 +112,8 @@ void	move_sprite(t_config *config, t_sprite *sprite)
 
 	map_pos.x = floorf(sprite->x / UNIT);
 	map_pos.y = floorf(sprite->y / UNIT);
-	player_pos.x = floorf(config->xPos / UNIT);
-	player_pos.y = floorf(config->yPos / UNIT);
+	player_pos.x = floorf(config->x_pos / UNIT);
+	player_pos.y = floorf(config->y_pos / UNIT);
 	if (sprite->path_index >= sprite->path_steps)
 		return ;
 	next_step = sprite->path_to_player[sprite->path_index];
@@ -126,7 +126,7 @@ void	move_sprite(t_config *config, t_sprite *sprite)
 		next_step = sprite->path_to_player[sprite->path_index];
 	}
 	set_new_pos(config, next_step, map_pos, sprite);
-	distance_to_player = get_distance(config->xPos, config->yPos,
+	distance_to_player = get_distance(config->x_pos, config->y_pos,
 			sprite->x, sprite->y);
 	if (distance_to_player < UNIT)
 		config->lost = 1;

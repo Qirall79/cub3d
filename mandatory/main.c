@@ -6,20 +6,14 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 14:29:42 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:47:45 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void wtf(void)
-{
-	system("leaks cub3d");
-}
-
 int	main(int argc, char **argv)
 {
-	atexit(wtf);
 	t_config	config;
 	t_tools		items;
 

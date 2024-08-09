@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:07:39 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 14:00:59 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:09:49 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ void	set_pos(t_config *config)
 		{
 			if (config->map[i][j] == 5)
 			{
-				config->yPos = i * UNIT + (UNIT - 10) / 2;
-				config->xPos = j * UNIT + (UNIT - 10) / 2;
+				config->y_pos = i * UNIT + (UNIT - 10) / 2;
+				config->x_pos = j * UNIT + (UNIT - 10) / 2;
 			}
 			if (config->map[i][j] == 2 || config->map[i][j] == 3)
 			{

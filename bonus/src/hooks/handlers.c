@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:48:34 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 14:02:33 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:14:09 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ void	handle_mouse(double xpos, double ypos, t_config *config)
 
 	(void) ypos;
 	increment = (xpos - config->width / 2.0) / 8;
-	config->viewAngle = normalize_angle(config->viewAngle + increment);
-	config->dirY = sin(config->viewAngle * DEG_TO_RAD);
-	config->dirX = cos(config->viewAngle * DEG_TO_RAD);
+	config->view_angle = normalize_angle(config->view_angle + increment);
+	config->dir_y = sin(config->view_angle * DEG_TO_RAD);
+	config->dir_x = cos(config->view_angle * DEG_TO_RAD);
 	mlx_set_mouse_pos(config->mlx, config->width / 2.0, config->height / 2.0);
 }

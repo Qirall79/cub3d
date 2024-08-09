@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 13:14:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 14:02:25 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:11:59 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ void	draw_rays(t_config *config)
 	t_vector	p;
 	int			i;
 
-	min_angle = config->viewAngle - config->fovAngle / 2;
+	min_angle = config->view_angle - config->fov_angle / 2;
 	i = 0;
 	while (i < config->width)
 	{
 		p = find_intersection(config, normalize_angle(min_angle));
 		draw_wall(config, p, min_angle, i);
-		min_angle += config->fovAngle / (float)(config->width);
+		min_angle += config->fov_angle / (float)(config->width);
 		i++;
 	}
 	move_all(config);

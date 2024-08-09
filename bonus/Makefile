@@ -6,7 +6,7 @@
 #    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/08/08 17:26:35 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/08/09 10:45:47 by wbelfatm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ SRCS = main.c src/utils/utils.c src/utils/init.c src/utils/position.c src/utils/
 	   src/sprite/sprite.c src/sprite/utils.c src/raycasting/raycasting.c src/raycasting/utils.c \
 	   src/hooks/hooks.c src/hooks/handlers.c src/hooks/move.c src/hooks/utils.c \
 	   src/minimap/minimap.c src/minimap/utils.c src/rendering/rendering.c src/rendering/utils.c \
-	   src/parsing/get_next_line.c src/parsing/parssing.c src/parsing/tools.c
+		src/parsing/get_next_line.c src/parsing/parssing.c src/parsing/tools_1.c src/parsing/tools_2.c src/parsing/tools_3.c \
+       src/parsing/parssing_2.c src/parsing/parssing_3.c src/parsing/parssing_4.c
 
 OBJS = ${SRCS:.c=.o}
 LIBMLX = ./lib/MLX42

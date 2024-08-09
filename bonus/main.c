@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 14:02:01 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:57:47 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	wtf(void)
 
 int	main(int argc, char **argv)
 {
-	atexit(wtf);
 	t_config	config;
 	t_tools		items;
 
+	atexit(wtf);
 	if (argc != 2)
 		exit(printf("Invalid args\n"));
 	parssing(argv[1], &items);

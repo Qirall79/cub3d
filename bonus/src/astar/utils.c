@@ -6,30 +6,11 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 11:13:47 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 17:22:10 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:06:08 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../cub3d.h"
-
-void	free_previous_nodes(t_node *nodes, int i, int j)
-{
-	int	y;
-	int	x;
-
-	y = 0;
-	while (y <= i)
-	{
-		x = 0;
-		while (x <= j)
-		{
-			free(nodes[y * MAP_WIDTH + x].neighbors);
-			x++;
-		}
-		y++;
-	}
-	free(nodes);
-}
 
 int	is_sprite_node(t_sprite *sprite, int i, int j)
 {
@@ -41,8 +22,8 @@ int	is_sprite_node(t_sprite *sprite, int i, int j)
 
 int	is_player_node(t_config *config, int i, int j)
 {
-	if ((int)(config->yPos / UNIT) == i
-		&& (int)(config->xPos / UNIT) == j)
+	if ((int)(config->y_pos / UNIT) == i
+		&& (int)(config->x_pos / UNIT) == j)
 		return (1);
 	return (0);
 }

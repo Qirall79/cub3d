@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/19 10:25:22 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 11:21:48 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:14:31 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void	draw_miniray(t_config *config)
 	t_vector	start;
 	t_vector	end;
 
-	start.x = config->xPos * ((float)MAP_UNIT / UNIT) - 1
+	start.x = config->x_pos * ((float)MAP_UNIT / UNIT) - 1
 		- config->minimap.start_x * MAP_UNIT;
-	start.y = config->yPos * ((float)MAP_UNIT / UNIT) - 1
+	start.y = config->y_pos * ((float)MAP_UNIT / UNIT) - 1
 		- config->minimap.start_y * MAP_UNIT;
-	end.x = start.x + config->dirX * 10;
-	end.y = start.y + config->dirY * 10;
+	end.x = start.x + config->dir_x * 10;
+	end.y = start.y + config->dir_y * 10;
 	draw_line(start, end, config, 0xFF0F00FF);
 }
 
@@ -41,10 +41,10 @@ void	init_minimap(t_config *config)
 	t_vector	start;
 	t_vector	end;
 
-	start.x = (int)floorf(config->xPos / UNIT) - 6;
+	start.x = (int)floorf(config->x_pos / UNIT) - 6;
 	if (start.x < 0)
 		start.x = 0;
-	start.y = (int)floorf(config->yPos / UNIT) - 6;
+	start.y = (int)floorf(config->y_pos / UNIT) - 6;
 	if (start.y < 0)
 		start.y = 0;
 	end.x = start.x + 13;

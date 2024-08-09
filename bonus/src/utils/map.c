@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 13:31:52 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 13:52:44 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:33:21 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,10 @@ void	init_map(t_config *config, t_tools *items)
 			ft_atoi(items->c_color[1]), ft_atoi(items->c_color[2]));
 	config->f_color = get_rgba(ft_atoi(items->f_color[0]),
 			ft_atoi(items->f_color[1]), ft_atoi(items->f_color[2]));
-	config->path_n = items->path_NO;
-	config->path_e = items->path_EA;
-	config->path_w = items->path_WE;
-	config->path_s = items->path_SO;
+	config->path_n = items->path_no;
+	config->path_e = items->path_ea;
+	config->path_w = items->path_we;
+	config->path_s = items->path_so;
 	map = get_map(items->maps, config);
 	config->map = map;
 	if (config->fail)

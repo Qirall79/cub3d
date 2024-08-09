@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:10:37 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 14:03:22 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:14:42 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,10 @@ float	get_view_angle(t_config *config)
 
 void	init_config(t_config *config)
 {
-	config->fovAngle = 60.0;
-	config->viewAngle = get_view_angle(config);
-	config->dirY = sin(config->viewAngle * DEG_TO_RAD);
-	config->dirX = cos(config->viewAngle * DEG_TO_RAD);
+	config->fov_angle = 60.0;
+	config->view_angle = get_view_angle(config);
+	config->dir_y = sin(config->view_angle * DEG_TO_RAD);
+	config->dir_x = cos(config->view_angle * DEG_TO_RAD);
 	config->rays = (int *) malloc(config->width * sizeof(int));
 	if (!config->rays)
 		set_failure(config);
@@ -79,8 +79,8 @@ void	init_config(t_config *config)
 	config->lost = 0;
 	config->won = 0;
 	config->is_starting = 1;
-	config->initial_player_x = config->xPos;
-	config->initial_player_y = config->yPos;
+	config->initial_player_x = config->x_pos;
+	config->initial_player_y = config->y_pos;
 	config->visible_door = (t_vector){.x = -1, .y = -1};
 	config->move_forward = 0;
 	config->move_backward = 0;

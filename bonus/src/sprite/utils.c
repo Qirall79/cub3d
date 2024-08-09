@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 12:29:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/06 09:31:44 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:09:34 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	set_sprites_distance(t_config *config)
 	while (i < config->sprite_count)
 	{
 		config->sprites[i].distance = get_distance(config->sprites[i].x,
-				config->sprites[i].y, config->xPos, config->yPos);
+				config->sprites[i].y, config->x_pos, config->y_pos);
 		i++;
 	}
 }

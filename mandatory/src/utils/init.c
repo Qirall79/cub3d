@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:10:37 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 14:29:20 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:41:50 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ float	get_view_angle(t_config *config)
 
 void	init_config(t_config *config)
 {
-	config->fovAngle = 60.0;
-	config->viewAngle = get_view_angle(config);
-	config->dirY = sin(config->viewAngle * DEG_TO_RAD);
-	config->dirX = cos(config->viewAngle * DEG_TO_RAD);
-	config->initial_player_x = config->xPos;
-	config->initial_player_y = config->yPos;
+	config->fov_angle = 60.0;
+	config->view_angle = get_view_angle(config);
+	config->dir_y = sin(config->view_angle * DEG_TO_RAD);
+	config->dir_x = cos(config->view_angle * DEG_TO_RAD);
+	config->initial_player_x = config->x_pos;
+	config->initial_player_y = config->y_pos;
 	config->move_forward = 0;
 	config->move_backward = 0;
 	config->move_right = 0;

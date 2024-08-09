@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 12:17:00 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/04 14:05:32 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:17:32 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,11 @@ void	draw_score(t_config *config)
 			while (j < UNIT)
 			{
 				draw_pixel(config, p, i, j);
-				j += COLLECTIBLE_STEP;
+				j += UNIT / 32;
 				p.x++;
 			}
 			p.y++;
-			i += COLLECTIBLE_STEP;
+			i += UNIT / 32;
 		}
 		n--;
 	}

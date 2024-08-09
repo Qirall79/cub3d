@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 11:08:37 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 17:24:48 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:55:11 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@ void	initialize_node(t_config *config, t_node *node, int x, int y)
 	node->neighbors[WEST] = NULL;
 }
 
+static void	init_nodes(t_node **start, t_node **end)
+{
+	*start = NULL;
+	*end = NULL;
+}
+
 t_node	*allocate_nodes(t_config *config,
 t_sprite *sprite, t_node **start, t_node **end)
 {
@@ -48,6 +54,7 @@ t_sprite *sprite, t_node **start, t_node **end)
 	int		i;
 	int		j;
 
+	init_nodes(start, end);
 	nodes = (t_node *) malloc(sizeof(t_node)
 			* config->map_width * config->map_height);
 	if (!nodes)

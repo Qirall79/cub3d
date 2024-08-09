@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/08 18:18:53 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 14:28:25 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:41:12 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ t_vector	raycasting_h(t_config *config, float alpha)
 	t_vector	map_pos;
 	int			i;
 
-	a.x = config->xPos;
-	a.y = config->yPos;
+	a.x = config->x_pos;
+	a.y = config->y_pos;
 	if (!set_params_h(config, &a, &step, alpha))
 		return (a);
 	i = 0;
@@ -46,8 +46,8 @@ t_vector	raycasting_v(t_config *config, float alpha)
 	t_vector	map_pos;
 	int			i;
 
-	a.x = config->xPos;
-	a.y = config->yPos;
+	a.x = config->x_pos;
+	a.y = config->y_pos;
 	if (!set_params_v(config, &a, &step, alpha))
 		return (a);
 	i = 0;
@@ -77,14 +77,14 @@ t_vector	find_intersection(t_config *config, float alpha)
 	p_v = raycasting_v(config, alpha);
 	p_v.z = 1;
 	p_h.z = 0;
-	dist_h = sqrtf((config->xPos - p_h.x) * (config->xPos - p_h.x)
-			+ (config->yPos - p_h.y) * (config->yPos - p_h.y));
-	dist_v = sqrtf((config->xPos - p_v.x) * (config->xPos - p_v.x)
-			+ (config->yPos - p_v.y) * (config->yPos - p_v.y));
-	if ((p_v.x == config->xPos && p_v.y == config->yPos)
+	dist_h = sqrtf((config->x_pos - p_h.x) * (config->x_pos - p_h.x)
+			+ (config->y_pos - p_h.y) * (config->y_pos - p_h.y));
+	dist_v = sqrtf((config->x_pos - p_v.x) * (config->x_pos - p_v.x)
+			+ (config->y_pos - p_v.y) * (config->y_pos - p_v.y));
+	if ((p_v.x == config->x_pos && p_v.y == config->y_pos)
 		|| (dist_v < 0.00001 && dist_v > -0.00001))
 		dist_v = 1e9;
-	if ((p_h.x == config->xPos && p_h.y == config->yPos)
+	if ((p_h.x == config->x_pos && p_h.y == config->y_pos)
 		|| (dist_h < 0.00001 && dist_h > -0.00001))
 		dist_h = 1e9;
 	p_h.distance = dist_h;

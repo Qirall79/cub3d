@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 11:11:08 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 15:53:55 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:56:34 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,18 @@ void	assign_neighbors(t_config *config, int i, int j, t_node **nodes)
 			= &(*nodes)[i * config->map_width + j + 1];
 }
 
-t_node	*set_neighbors(t_config *config, t_node **nodes, t_sprite *sprite)
+void	set_neighbors(t_config *config, t_node **nodes)
 {
 	int		i;
 	int		j;
-	t_node	*current;
 
-	current = NULL;
 	i = -1;
 	while (++i < config->map_height)
 	{
 		j = -1;
 		while (++j < config->map_width)
-		{
-			if ((*nodes)[i * config->map_width + j].x
-				== (int)roundf((sprite->x) / UNIT)
-			&& (*nodes)[i * config->map_width + j].y
-				== (int)roundf((sprite->y) / UNIT))
-				current = &((*nodes)[i * config->map_width + j]);
 			assign_neighbors(config, i, j, nodes);
-		}
 	}
-	return (current);
 }
 
 void	update_neighbors(t_node *current,

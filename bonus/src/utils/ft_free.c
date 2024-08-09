@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 13:56:30 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/07 14:01:04 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:55:57 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,23 @@ void	free_config(t_config *config)
 	free_texture(config, config->entry_texture, 'w');
 	free_items(config->items);
 	free(config->rays);
+}
+
+void	free_previous_nodes(t_node *nodes, int i, int j)
+{
+	int	y;
+	int	x;
+
+	y = 0;
+	while (y <= i)
+	{
+		x = 0;
+		while (x <= j)
+		{
+			free(nodes[y * MAP_WIDTH + x].neighbors);
+			x++;
+		}
+		y++;
+	}
+	free(nodes);
 }

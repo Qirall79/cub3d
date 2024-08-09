@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/22 15:31:55 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 14:06:20 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:14:24 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@ void	rotate(t_config *config, float rot_speed)
 {
 	if (config->rotate_left)
 	{
-		config->viewAngle = normalize_angle(config->viewAngle - rot_speed);
-		config->dirY = sin(config->viewAngle * DEG_TO_RAD);
-		config->dirX = cos(config->viewAngle * DEG_TO_RAD);
+		config->view_angle = normalize_angle(config->view_angle - rot_speed);
+		config->dir_y = sin(config->view_angle * DEG_TO_RAD);
+		config->dir_x = cos(config->view_angle * DEG_TO_RAD);
 	}
 	if (config->rotate_right)
 	{
-		config->viewAngle = normalize_angle(config->viewAngle + rot_speed);
-		config->dirY = sin(config->viewAngle * DEG_TO_RAD);
-		config->dirX = cos(config->viewAngle * DEG_TO_RAD);
+		config->view_angle = normalize_angle(config->view_angle + rot_speed);
+		config->dir_y = sin(config->view_angle * DEG_TO_RAD);
+		config->dir_x = cos(config->view_angle * DEG_TO_RAD);
 	}
 }
 
@@ -48,9 +48,9 @@ void	reset_game(t_config *config)
 			= config->sprites[i].type + 2;
 		i++;
 	}
-	config->xPos = config->initial_player_x;
-	config->yPos = config->initial_player_y;
-	config->viewAngle = get_view_angle(config);
+	config->x_pos = config->initial_player_x;
+	config->y_pos = config->initial_player_y;
+	config->view_angle = get_view_angle(config);
 	assign_paths(config);
 }
 

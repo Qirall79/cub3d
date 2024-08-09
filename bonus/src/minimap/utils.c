@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:54:38 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 21:35:08 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 11:08:17 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ void	draw_player(t_config *config)
 	int		x;
 	int		y;
 
-	mini_x = config->xPos * ((float)MAP_UNIT / UNIT)
+	mini_x = config->x_pos * ((float)MAP_UNIT / UNIT)
 		- config->minimap.start_x * MAP_UNIT;
-	mini_y = config->yPos * ((float)MAP_UNIT / UNIT)
+	mini_y = config->y_pos * ((float)MAP_UNIT / UNIT)
 		- config->minimap.start_y * MAP_UNIT;
 	y = 0;
 	while (y < MAP_UNIT / 4)

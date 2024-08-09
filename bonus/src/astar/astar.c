@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 20:18:09 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/08 17:12:59 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/09 10:56:48 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	sort_list(t_node **nodes_to_check, int end, t_node **current)
 		j = i + 1;
 		while (j < end)
 		{
-			if (nodes_to_check[j]->global_goal < nodes_to_check[i]->local_goal)
+			if (nodes_to_check[j]->global_goal < nodes_to_check[i]->global_goal)
 				swap_nodes(nodes_to_check, i, j);
 			j++;
 		}
@@ -76,12 +76,10 @@ void	solve_a_star(t_config *config, t_sprite *sprite)
 	t_node	**nodes_to_check;
 	int		k;
 
-	current = NULL;
-	end = NULL;
 	nodes = allocate_nodes(config, sprite, &current, &end);
 	if (!nodes)
 		return ;
-	set_neighbors(config, &nodes, sprite);
+	set_neighbors(config, &nodes);
 	nodes_to_check = get_nodes_to_check(config);
 	if (!nodes_to_check)
 		return (free_nodes(config, nodes, NULL, 'f'));
