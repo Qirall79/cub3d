@@ -6,7 +6,7 @@
 #    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/08/09 10:47:06 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/08/09 12:09:39 by wbelfatm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ all: libmlx $(NAME)
 
 libmlx:
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
+
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(LIBS) $(OBJS) $(INCLUDES) -o $(NAME)

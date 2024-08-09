@@ -6,7 +6,7 @@
 #    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/08/09 10:45:47 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/08/09 12:09:50 by wbelfatm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -L$(GLFW) -lm
 PARSING = parsing/parsing.a
 INCLUDES = -I $(LIBMLX)
 NAME = cub3d
-HEADERS = cub3d.h parsing.h $(LIBMLX)/MLX42.h
+HEADERS = cub3d.h parsing.h $(LIBMLX)/include/MLX42/MLX42.h
 
 all: libmlx $(NAME)
 
