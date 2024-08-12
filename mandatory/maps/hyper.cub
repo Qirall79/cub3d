@@ -4,8 +4,8 @@ SO ./textures/hisoka_portrait.png
 EA ./textures/chrollo_portrait.png
 
 
-F 0,0,0
-C 36,26,0
+F        0,0,0
+C                  36,26,0              
 
 
 

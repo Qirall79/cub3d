@@ -6,7 +6,7 @@
 /*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 20:38:22 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/12 13:13:20 by zmoumni          ###   ########.fr       */
+/*   Updated: 2024/08/12 13:52:17 by zmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,27 +54,17 @@ int	check_texture_2(char *s, t_tools *itms, char c)
 {
 	int	i;
 	int	cp;
-	int	k;
 
 	i = 0;
 	cp = 0;
-	while (s && s[i] && s[i] == ' ')
-		i++;
-	s += i;
-	i = 0;
-	while (s && s[i] && s[i] != '\n' && s[i] != ' ')
+	while (s && s[i] && s[i] != ' ')
 	{
 		if (s[i] == ',')
 			cp++;
 		i++;
 	}
-	if (s[i] == '\n')
-		k = i++;
-	while (s && s[i] && s[i] == ' ')
-		i++;
-	if (s[i] != '\0' || cp != 2)
+	if (cp != 2)
 		ft_putstr_fd("Error\nBad texture\n", 2);
-	s[k] = '\0';
 	helper(s, c, itms);
 	return (0);
 }

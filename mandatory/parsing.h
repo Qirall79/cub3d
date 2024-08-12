@@ -6,7 +6,7 @@
 /*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 11:25:03 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/12 13:22:47 by zmoumni          ###   ########.fr       */
+/*   Updated: 2024/08/12 13:47:47 by zmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ char	*ft_strcpy(char *dest, char *src);
 char	*ft_strdup(char *src);
 int		ft_strncmp(char *s1, char *s2, int c);
 char	**free_2d(char **tbl);
-int		ft_strncmp(char *s1, char *s2, int c);
+void	skip_line(t_tools *itms);
 char	*ft_strtrim(char	*s1, char	*set);
 
 #endif
