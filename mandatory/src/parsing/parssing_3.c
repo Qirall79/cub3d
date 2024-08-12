@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:46:56 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/12 15:56:01 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/12 18:11:12 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int	is_valid_map(t_tools *itms)
 	while (itms->maps[i])
 	{
 		j = 0;
-		if (is_valid(itms->map_2[i], itms))
+		if (is_valid(itms->maps[i], itms))
 			ft_putstr_fd("Error\nBad map\n", 2);
 		while (itms->maps[i][j])
 		{

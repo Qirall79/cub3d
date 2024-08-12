@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:10:37 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/12 13:27:36 by zmoumni          ###   ########.fr       */
+/*   Updated: 2024/08/12 18:37:35 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,20 +58,20 @@ void	init_game(t_config *config, t_tools *items)
 {
 	config->fail = 0;
 	init_map(config, items);
-	if (config->fail)
-		return ;
-	config->width = WIDTH;
-	config->height = HEIGHT;
-	init_sprites_textures(config);
-	if (config->fail)
-		return ;
-	set_pos(config);
-	config->mlx = mlx_init(config->width, config->height, "Cub3D", 1);
-	if (!config->mlx)
-		printf("ERROR initializing MLX\n");
-	config->img = mlx_new_image(config->mlx, config->width, config->height);
-	if (!config->img
-		|| (mlx_image_to_window(config->mlx, config->img, 0, 0) < 0))
-		printf("ERROR initializing MLX image\n");
-	init_config(config);
+	// if (config->fail)
+	// 	return ;
+	// config->width = WIDTH;
+	// config->height = HEIGHT;
+	// init_sprites_textures(config);
+	// if (config->fail)
+	// 	return ;
+	// set_pos(config);
+	// config->mlx = mlx_init(config->width, config->height, "Cub3D", 1);
+	// if (!config->mlx)
+	// 	printf("ERROR initializing MLX\n");
+	// config->img = mlx_new_image(config->mlx, config->width, config->height);
+	// if (!config->img
+	// 	|| (mlx_image_to_window(config->mlx, config->img, 0, 0) < 0))
+	// 	printf("ERROR initializing MLX image\n");
+	// init_config(config);
 }
