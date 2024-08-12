@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/07 13:56:30 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/12 18:37:46 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/12 20:46:28 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,16 @@ void	free_items(t_tools *items)
 
 void	free_config(t_config *config)
 {
-	// free_texture(config, config->texture_east, 'u');
-	// free_texture(config, config->texture_west, 'u');
-	// free_texture(config, config->texture_north, 'u');
-	// free_texture(config, config->texture_south, 'u');
+	free_texture(config, config->texture_east, 'u');
+	free_texture(config, config->texture_west, 'u');
+	free_texture(config, config->texture_north, 'u');
+	free_texture(config, config->texture_south, 'u');
 	free_items(config->items);
+	int i = 0;
+	while (config->map[i])
+	{
+		free(config->map[i]);
+		i++;
+	}
+	free(config->map);
 }
