@@ -1,7 +1,7 @@
-NO ./textures/file1.png
-SO ./textures/file4.png
-WE ./textures/file2.png
-EA ./textures/file3.png
+NO ./textures/ronda_1.png
+SO ./textures/ronda_1.png
+WE ./textures/ronda_1.png
+EA ./textures/ronda_1.png
 
 F 220,100,0
 C 251,255,2
@@ -10,5 +10,5 @@ C 251,255,2
 100000000000000000000001
 100000000000000000000001
 100000000000000000000001
-10000000000N0000000000001
+10000000000W000000000001
 111111111111111111111111
