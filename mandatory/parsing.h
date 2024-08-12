@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 11:25:03 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/12 13:47:47 by zmoumni          ###   ########.fr       */
+/*   Updated: 2024/08/12 14:07:21 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct tools
 {
 	char		**tmp_map;
 	char		**map;
+	char		**map_origin;
 	char		*m_tmp;
 	double		ray_angle;
 	char		**map_2;

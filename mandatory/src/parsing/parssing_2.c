@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:46:54 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/12 13:47:25 by zmoumni          ###   ########.fr       */
+/*   Updated: 2024/08/12 14:07:10 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	update_map(t_tools *itms, int cp)
 	itms->map_2 += cp;
 	get_yx(itms);
 	itms->maps = (char **)malloc((itms->len_y + 1) * sizeof(char *));
+	itms->map_origin = itms->maps;
 	if (!itms->maps)
 		return (1);
 	while (j < itms->len_y)
