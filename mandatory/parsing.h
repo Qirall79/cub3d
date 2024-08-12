@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 11:25:03 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/09 12:10:16 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:22:47 by zmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ int		update_map(t_tools *itms, int cp);
 
 /*p-2*/
 int		is_empty(char *s);
+int		is_empty_2(char *s);
 int		check_extention(char *s);
 void	ft_init(t_tools *itms);
 int		ft_read_map(char *name, t_tools *itms);
@@ -99,7 +100,10 @@ char	**update(char **s, char *line);
 int		is_digit(char c);
 void	function(char **s);
 int		check_texture_2(char *s, t_tools *itms, char c);
+int		is_empty_line(t_tools *itms);
 int		parssing(char *s, t_tools *itms);
+char	*ft_strchr(char *s, int c);
+char	*ft_substr(char *s, unsigned int start, size_t len);
 char	*get_next_line(int fd);
 size_t	ft_strlen(char *s);
 void	ft_putstr_fd(char *s, int fd);
@@ -111,5 +115,6 @@ char	*ft_strdup(char *src);
 int		ft_strncmp(char *s1, char *s2, int c);
 char	**free_2d(char **tbl);
 int		ft_strncmp(char *s1, char *s2, int c);
+char	*ft_strtrim(char	*s1, char	*set);
 
 #endif

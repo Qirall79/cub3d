@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing_4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 18:02:15 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/09 12:13:53 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/12 10:10:51 by zmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,8 @@ int	check_texture_1(char *s, t_tools *itms, void **p)
 
 	i = 0;
 	end = 0;
-	while (s && s[i] != '\n' && s[i] == ' ')
-		i++;
-	s += i;
-	while (s && s[i] != '\n' && s[i] != ' ')
-		i++;
-	end = i;
-	while (s && s[i] && s[i] == ' ')
-		i++;
-	if (s[i] == '\n')
-		i++;
-	if (s[i] == '\0')
-	{
-		s[end] = '\0';
-		open_image(s, itms, (mlx_image_t *)p);
-		return (0);
-	}
-	else
-		return (1);
+	(void)itms;
+	(void)p;
+	open_image(s, itms, (mlx_image_t *)p);
+	return (0);
 }

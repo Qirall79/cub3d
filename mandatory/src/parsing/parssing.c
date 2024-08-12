@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 20:38:22 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/09 12:14:06 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:13:20 by zmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,13 @@ int	parssing(char *s, t_tools *itms)
 	itms->tmp_map = itms->map_2;
 	ft_init(itms);
 	check_items(itms);
+	is_empty_line(itms);
 	is_valid_map(itms);
 	if (check_texture_1(itms->path_no, itms, (void *)itms->n) \
 		|| check_texture_1(itms->path_so, itms, (void *)itms->s) \
 			|| check_texture_1(itms->path_we, itms, (void *)itms->w) \
 				|| check_texture_1(itms->path_ea, itms, (void *)itms->e))
-		ft_putstr_fd("Errpr\nBad texture !!!", 2);
+		ft_putstr_fd("Error\nBad texture", 2);
 	check_texture_2(itms->path_c, itms, 'c');
 	check_texture_2(itms->path_f, itms, 'f');
 	return (0);

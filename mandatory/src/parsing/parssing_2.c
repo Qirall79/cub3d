@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:46:54 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/09 12:13:24 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:43:08 by zmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ int	ft_read_map(char *name, t_tools *itms)
 int	check(char *s, t_tools *all)
 {
 	if (ft_strncmp(s, "NO ", 3))
-		return (all->cp_no++, all->path_no = (s + 3), 1);
+		return (all->cp_no++, s += 3, all->path_no = ft_strtrim(s, " \t\n"), 1);
 	else if (ft_strncmp(s, "SO ", 3))
-		return (all->cp_so++, all->path_so = (s + 3), 1);
+		return (all->cp_so++, s += 3, all->path_so = ft_strtrim(s, " \t\n"), 1);
 	else if (ft_strncmp(s, "WE ", 3))
-		return (all->cp_we++, all->path_we = (s + 3), 1);
+		return (all->cp_we++, s += 3, all->path_we = ft_strtrim(s, " \t\n"), 1);
 	else if (ft_strncmp(s, "EA ", 3))
-		return (all->cp_ea++, all->path_ea = (s + 3), 1);
+		return (all->cp_ea++, s += 3, all->path_ea = ft_strtrim(s, " \t\n"), 1);
 	else if (ft_strncmp(s, "C ", 2))
-		return (all->cp_c++, all->path_c = (s + 2), 1);
+		return (all->cp_c++, s += 2, all->path_c = ft_strtrim(s, " \t\n"), 1);
 	else if (ft_strncmp(s, "F ", 2))
-		return (all->cp_f++, all->path_f = (s + 2), 1);
+		return (all->cp_f++, s += 2, all->path_f = ft_strtrim(s, " \t\n"), 1);
 	else
 		return (0);
 }
@@ -107,5 +107,5 @@ int	update_map(t_tools *itms, int cp)
 		j++;
 	}
 	itms->maps[itms->len_y] = (NULL);
-	return (0);
+	return (skip_line(itms), 0);
 }
