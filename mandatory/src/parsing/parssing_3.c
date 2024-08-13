@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing_3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:46:56 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/12 18:11:12 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:02:59 by zmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	is_valid(char *s, t_tools *all)
 	int	i;
 
 	i = 0;
-	while (s[i])
+	while (s[i] && s[i] != '#')
 	{
 		if (s[i] == '0' || s[i] == '1' || s[i] == 'N' \
 			|| s[i] == 'S' || s[i] == 'E' || s[i] == 'W' \
@@ -116,7 +116,7 @@ int	is_valid_map(t_tools *itms)
 	{
 		j = 0;
 		if (is_valid(itms->maps[i], itms))
-			ft_putstr_fd("Error\nBad map\n", 2);
+			ft_putstr_fd("Error\nBad map /*/\n", 2);
 		while (itms->maps[i][j])
 		{
 			if (is_valid_2(itms->maps[i][j], itms, i, j))
