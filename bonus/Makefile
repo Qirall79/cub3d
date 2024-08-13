@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
+#    By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/08/13 08:49:21 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/08/13 16:05:25 by zmoumni          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS = main.c src/utils/utils.c src/utils/init.c src/utils/position.c src/utils/
 
 OBJS = ${SRCS:.c=.o}
 LIBMLX = ./lib/MLX42
-GLFW = /Users/wbelfatm/homebrew/Cellar/glfw/3.4/lib
+GLFW = /Users/zmoumni/.brew/Cellar/glfw/3.4/lib
 # GLFW = /opt/homebrew/Cellar/glfw/3.4/lib
 LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -L$(GLFW) -lm
 PARSING = parsing/parsing.a
