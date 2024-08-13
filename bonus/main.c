@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/13 09:00:39 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:00:21 by zmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 	t_config	config;
 	t_tools		items;
 
-	atexit(wtf);
+	// atexit(wtf);
 	if (argc != 2)
 		exit(printf("Invalid args\n"));
 	parssing(argv[1], &items);

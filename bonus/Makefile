@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
+#    By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/08/13 17:47:41 by wbelfatm         ###   ########.fr        #
+#    Updated: 2024/08/13 18:03:24 by zmoumni          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CFLAGS = -Wall -Wextra -Werror -Ofast #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -Ofast -fsanitize=address -g
 CC = cc
 RM = rm -f
 
@@ -25,7 +25,7 @@ SRCS = main.c src/utils/utils.c src/utils/init.c src/utils/position.c src/utils/
 
 OBJS = ${SRCS:.c=.o}
 LIBMLX = ./lib/MLX42
-GLFW = /Users/wbelfatm/homebrew/Cellar/glfw/3.4/lib
+GLFW = /Users/zmoumni/.brew/Cellar/glfw/3.4/lib
 # GLFW = /opt/homebrew/Cellar/glfw/3.4/lib
 LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -L$(GLFW) -lm
 PARSING = parsing/parsing.a

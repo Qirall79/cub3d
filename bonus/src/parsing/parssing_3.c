@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing_3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:46:56 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/13 17:49:36 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/13 18:16:37 by zmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,17 @@ int	valid_edge(int i, int j, char **s)
 	int	cp;
 
 	cp = 0;
-	if (s[i] && s[i][j + 1] && s[i][j + 1] != '#' && s[i][j + 1] != ' ')
+	if (s[i] && s[i][j + 1] && s[i][j + 1] != '#' && \
+		s[i][j + 1] != ' ' && s[i][j + 1] != '\n')
 		cp++;
-	if (j != 0 && s[i] && s[i][j - 1] && s[i][j - 1] != '#' && s[i][j - 1] != ' ')
+	if (j != 0 && s[i] && s[i][j - 1] && s[i][j - 1] != '#' && \
+		s[i][j - 1] != ' ' && s[i][j - 1] != '\n')
 		cp++;
-	if (s[i + 1] && s[i + 1][j] && s[i + 1][j] != '#' && s[i + 1][j] != ' ')
+	if (s[i + 1] && s[i + 1][j] && s[i + 1][j] != '#' && \
+		s[i + 1][j] != ' ' && s[i + 1][j] != '\n')
 		cp++;
-	if (i != 0 && s[i - 1] && s[i - 1][j] && s[i - 1][j] != '#' && s[i - 1][j] != ' ')
+	if (i != 0 && s[i - 1] && s[i - 1][j] && s[i - 1][j] != '#' && \
+		s[i - 1][j] != ' ' && s[i - 1][j] != '\n')
 		cp++;
 	if (cp == 4)
 		return (0);
@@ -79,28 +83,21 @@ int	valid_edge(int i, int j, char **s)
 
 int	is_valid_2(char c, t_tools *itms, int i, int j)
 {
-	if (c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == '0')
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == '0' || c == 'D' \
+		|| c == 'O' || c == 'C' || c == 'T')
 	{
 		if (c == 'S')
-		{
 			(1) && (itms->player_x = j * SIZE, itms->player_y = i * SIZE, \
 				itms->angle = M_PI / 2);
-		}
 		else if (c == 'N')
-		{
 			(1) && (itms->player_x = j * SIZE, itms->player_y = i * SIZE, \
 			itms->angle = (3 * M_PI) / 2);
-		}
 		else if (c == 'E')
-		{
 			(1) && (itms->player_x = j * SIZE, itms->player_y = i * SIZE, \
 			itms->angle = 0);
-		}
 		else if (c == 'W')
-		{
 			(1) && (itms->player_x = j * SIZE, itms->player_y = i * SIZE, \
 			itms->angle = M_PI);
-		}
 		return (1);
 	}
 	return (0);
@@ -118,7 +115,7 @@ int	is_valid_map(t_tools *itms)
 	{
 		j = 0;
 		if (is_valid(itms->maps[i], itms))
-			ft_putstr_fd("Error\nBad map /*/\n", 2);
+			ft_putstr_fd("Error\nBad map\n", 2);
 		while (itms->maps[i][j])
 		{
 			if (is_valid_2(itms->maps[i][j], itms, i, j))
