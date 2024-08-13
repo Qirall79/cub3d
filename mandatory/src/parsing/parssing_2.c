@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:46:54 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/12 18:43:08 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:52:46 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,14 +86,14 @@ int	update_map(t_tools *itms, int cp)
 	int	j;
 	int	k;
 
-	j = 0;
+	j = -1;
 	itms->map_2 += cp;
 	get_yx(itms);
 	itms->maps = (char **)malloc((itms->len_y + 1) * sizeof(char *));
 	itms->map_origin = itms->maps;
 	if (!itms->maps)
 		return (1);
-	while (j < itms->len_y)
+	while (++j < itms->len_y)
 	{
 		itms->maps[j] = (char *)malloc((itms->len_x + 1) * sizeof(char));
 		if (!itms->maps[j])
@@ -105,7 +105,6 @@ int	update_map(t_tools *itms, int cp)
 			itms->maps[j][k] = itms->map_2[j][k];
 			k++;
 		}
-		j++;
 	}
 	itms->maps[itms->len_y] = (NULL);
 	return (skip_line(itms), 0);

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 11:01:46 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/09 13:37:55 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:50:26 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,17 @@ void	set_sprite_boundaries(t_config *config, t_sprite *sprite)
 	sprite->height = roundf((ENEMY_SIZE / sprite->distance) * plane_dist);
 	if (sprite->type == COLLECTIBLE)
 		sprite->height /= 2;
+	if (config->flying_up)
+		config->sprite_offset++;
+	else
+		config->sprite_offset--;
+	if (config->sprite_offset >= 40)
+		config->flying_up = 0;
+	if (config->sprite_offset <= 0)
+		config->flying_up = 1;
 	sprite->start_y = (config->height / 2) - (sprite->height / 2);
 	if (sprite->type == COLLECTIBLE)
-		sprite->start_y += (sprite->height / 2);
+		sprite->start_y += (sprite->height / 2) + config->sprite_offset;
 	sprite->end_y = sprite->start_y + sprite->height;
 	sprite->start_x = fov_ratio * screen_angle - (sprite->height / 2);
 	sprite->end_x = sprite->start_x + sprite->height;
