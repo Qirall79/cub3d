@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:46:56 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/09 12:14:46 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/13 15:35:12 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,13 @@ int	is_valid(char *s, t_tools *all)
 	int	i;
 
 	i = 0;
-	while (s[i])
+	while (s[i] && s[i] != '#')
 	{
-		if (s[i] == '0' || s[i] == '1' || s[i] == 'N'
-			|| s[i] == 'S' || s[i] == 'E' || s[i] == 'W'
-			|| s[i] == 'T' || s[i] == 'C' || s[i] == 'D'
-			|| s[i] == 'O' || s[i] == ' ' || s[i] == '\n')
+		if (s[i] == '0' || s[i] == '1' || s[i] == 'N' \
+			|| s[i] == 'S' || s[i] == 'E' || s[i] == 'W' \
+			|| s[i] == ' ' || s[i] == '\n'
+			|| s[i] == 'D' || s[i] == 'O'
+			|| s[i] == 'T' || s[i] == 'C')
 		{
 			if (s[i] == 'N' || s[i] == 'S' || s[i] == 'E' || s[i] == 'W')
 				all->snew++;
@@ -63,13 +64,13 @@ int	valid_edge(int i, int j, char **s)
 	int	cp;
 
 	cp = 0;
-	if (s[i] && s[i][j + 1] && s[i][j + 1] != ' ')
+	if (s[i] && s[i][j + 1] && s[i][j + 1] != '#')
 		cp++;
-	if (j != 0 && s[i] && s[i][j - 1] && s[i][j - 1] != ' ')
+	if (j != 0 && s[i] && s[i][j - 1] && s[i][j - 1] != '#')
 		cp++;
-	if (s[i + 1] && s[i + 1][j] && s[i + 1][j] != ' ')
+	if (s[i + 1] && s[i + 1][j] && s[i + 1][j] != '#')
 		cp++;
-	if (i != 0 && s[i - 1] && s[i - 1][j] && s[i - 1][j] != ' ')
+	if (i != 0 && s[i - 1] && s[i - 1][j] && s[i - 1][j] != '#')
 		cp++;
 	if (cp == 4)
 		return (0);
@@ -116,20 +117,20 @@ int	is_valid_map(t_tools *itms)
 	while (itms->maps[i])
 	{
 		j = 0;
-		if (is_valid(itms->map_2[i], itms))
-			ft_putstr_fd("Error\nFound invalid caracter in map\n", 2);
+		if (is_valid(itms->maps[i], itms))
+			ft_putstr_fd("Error\nBad map /*/\n", 2);
 		while (itms->maps[i][j])
 		{
 			if (is_valid_2(itms->maps[i][j], itms, i, j))
 			{
 				if (valid_edge(i, j, itms->maps))
-					ft_putstr_fd("Error\nFound invalid caracter in map\n", 2);
+					ft_putstr_fd("Error\nFound invalid caracter in map !\n", 2);
 			}
 			j++;
 		}
 		i++;
 	}
 	if (itms->snew != 1)
-		ft_putstr_fd("Error\nBad map direction in map\n", 2);
+		ft_putstr_fd("Error\nBad direction in map\n", 2);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/09 11:25:03 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/09 11:31:45 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/13 08:49:51 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct tools
 {
 	char		**tmp_map;
 	char		**map;
+	char		**map_origin;
 	char		*m_tmp;
 	double		ray_angle;
 	char		**map_2;
@@ -104,6 +105,8 @@ char	*get_next_line(int fd);
 size_t	ft_strlen(char *s);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strchr(char *s, int c);
+char	*ft_substr(char *s, unsigned int start, size_t len);
 char	**ft_split(char *str, char c);
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strcpy(char *dest, char *src);
@@ -111,5 +114,8 @@ char	*ft_strdup(char *src);
 int		ft_strncmp(char *s1, char *s2, int c);
 char	**free_2d(char **tbl);
 int		ft_strncmp(char *s1, char *s2, int c);
+char	*ft_strtrim(char	*s1, char	*set);
+int		is_empty_line(t_tools *itms);
+void	skip_line(t_tools *itms);
 
 #endif

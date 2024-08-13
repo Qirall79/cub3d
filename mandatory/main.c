@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:47:56 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/12 20:43:28 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/13 08:51:01 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void wtf()
 
 int	main(int argc, char **argv)
 {
-	// atexit(wtf);
+	atexit(wtf);
 	t_config	config;
 	t_tools		items;
 
@@ -30,13 +30,15 @@ int	main(int argc, char **argv)
 	init_game(&config, &items);
 	draw_map(&config);
 	if (config.fail)
-		exit(1);
+	{
+		free_config(&config);
+		exit(EXIT_FAILURE);
+	}
 	mlx_key_hook(config.mlx, (mlx_keyfunc) handle_click, &config);
 	mlx_loop_hook(config.mlx, (void *) loop_hook, &config);
 	mlx_resize_hook(config.mlx, (mlx_resizefunc) handle_resize, &config);
 	mlx_loop(config.mlx);
 	mlx_terminate(config.mlx);
 	free_config(&config);
-	// exit (EXIT_SUCCESS);
-	return 0;
+	exit (EXIT_SUCCESS);
 }

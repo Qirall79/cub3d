@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 20:38:22 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/09 12:15:26 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/12 13:52:17 by zmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,27 +54,17 @@ int	check_texture_2(char *s, t_tools *itms, char c)
 {
 	int	i;
 	int	cp;
-	int	k;
 
 	i = 0;
 	cp = 0;
-	while (s && s[i] && s[i] == ' ')
-		i++;
-	s += i;
-	i = 0;
-	while (s && s[i] && s[i] != '\n' && s[i] != ' ')
+	while (s && s[i] && s[i] != ' ')
 	{
 		if (s[i] == ',')
 			cp++;
 		i++;
 	}
-	if (s[i] == '\n')
-		k = i++;
-	while (s && s[i] && s[i] == ' ')
-		i++;
-	if (s[i] != '\0' || cp != 2)
+	if (cp != 2)
 		ft_putstr_fd("Error\nBad texture\n", 2);
-	s[k] = '\0';
 	helper(s, c, itms);
 	return (0);
 }
@@ -86,12 +76,13 @@ int	parssing(char *s, t_tools *itms)
 	itms->tmp_map = itms->map_2;
 	ft_init(itms);
 	check_items(itms);
+	is_empty_line(itms);
 	is_valid_map(itms);
 	if (check_texture_1(itms->path_no, itms, (void *)itms->n) \
 		|| check_texture_1(itms->path_so, itms, (void *)itms->s) \
 			|| check_texture_1(itms->path_we, itms, (void *)itms->w) \
 				|| check_texture_1(itms->path_ea, itms, (void *)itms->e))
-		ft_putstr_fd("Errpr\nBad texture !!!\n", 2);
+		ft_putstr_fd("Error\nBad texture", 2);
 	check_texture_2(itms->path_c, itms, 'c');
 	check_texture_2(itms->path_f, itms, 'f');
 	return (0);

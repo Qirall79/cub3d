@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/21 08:46:51 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/09 12:11:33 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/13 08:59:03 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,7 +285,7 @@ void		init_config(t_config *config);
 void		init_sprites_textures(t_config *config);
 void		init_screens(t_config *config);
 int			ft_atoi(const char *str);
-void		free_items(t_tools *items);
+void		free_items(t_config *config);
 int			**get_map(char **map_lines, t_config *config);
 void		init_map(t_config *config, t_tools *items);
 float		get_view_angle(t_config *config);

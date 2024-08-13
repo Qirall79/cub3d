@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+         #
+#    By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/21 10:21:18 by wbelfatm          #+#    #+#              #
-#    Updated: 2024/08/12 10:48:49 by zmoumni          ###   ########.fr        #
+#    Updated: 2024/08/13 08:49:21 by wbelfatm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,11 +21,11 @@ SRCS = main.c src/utils/utils.c src/utils/init.c src/utils/position.c src/utils/
 	   src/hooks/hooks.c src/hooks/handlers.c src/hooks/move.c src/hooks/utils.c \
 	   src/minimap/minimap.c src/minimap/utils.c src/rendering/rendering.c src/rendering/utils.c \
 		src/parsing/get_next_line.c src/parsing/parssing.c src/parsing/tools_1.c src/parsing/tools_2.c src/parsing/tools_3.c \
-       src/parsing/parssing_2.c src/parsing/parssing_3.c src/parsing/parssing_4.c
+       src/parsing/parssing_2.c src/parsing/parssing_3.c src/parsing/parssing_4.c src/parsing/ft_strtrim.c
 
 OBJS = ${SRCS:.c=.o}
 LIBMLX = ./lib/MLX42
-GLFW = /Users/zmoumni/.brew/Cellar/glfw/3.4/lib
+GLFW = /Users/wbelfatm/homebrew/Cellar/glfw/3.4/lib
 # GLFW = /opt/homebrew/Cellar/glfw/3.4/lib
 LIBS = $(LIBMLX)/build/libmlx42.a -ldl -lglfw -L$(GLFW) -lm
 PARSING = parsing/parsing.a
