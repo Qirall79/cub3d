@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 16:46:54 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/13 15:52:46 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/14 13:38:50 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,17 @@ int	ft_read_map(char *name, t_tools *itms)
 
 int	check(char *s, t_tools *all)
 {
-	if (ft_strncmp(s, "NO ", 3))
+	if (ft_strncmp(s, "NO ", 3) && !all->path_no)
 		return (all->cp_no++, s += 3, all->path_no = ft_strtrim(s, " \t\n"), 1);
-	else if (ft_strncmp(s, "SO ", 3))
+	else if (ft_strncmp(s, "SO ", 3) && !all->path_so)
 		return (all->cp_so++, s += 3, all->path_so = ft_strtrim(s, " \t\n"), 1);
-	else if (ft_strncmp(s, "WE ", 3))
+	else if (ft_strncmp(s, "WE ", 3) && !all->path_we)
 		return (all->cp_we++, s += 3, all->path_we = ft_strtrim(s, " \t\n"), 1);
-	else if (ft_strncmp(s, "EA ", 3))
+	else if (ft_strncmp(s, "EA ", 3) && !all->path_ea)
 		return (all->cp_ea++, s += 3, all->path_ea = ft_strtrim(s, " \t\n"), 1);
-	else if (ft_strncmp(s, "C ", 2))
+	else if (ft_strncmp(s, "C ", 2) && !all->path_c)
 		return (all->cp_c++, s += 2, all->path_c = ft_strtrim(s, " \t\n"), 1);
-	else if (ft_strncmp(s, "F ", 2))
+	else if (ft_strncmp(s, "F ", 2) && !all->path_f)
 		return (all->cp_f++, s += 2, all->path_f = ft_strtrim(s, " \t\n"), 1);
 	else
 		return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing_4.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/08 18:02:15 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/13 15:00:23 by zmoumni          ###   ########.fr       */
+/*   Updated: 2024/08/14 13:32:22 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ int	check_items(t_tools *itms)
 
 void	open_image(char *path, t_tools *itm, mlx_image_t *img)
 {
-	mlx_texture_t	*texture;
+	int	fd;
 
 	(void)itm;
 	(void)img;
-	texture = mlx_load_png(path);
-	if (!texture)
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
 		ft_putstr_fd("Error\ninvalid texture file\n", 2);
-	mlx_delete_texture(texture);
+	close(fd);
 }
 
 int	check_texture_1(char *s, t_tools *itms, void **p)

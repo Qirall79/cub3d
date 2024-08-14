@@ -3,10 +3,9 @@ SO ./textures/ronda_1.png
 WE ./textures/ronda_1.png
 EA ./textures/ronda_1.png
 
-F 220,100,0
-C 251,255,2
+F       0,0,0       
+C       0,0,0                  
 
-1111111111111
-1000000000001
-100W000000001
-1111111111111
+ 1
+1E1
+ 1
