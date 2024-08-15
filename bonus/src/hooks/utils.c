@@ -6,7 +6,7 @@
 /*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 13:17:06 by wbelfatm          #+#    #+#             */
-/*   Updated: 2024/08/09 11:07:47 by wbelfatm         ###   ########.fr       */
+/*   Updated: 2024/08/15 14:42:47 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ int	is_wall_v(float newX, float newY, t_config *config)
 	(void) newX;
 	y = (int)(config->y_pos + newY) / UNIT;
 	x = (int)(config->x_pos) / UNIT;
+	if (y >= config->height || y < 0 || x >= config->width || x < 0)
+		return (1);
 	if (config->map[y][x] == 1
 	|| config->map[y][x] == 4)
 		return (1);
@@ -43,6 +45,8 @@ int	is_wall_h(float newX, float newY, t_config *config)
 	(void) newY;
 	x = (int)(config->x_pos + newX) / UNIT;
 	y = (int)(config->y_pos) / UNIT;
+	if (y >= config->height || y < 0 || x >= config->width || x < 0)
+		return (1);
 	if (config->map[y][x] == 1
 	|| config->map[y][x] == 4)
 		return (1);

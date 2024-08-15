@@ -1,11 +1,14 @@
-NO ./textures/ronda_1.png
-SO ./textures/ronda_1.png
-WE ./textures/ronda_1.png
-EA ./textures/ronda_1.png
+NO ./textures/file1.png
+SO ./textures/file4.png
+WE ./textures/file2.png
+EA ./textures/file3.png
 
-F       0,0,0       
-C       0,0,0                  
-
- 1
-1E1
- 1
+F 220,100,0
+C 251,10,2
+111111111111111111111111
+100000000000000000000001
+100000000000000000000001
+100000000000000000000001
+10000000000N000000000001
+100000000000000000000001
+111111111111111111111111

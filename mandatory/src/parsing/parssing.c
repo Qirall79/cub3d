@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parssing.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmoumni <zmoumni@student.42.fr>            +#+  +:+       +#+        */
+/*   By: wbelfatm <wbelfatm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/05 20:38:22 by zmoumni           #+#    #+#             */
-/*   Updated: 2024/08/12 13:52:17 by zmoumni          ###   ########.fr       */
+/*   Updated: 2024/08/15 15:41:35 by wbelfatm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	helper(char *s, char c, t_tools *itms)
 		itms->c_color = ft_split(s, ',');
 		check_color(itms->c_color);
 	}
-	else
+	else if (c == 'f')
 	{
 		itms->f_color = ft_split(s, ',');
 		check_color(itms->f_color);
